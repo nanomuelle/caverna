@@ -72,6 +72,17 @@ class FourPlayersGameBuilder {
         }        
     }
     
+    private static function createCaveSpaces(Player $player) {
+        foreach(range(0, 4) as $row) {
+            foreach(range(0, 3) as $col) {
+                $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\MountainCaveSpace();
+                $caveSpace->setRow($row);
+                $caveSpace->setCol($col);
+                
+                $player->addCaveSpace($caveSpace);
+            }
+        }
+    }
     private static function createForestSpaces(Player $player) {
         foreach(range(0, 4) as $row) {
             foreach(range(0, 3) as $col) {
@@ -106,10 +117,11 @@ class FourPlayersGameBuilder {
             $game->addPlayer($player);                                    
         }        
         
-        // forest
+        // forest and mountain
         foreach($game->getPlayers() as $player) {
             self::createForestSpaces($player);
-        }        
+            self::createCaveSpaces($player);
+        }                
     }
     
     private static function createActionSpaces(Game $game) {
@@ -148,7 +160,7 @@ class FourPlayersGameBuilder {
             $orderNum++;
         }
     }
-    
+        
     public static function create() {
         $game = new Game();
         

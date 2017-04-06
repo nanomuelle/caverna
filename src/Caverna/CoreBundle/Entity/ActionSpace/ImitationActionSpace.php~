@@ -41,11 +41,11 @@ class ImitationActionSpace extends ActionSpace {
     }
     
     public function getDescription() {
-        return ' Comida: -2';
+        return "Comida: -2\n";
     }
     
     public function getState() {
-        return '';
+        return "Comida: -2\n";
     }
             
     public function __toString() {        

@@ -14,11 +14,10 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 /**
  * @ORM\Entity;
  */
-class LoggingActionSpace extends ActionSpace {
-    const KEY = 'Logging';
-    
-    const INITIAL_WOOD = 3;
-    const REPLENISH_WOOD = 3;
+class DriftMiningActionSpace extends ActionSpace {
+    const KEY = 'DriftMining';
+    const DESCRIPTION_1_TO_3 = 'Piedra 1(1)';
+    const DESCRIPTION_4_TO_7 = 'Piedra 2(2)';
     
     /**
      * @ORM\Id
@@ -30,28 +29,32 @@ class LoggingActionSpace extends ActionSpace {
     /**
      * @ORM\Column(type="integer")
      */
-    private $wood;
+    private $stone;
     
     public function getKey() {
         return self::KEY;
     }
     
+    public function addStone($amount) {
+        $this->stone += $amount;
+    }
+    
     public function getDescription() {
-        return "Madera: 3(3)\n";
+        if ($this->getGame()->getNumPlayers() < 4) {
+            return self::DESCRIPTION_1_TO_3;
+        }
+        
+        return self::DESCRIPTION_4_TO_7;
     }
     
     public function getState() {
-        return 'Madera: ' . $this->getWood() . "\n";
-    }        
-    
-    public function __toString() {        
-        return parent::__toString() . ' (' . $this->getWood() . 'W)';
+        return 'Piedra: ' . $this->getStone() . "\n";
     }
-    
+        
     public function __construct() {
         parent::__construct();
-        $this->setName('Logging');
-        $this->wood = 0;
+        $this->setName('Drift Mining');
+        $this->stone = 0;
     }
 
     /**
@@ -65,26 +68,26 @@ class LoggingActionSpace extends ActionSpace {
     }
 
     /**
-     * Set wood
+     * Set stone
      *
-     * @param integer $wood
+     * @param integer $stone
      *
-     * @return LoggingActionSpace
+     * @return DriftMiningActionSpace
      */
-    public function setWood($wood)
+    public function setStone($stone)
     {
-        $this->wood = $wood;
+        $this->stone = $stone;
 
         return $this;
     }
 
     /**
-     * Get wood
+     * Get stone
      *
      * @return integer
      */
-    public function getWood()
+    public function getStone()
     {
-        return $this->wood;
+        return $this->stone;
     }
 }

@@ -28,11 +28,11 @@ class GrowthActionSpace extends ActionSpace {
     }
     
     public function getDescription() {
-        return " Comida: +1\n Madera: +1\n Pieda: +1\n Mineral: +1\n VP: +2";
+        return "Comida: +1\nMadera: +1\nPieda: +1\nMineral: +1\nVP: +2\n";
     }
     
     public function getState() {
-        return '';
+        return "Comida: +1\nMadera: +1\nPieda: +1\nMineral: +1\nVP: +2\n";
     }        
     
     public function getFood() {
@@ -43,7 +43,7 @@ class GrowthActionSpace extends ActionSpace {
         return self::WOOD;
     }
     
-    public function getStond() {
+    public function getStone() {
         return self::STONE;
     }
     

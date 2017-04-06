@@ -18,13 +18,16 @@ use Caverna\CoreBundle\Entity\Game;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({
- *      "DriftMinning" = "DriftMinningActionSpace",
+ *      "DriftMining" = "DriftMiningActionSpace",
  *      "Imitation" = "ImitationActionSpace",
  *      "Logging" = "LoggingActionSpace",
  *      "ForestExploration" = "ForestExplorationActionSpace",
  *      "Excavation" = "ExcavationActionSpace",
  *      "Growth" = "GrowthActionSpace",
- *      "StartingPlayer" = "StartingPlayerActionSpace"
+ *      "Clearing" = "ClearingActionSpace",
+ *      "StartingPlayer" = "StartingPlayerActionSpace",
+ *      "OreMining" = "OreMiningActionSpace",
+ *      "Sustenance" = "SustenanceActionSpace"
  * })
  */
 abstract class ActionSpace {

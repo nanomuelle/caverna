@@ -16,9 +16,8 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
  */
 class ExcavationActionSpace extends ActionSpace {
     const KEY = 'Excavation';
-    
-    const INITIAL_STONE = 2;
-    const REPLENISH_STONE = 1;
+    const DESCRIPTION_1_TO_3 = 'Piedra 1(1)';
+    const DESCRIPTION_4_TO_7 = 'Piedra 2(1)';
     
     /**
      * @ORM\Id
@@ -41,17 +40,20 @@ class ExcavationActionSpace extends ActionSpace {
     }
     
     public function getDescription() {
-        return ' Piedra: 2(1)';
+        if ($this->getGame()->getNumPlayers() < 4) {
+            return self::DESCRIPTION_1_TO_3;
+        }
+        return self::DESCRIPTION_4_TO_7;
     }
     
     public function getState() {
-        return ' Piedra: ' . $this->getStone();
+        return 'Piedra: ' . $this->getStone() . "\n";
     }
         
     public function __construct() {
         parent::__construct();
         $this->setName('Excavation');
-        $this->setStone(self::INITIAL_STONE);
+        $this->stone = 0;
     }
 
     /**
@@ -69,7 +71,7 @@ class ExcavationActionSpace extends ActionSpace {
      *
      * @param integer $stone
      *
-     * @return DriftMinningActionSpace
+     * @return DriftMiningActionSpace
      */
     public function setStone($stone)
     {

@@ -55,7 +55,7 @@ class ForestForestSpace extends BaseForestSpace {
         }
         
         if ($this->getFoodReward() > 0) {
-            return '*';
+            return '1';
         }
         
         if ($this->getBoarReward() > 0) {

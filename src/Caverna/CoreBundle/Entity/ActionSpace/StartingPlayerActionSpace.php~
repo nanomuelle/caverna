@@ -21,8 +21,8 @@ class StartingPlayerActionSpace extends ActionSpace {
     const INITIAL_FOOD = 1;
     const REPLENISH_FOOD = 1;
     
-    const ORE_AMOUNT = 2;
-    const RUBY_AMOUNT = 1;
+    const ORE = 2;
+    const RUBY = 1;
     
     /**
      * @ORM\Id
@@ -42,7 +42,7 @@ class StartingPlayerActionSpace extends ActionSpace {
     
     public function getOre() {
         if ($this->getGame()->getNumPlayers() < 4) {
-            return self::ORE_AMOUNT;
+            return self::ORE;
         }
         
         return 0;
@@ -50,7 +50,7 @@ class StartingPlayerActionSpace extends ActionSpace {
     
     public function getRuby() {
         if ($this->getGame()->getNumPlayers() >= 4) {
-            return self::RUBY_AMOUNT;
+            return self::RUBY;
         }
         
         return 0;
@@ -61,11 +61,21 @@ class StartingPlayerActionSpace extends ActionSpace {
     }
     
     public function getDescription() {
-        return ' Jugador Inicial';
+        $description = "Jugador Inicial\nComida: 1(1)\n";
+        
+        if ($this->getGame()->getNumPlayers() < 4) {
+            $description .= "Mineral: +2\n";
+        }
+        
+        if ($this->getGame()->getNumPlayers() >= 4) {
+            $description .= "Ruby: +1\n";
+        }
+        
+        return $description;                
     }
     
     public function getState() {
-        return ' Comida: ' . $this->getFood();
+        return $this->getDescription();
     }
     
     public function __toString() {        
@@ -75,7 +85,7 @@ class StartingPlayerActionSpace extends ActionSpace {
     public function __construct() {
         parent::__construct();
         $this->setName('Jugador Inicial');
-        $this->setFood(self::INITIAL_FOOD);
+        $this->food = 0;
     }
 
     /**
