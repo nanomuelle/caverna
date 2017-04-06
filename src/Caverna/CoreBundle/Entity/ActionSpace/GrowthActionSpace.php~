@@ -1,0 +1,72 @@
+<?php
+namespace Caverna\CoreBundle\Entity\ActionSpace;
+
+use Doctrine\ORM\Mapping as ORM;
+use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
+
+/**
+ * @ORM\Entity;
+ */
+class GrowthActionSpace extends ActionSpace {
+    const KEY = 'Growth';
+    
+    const FOOD = 1;
+    const WOOD = 1;
+    const STONE = 1;
+    const ORE = 1;
+    const VP = 2;
+    
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    
+    public function getKey() {
+        return self::KEY;
+    }
+    
+    public function getDescription() {
+        return " Comida: +1\n Madera: +1\n Pieda: +1\n Mineral: +1\n VP: +2";
+    }
+    
+    public function getState() {
+        return '';
+    }        
+    
+    public function getFood() {
+        return self::FOOD;
+    }
+    
+    public function getWood() {
+        return self::WOOD;
+    }
+    
+    public function getStond() {
+        return self::STONE;
+    }
+    
+    public function getOre() {
+        return self::ORE;
+    }
+    
+    public function getVp() {
+        return self::VP;
+    }
+    
+    public function __toString() {        
+        return parent::__toString() . ' (' . 
+            $this->getFood() . 'F' .
+            $this->getWood() . 'W' .
+            $this->getStone() . 'S' . 
+            $this->getOre() . 'O' .
+            $this->getVP() . 'V' .
+        ')';
+    }
+    
+    public function __construct() {
+        parent::__construct();
+        $this->setName('Growth');
+    }
+}

@@ -1,0 +1,89 @@
+<?php
+
+namespace Caverna\CoreBundle\Entity\ActionSpace;
+
+use Doctrine\ORM\Mapping as ORM;
+use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
+
+/**
+ * @ORM\Entity;
+ */
+class ForestExplorationActionSpace extends ActionSpace {
+    const KEY = 'ForestExploration';
+    
+    const INITIAL_WOOD = 2;
+    const FOOD = 2;
+    
+    const REPLENISH_WOOD = 1;
+    
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $wood;
+    
+    public function getKey() {
+        return self::KEY;
+    }
+    
+    public function getDescription() {
+        return " Madera: 2(1), Comida: +2";
+    }
+    
+    public function getState() {
+        return ' Madera: ' . $this->getWood() . ' Comida: 2';
+    }        
+    
+    public function getFood() {
+        return self::FOOD;
+    }
+    public function __toString() {        
+        return parent::__toString() . ' (' . $this->getWood() . 'W 2F)';
+    }
+    
+    public function __construct() {
+        parent::__construct();
+        $this->setName('Forest Exploration');
+        $this->setWood(self::INITIAL_WOOD);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set wood
+     *
+     * @param integer $wood
+     *
+     * @return LoggingActionSpace
+     */
+    public function setWood($wood)
+    {
+        $this->wood = $wood;
+
+        return $this;
+    }
+
+    /**
+     * Get wood
+     *
+     * @return integer
+     */
+    public function getWood()
+    {
+        return $this->wood;
+    }
+}

@@ -1,0 +1,7 @@
+services:
+    caverna.game_engine:
+        class: Caverna\CoreBundle\GameEngine\GameEngine
+        arguments:
+            entityManager: '@doctrine.orm.entity_manager'
+        tags:
+            - { name: caverna.game_engine, alias: caverna_game_engine }

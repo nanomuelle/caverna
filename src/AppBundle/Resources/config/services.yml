@@ -1,0 +1,87 @@
+services:
+#    app.game_engine:
+#        class: AppBundle\GameEngine\GameEngine
+#        arguments:
+#            entityManager: '@doctrine.orm.entity_manager'
+#        tags:
+#            - { name: app.game_engine, alias: app_game_engine }
+
+    app.game.create_command:
+        class: AppBundle\Command\Game\CreateCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game.list_command:
+        class: AppBundle\Command\Game\ListCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+    
+    app.game.show_command:
+        class: AppBundle\Command\Game\ShowCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+    
+    app.game.start_command:
+        class: AppBundle\Command\Game\StartCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+    
+    app.game_turn.finish_command:
+        class: AppBundle\Command\GameTurn\FinishCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_action_space.drift_mining_command:
+        class: AppBundle\Command\GameActionSpace\DriftMiningCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+            
+    app.game_action_space.logging_command:
+        class: AppBundle\Command\GameActionSpace\LoggingCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_action_space.imitation:
+        class: AppBundle\Command\GameActionSpace\ImitationCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+            
+    app.game_action_space.excavation:
+        class: AppBundle\Command\GameActionSpace\ExcavationCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_action_space.growth:
+        class: AppBundle\Command\GameActionSpace\GrowthCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+            
+    app.game_action_space.clearing:
+        class: AppBundle\Command\GameActionSpace\ClearingCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+            
+    app.game_action_space.starting_player_command:
+        class: AppBundle\Command\GameActionSpace\StartingPlayerCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_action_space.ore_mining_command:
+        class: AppBundle\Command\GameActionSpace\OreMiningCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+            
