@@ -152,7 +152,7 @@ class ShowCommand extends Command {
         $table->render();
         
         $output->writeln('');
-   }
+    }
     
     private function renderActionSpaces(OutputInterface $output, Game $game) {
         $actionSpaces = $game->getActionSpaces();
@@ -186,7 +186,7 @@ class ShowCommand extends Command {
         
         /* @var $player Player */
         foreach ($players as $player) {
-            $dwarfs = '';            
+            $dwarfs = '';
             for ($i = 0; $i < $player->spaceForDwarfs(); $i++) {
                 if ($i < $player->getDwarfs()->count()) {
                     $dwarfs .= $player->getDwarfs()[$i] . "\n";
@@ -205,8 +205,7 @@ class ShowCommand extends Command {
                 $player->getStone(),
                 $player->getOre(),
                 $player->getRuby(),
-                $player->getVp(),
-                $player->spaceForDwarfs()
+                $player->getVp()
             ));
         }
         

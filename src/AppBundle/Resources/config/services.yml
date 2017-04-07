@@ -84,4 +84,16 @@ services:
         tags:
             - { name: console.command }
 
+    app.game_action_space.forest_exploration_command:
+        class: AppBundle\Command\GameActionSpace\ForestExplorationCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+            
+    app.game_action_space.sustenance_command:
+        class: AppBundle\Command\GameActionSpace\SustenanceCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
             
