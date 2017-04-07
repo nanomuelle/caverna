@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Caverna\CoreBundle\Entity\ForestSpace;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -142,7 +136,7 @@ abstract class BaseForestSpace {
      *
      * @return BaseForestSpace
      */
-    public function setPlayer(\Caverna\CoreBundle\Entity\Player $player = null)
+    public function setPlayer(Player $player = null)
     {
         $this->player = $player;
 
