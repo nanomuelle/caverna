@@ -73,13 +73,13 @@ class FourPlayersGameBuilder {
     }
     
     private static function createCaveSpaces(Player $player) {
-        foreach(range(0, 4) as $row) {
+        foreach(range(0, 5) as $row) {
             foreach(range(0, 3) as $col) {
                 
-                if ($row === 3 && $col === 0) {
+                if ($row === 4 && $col === 0) {
                     // initial dwelling
                     $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\Dwelling\InitialDwellingCaveSpace();
-                } elseif ($row === 2 && $col === 0) {
+                } elseif ($row === 3 && $col === 0) {
                     // Cavern
                     $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace();
                 } else {
@@ -94,7 +94,7 @@ class FourPlayersGameBuilder {
         }
     }
     private static function createForestSpaces(Player $player) {
-        foreach(range(0, 4) as $row) {
+        foreach(range(0, 5) as $row) {
             foreach(range(0, 3) as $col) {
                 $forestSpace = new \Caverna\CoreBundle\Entity\ForestSpace\ForestForestSpace();
                 $forestSpace->setRow($row);
