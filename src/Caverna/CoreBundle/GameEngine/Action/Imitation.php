@@ -18,7 +18,7 @@ class Imitation {
         $actionClass::execute($imitatedActionSpace, $player);        
     }
     
-    public static function replenish(LoggingActionSpace $actionSpace) {
+    public static function replenish(ImitationActionSpace $actionSpace) {
         return;
     }
 }

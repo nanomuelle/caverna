@@ -127,11 +127,11 @@ class FourPlayersGameBuilder {
             $game->addPlayer($player);                                    
         }        
         
-        // forest and mountain
+        // forest
         foreach($game->getPlayers() as $player) {
             self::createForestSpaces($player);
             self::createCaveSpaces($player);
-        }                
+        }        
     }
     
     private static function createActionSpaces(Game $game) {
@@ -170,7 +170,7 @@ class FourPlayersGameBuilder {
             $orderNum++;
         }
     }
-        
+    
     public static function create() {
         $game = new Game();
         

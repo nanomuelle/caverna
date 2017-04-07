@@ -31,9 +31,9 @@ class Clearing {
     
     public static function replenish(ClearingActionSpace $actionSpace) {
         if ($actionSpace->getGame()->getNumPlayers() < 4) {
-            $actionSpace->addWodd(self::REPLENISH_WOOD_1_TO_3_PLAYERS);
+            $actionSpace->addWood(self::REPLENISH_WOOD_1_TO_3_PLAYERS);
         } else {
-            $actionSpace->addWodd(self::REPLENISH_WOOD_4_TO_7_PLAYERS);
+            $actionSpace->addWood(self::REPLENISH_WOOD_4_TO_7_PLAYERS);
         }
     }
 }
