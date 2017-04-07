@@ -8,4 +8,7 @@ use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
  * @ORM\Entity;
  */
 class CavernCaveSpace extends BaseCaveSpace {
+    public function __toString() {
+        return 'C';
+    }
 }

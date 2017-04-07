@@ -75,10 +75,20 @@ class FourPlayersGameBuilder {
     private static function createCaveSpaces(Player $player) {
         foreach(range(0, 4) as $row) {
             foreach(range(0, 3) as $col) {
-                $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\MountainCaveSpace();
+                
+                if ($row === 3 && $col === 0) {
+                    // initial dwelling
+                    $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\Dwelling\InitialDwellingCaveSpace();
+                } else if ($row === 2 && $col === 0) {
+                    // Cavern
+                    $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace();
+                } else {
+                    // mountain space
+                    $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\MountainCaveSpace();
+                }
+                
                 $caveSpace->setRow($row);
                 $caveSpace->setCol($col);
-                
                 $player->addCaveSpace($caveSpace);
             }
         }

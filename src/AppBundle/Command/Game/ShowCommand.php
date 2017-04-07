@@ -16,6 +16,7 @@ use Caverna\CoreBundle\Entity\Player;
 use Caverna\CoreBundle\Entity\Round;
 use Caverna\CoreBundle\Entity\Turn;
 use Caverna\CoreBundle\Entity\ForestSpace;
+use Caverna\CoreBundle\Entity\CaveSpace;
 
 /**
  * @author marte
@@ -98,14 +99,31 @@ class ShowCommand extends Command {
         $output->writeln('');
         $output->writeln('Tablero ' . $turn->getPlayer());
         $this->renderForest($output, $turn->getPlayer());
+        $this->renderCave($output, $turn->getPlayer());
     }
     
     private function renderForest(OutputInterface $output, Player $player) {
-        $rows = array(array(),array(),array(),array());
+        $rows = array(array(),array(),array(),array(),array());
         
         /* @var $forestSpace ForestSpace */
         foreach ($player->getForestSpaces() as $forestSpace) {
             $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $forestSpace;
+        }
+        
+        $table = new Table($output);
+        $table->setStyle('compact');
+        $table->addRows($rows);
+        $table->render();
+        
+        $output->writeln('');
+    }
+
+    private function renderCave(OutputInterface $output, Player $player) {
+        $rows = array(array(),array(),array(),array(),array());
+        
+        /* @var $caveSpace CaveSpace */
+        foreach ($player->getCaveSpaces() as $caveSpace) {
+            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
         }
         
         $table = new Table($output);

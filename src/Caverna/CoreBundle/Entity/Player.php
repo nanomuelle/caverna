@@ -5,6 +5,8 @@ namespace Caverna\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Caverna\CoreBundle\GameEngine\Dwelling\SpaceForDwarfsInterface;
+
 /**
  * @ORM\Entity
  */
@@ -191,6 +193,16 @@ class Player
     
     public function __toString() {
         return $this->num . ' ' . $this->color . ' (#'. $this->id .')';
+    }
+    
+    public function spaceForDwarfs() {
+        $spaceForDwarfs = 0;
+        foreach ($this->caveSpaces as $caveSpace) {
+            if ($caveSpace instanceof SpaceForDwarfsInterface) {
+                $spaceForDwarfs += $caveSpace->spaceForDwarfs();
+            }
+        }
+        return $spaceForDwarfs;
     }
     
     /**
