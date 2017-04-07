@@ -1,4 +1,4 @@
-*~
+/src/**/*~
 
 # Email spool folder
 /app/spool/*

@@ -45,21 +45,22 @@ class ForestForestSpace extends BaseForestSpace {
     
     public function __toString() {
         if ($this->isExternal()) {
-//            if ($this->getRow() === 0 && $this->getCol() === 0) {
-//                return '+'; // chr(218); // ┌
-//            }
-//            
-//            if ($this->getRow() === 4 && $this->getCol() === 0) {
-//                return '+'; //chr(192); // └
-//            }
-//            
-//            if ($this->getRow() === 0 || $this->getRow() === 4) {
-//                return '-'; // chr(196); // ─
-//            }
-//            
-//            if ($this->getCol() === 0) {
-//                return '|'; // chr(179); // │
-//            }
+            if ($this->getRow() === 0 && $this->getCol() === 0) {
+                //return '+'; // chr(218); // ┌
+                return chr(218);
+            }
+            
+            if ($this->getRow() === 4 && $this->getCol() === 0) {
+                return '+'; //chr(192); // └
+            }
+            
+            if ($this->getRow() === 0 || $this->getRow() === 4) {
+                return '-'; // chr(196); // ─
+            }
+            
+            if ($this->getCol() === 0) {
+                return '|'; // chr(179); // │
+            }
 
             return "<fg=green>\xF0\x9F\x8C\xB5</>"; //"\xF0\x9F\x8C\xB5";
             

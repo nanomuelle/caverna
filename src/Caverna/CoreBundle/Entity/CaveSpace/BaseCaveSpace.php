@@ -16,7 +16,8 @@ use Caverna\CoreBundle\Entity\Player;
  *      "Cavern" = "CavernCaveSpace",
  * 
  *      "Dwelling" = "Caverna\CoreBundle\Entity\CaveSpace\Dwelling\DwellingCaveSpace",
- *      "InitialDwelling" = "Caverna\CoreBundle\Entity\CaveSpace\Dwelling\InitialDwellingCaveSpace"
+ *      "InitialDwelling" = "Caverna\CoreBundle\Entity\CaveSpace\Dwelling\InitialDwellingCaveSpace",
+ *      "SimpleDwelling" = "Caverna\CoreBundle\Entity\CaveSpace\Dwelling\SimpleDwellingCaveSpace"
  * })
  */
 abstract class BaseCaveSpace {

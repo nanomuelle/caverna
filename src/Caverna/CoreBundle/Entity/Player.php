@@ -245,12 +245,8 @@ class Player
         $this->ore = 0;
         $this->ruby = 0;
         $this->vp = 0;
-        
-        //
-        // $this->vegetable = 0;
-        // $this->grain = 0;
-        //
-        // $this->victoryPoints = 0;
+        $this->vegetable = 0;
+        $this->grain = 0;
     }
 
 
@@ -590,5 +586,25 @@ class Player
     public function getVegetable()
     {
         return $this->vegetable;
+    }
+
+    /**
+     * Remove caveSpace
+     *
+     * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
+     */
+    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
+    {
+        $this->caveSpaces->removeElement($caveSpace);
+    }
+
+    /**
+     * Get caveSpaces
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCaveSpaces()
+    {
+        return $this->caveSpaces;
     }
 }
