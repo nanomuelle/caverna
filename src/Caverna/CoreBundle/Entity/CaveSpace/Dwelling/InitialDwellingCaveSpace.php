@@ -18,6 +18,6 @@ class InitialDwellingCaveSpace extends BaseCaveSpace implements SpaceForDwarfsIn
     }      
     
     public function __toString() {
-        return 'H';
+        return "<fg=white;bg=blue;options=bold>\xF0\x9F\x8F\xA0</>"; //'H';
     }
 }

@@ -31,14 +31,18 @@ class MountainCaveSpace extends BaseCaveSpace {
     
     public function __toString() {
         if ($this->isExternal()) {
-            return '-';
+            return "<fg=cyan>\xF0\x9F\x8C\x84</>";
         }
         
-        if ($this->getFoodReward() > 0) {
-            return '' . $this->getFoodReward();
+        if ($this->getFoodReward() === 1) {
+            return "<fg=yellow>\xF0\x9F\x8D\xB5</>"; // '1';
         }
         
-        return 'o';
+        if ($this->getFoodReward() === 2) {
+            return "<fg=yellow>\xF0\x9F\x8D\x92</>"; // '1';
+        }
+        
+        return "<fg=cyan;options=bold>\xF0\x9F\x97\xBB</>"; //'o';
     }
     
     

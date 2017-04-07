@@ -79,7 +79,7 @@ class FourPlayersGameBuilder {
                 if ($row === 3 && $col === 0) {
                     // initial dwelling
                     $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\Dwelling\InitialDwellingCaveSpace();
-                } else if ($row === 2 && $col === 0) {
+                } elseif ($row === 2 && $col === 0) {
                     // Cavern
                     $caveSpace = new \Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace();
                 } else {

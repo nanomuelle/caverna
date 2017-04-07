@@ -9,6 +9,6 @@ use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
  */
 class CavernCaveSpace extends BaseCaveSpace {
     public function __toString() {
-        return 'C';
+        return '<bg=blue> </>';// C;
     }
 }

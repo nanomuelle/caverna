@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableStyle;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\Game;
@@ -98,11 +99,10 @@ class ShowCommand extends Command {
         $table->render();
         $output->writeln('');
         $output->writeln('Tablero ' . $turn->getPlayer());
-        $this->renderForest($output, $turn->getPlayer());
-        $this->renderCave($output, $turn->getPlayer());
+        $this->renderPlayerBoard($output, $turn->getPlayer());
     }
     
-    private function renderForest(OutputInterface $output, Player $player) {
+    private function getForestRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array());
         
         /* @var $forestSpace ForestSpace */
@@ -110,15 +110,10 @@ class ShowCommand extends Command {
             $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $forestSpace;
         }
         
-        $table = new Table($output);
-        $table->setStyle('compact');
-        $table->addRows($rows);
-        $table->render();
-        
-        $output->writeln('');
+        return $rows;        
     }
 
-    private function renderCave(OutputInterface $output, Player $player) {
+    private function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array());
         
         /* @var $caveSpace CaveSpace */
@@ -126,13 +121,38 @@ class ShowCommand extends Command {
             $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
         }
         
+        return $rows;
+    }
+    
+    private function renderPlayerBoard(OutputInterface $output, Player $player) {
+        $forestRows = $this->getForestRows($player);
+        $caveRows = $this->getCaveRows($player);
+        $rows = array();
+        for ($row = 0; $row < 5; $row++) {
+            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
+        }
+        
+        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
+        $style = new TableStyle();
+        $style
+                ->setCellRowFormat('<fg=green>%s</>')
+                ->setCellHeaderFormat('%s')
+                ->setCellRowContentFormat('%s')
+                ->setHorizontalBorderChar('')
+                ->setVerticalBorderChar('')
+//                ->setBorderFormat('')
+//                ->setCrossingChar('')
+                ;
+        
+        
         $table = new Table($output);
         $table->setStyle('compact');
+//        $table->setStyle($style);
         $table->addRows($rows);
         $table->render();
         
         $output->writeln('');
-    }
+   }
     
     private function renderActionSpaces(OutputInterface $output, Game $game) {
         $actionSpaces = $game->getActionSpaces();
@@ -163,25 +183,30 @@ class ShowCommand extends Command {
         $table
             ->setHeaders(array('id', 'Num', 'Color', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
         ;        
+        
+        /* @var $player Player */
         foreach ($players as $player) {
-            $dwarfs = '';
-            
-            foreach ($player->getDwarfs() as $dwarf) {
-                $dwarfs .= $dwarf . "\n";
+            $dwarfs = '';            
+            for ($i = 0; $i < $player->spaceForDwarfs(); $i++) {
+                if ($i < $player->getDwarfs()->count()) {
+                    $dwarfs .= $player->getDwarfs()[$i] . "\n";
+                } else {
+                    $dwarfs .= "[ ]\n";                    
+                }
             }
             
             $table->addRow(array(
                 '#' . $player->getId(),
                 $player->getNum(),
                 $player->getColor(),
-//                $player->getDwarfs()->count(),
                 $dwarfs,
                 $player->getFood(),
                 $player->getWood(),
                 $player->getStone(),
                 $player->getOre(),
                 $player->getRuby(),
-                $player->getVp()
+                $player->getVp(),
+                $player->spaceForDwarfs()
             ));
         }
         
@@ -205,7 +230,7 @@ class ShowCommand extends Command {
         $this->renderRound($output, $game->getCurrentRound());
         
         if ($game->getCurrentRound()->getCurrentTurn()) {
-            $output->writeln('Turno Actual');
+            $output->writeln('<info>Turno Actual</info>');
             $this->renderTurn($output, $game->getCurrentRound()->getCurrentTurn());        
         }
     } 
