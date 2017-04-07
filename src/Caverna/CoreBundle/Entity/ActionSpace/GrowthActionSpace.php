@@ -16,23 +16,16 @@ class GrowthActionSpace extends ActionSpace {
     const ORE = 1;
     const VP = 2;
     
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    
     public function getKey() {
         return self::KEY;
     }
     
     public function getDescription() {
-        return "Comida: +1\nMadera: +1\nPieda: +1\nMineral: +1\nVP: +2\n";
+        return 'Comida: +1, Madera: +1, Pieda: +1, Mineral: +1, Vp: +2';
     }
     
     public function getState() {
-        return "Comida: +1\nMadera: +1\nPieda: +1\nMineral: +1\nVP: +2\n";
+        return 'Comida: +1, Madera: +1, Pieda: +1, Mineral: +1, Vp: +2';
     }        
     
     public function getFood() {

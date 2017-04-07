@@ -14,16 +14,17 @@ class ClearingActionSpace extends ActionSpace {
     const DESCRIPTION_4_TO_7 = "Madera 2(2)";
     
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    
-    /**
      * @ORM\Column(type="integer")
      */
     private $wood;
+    
+    /**
+     * 
+     * @param integer $amount
+     */
+    public function addWood($amount) {
+        $this->wood += $amount;
+    }
     
     public function getKey() {
         return self::KEY;
@@ -38,27 +39,13 @@ class ClearingActionSpace extends ActionSpace {
     }
     
     public function getState() {
-        return 'Madera: ' . $this->getWood() . "\n";
-    }        
-    
-    public function __toString() {        
-        return parent::__toString() . ' (' . $this->getWood() . 'W)';
+        return 'Madera: ' . $this->getWood();
     }
     
     public function __construct() {
         parent::__construct();
         $this->setName('Clearing');
         $this->wood = 0;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

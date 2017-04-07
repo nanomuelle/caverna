@@ -35,7 +35,7 @@ class ForestExploration {
         }
     }
     
-    public static function replenish(LoggingActionSpace $actionSpace) {
+    public static function replenish(ForestExplorationActionSpace $actionSpace) {
         if ($actionSpace->getWood() === 0) {
             $actionSpace->setWood(
                 $actionSpace->getGame()->getNumPlayers() < 4 ?

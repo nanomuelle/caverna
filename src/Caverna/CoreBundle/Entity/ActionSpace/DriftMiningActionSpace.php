@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Caverna\CoreBundle\Entity\ActionSpace;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -18,13 +12,6 @@ class DriftMiningActionSpace extends ActionSpace {
     const KEY = 'DriftMining';
     const DESCRIPTION_1_TO_3 = 'Piedra 1(1)';
     const DESCRIPTION_4_TO_7 = 'Piedra 2(2)';
-    
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
     
     /**
      * @ORM\Column(type="integer")
@@ -48,23 +35,13 @@ class DriftMiningActionSpace extends ActionSpace {
     }
     
     public function getState() {
-        return 'Piedra: ' . $this->getStone() . "\n";
+        return 'Piedra: ' . $this->getStone();
     }
         
     public function __construct() {
         parent::__construct();
         $this->setName('Drift Mining');
         $this->stone = 0;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

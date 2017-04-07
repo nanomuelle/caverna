@@ -10,20 +10,13 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
  */
 class SustenanceActionSpace extends ActionSpace {
     const KEY = 'Sustenance';
-    const DESCRIPTION_1_TO_3 = "Food: (1) Grain: +1";
-    const DESCRIPTION_4_TO_7 = "Grain: 1 Vegetable: (1)";
+    const DESCRIPTION_1_TO_3 = "Comida: (1), Grano: +1";
+    const DESCRIPTION_4_TO_7 = "Grano: 1, Hortaliza: (1)";
     
     const INITIAL_FOOD = 1;
     const GRAIN = 1;
     const REPLENISH_FOOD = 1;
     const REPLENISH_VEGETABLE = 1;
-    
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
     
     /**
      * @ORM\Column(type="integer")
@@ -80,17 +73,10 @@ class SustenanceActionSpace extends ActionSpace {
     
     public function getState() {
         if ($this->oneToTreePlayers()) {
-            return 'Comida: ' . $this->getFood() . "\n" . ' Grano: ' . $this->getGrain();
+            return 'Comida: ' . $this->getFood() . ', Grano: ' . $this->getGrain();
         }
+        return 'Grano: ' . $this->getGrain() . ', Hortaliza: ' . $this->getVegetable();
     }        
-    
-    public function __toString() {        
-        if ($this->oneToTreePlayers()) {
-            return parent::__toString() . 'F: ' . $this->getFood() . ' G: ' . $this->getGrain();
-        }
-        
-        return parent::__toString() . 'G: ' . $this->getGrain() . ' H: ' . $this->getVegetable();        
-    }
     
     public function __construct() {
         parent::__construct();
@@ -98,40 +84,6 @@ class SustenanceActionSpace extends ActionSpace {
         $this->food = 0;
         $this->grain = 0;
         $this->vegetable = 0;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set wood
-     *
-     * @param integer $wood
-     *
-     * @return LoggingActionSpace
-     */
-    public function setWood($wood)
-    {
-        $this->wood = $wood;
-
-        return $this;
-    }
-
-    /**
-     * Get wood
-     *
-     * @return integer
-     */
-    public function getWood()
-    {
-        return $this->wood;
     }
 
     /**

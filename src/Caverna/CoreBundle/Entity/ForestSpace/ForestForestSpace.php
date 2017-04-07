@@ -9,12 +9,6 @@ use Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace;
  * @ORM\Entity;
  */
 class ForestForestSpace extends BaseForestSpace {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
     
     public function isExternal() {
         if ($this->getRow() === 0 || $this->getRow() === 4 || $this->getCol() === 0) {

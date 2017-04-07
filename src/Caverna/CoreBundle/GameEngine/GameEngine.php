@@ -53,6 +53,21 @@ class GameEngine {
                 ->find($id);
     }
     
+    private function replenishActionSpace(ActionSpace $actionSpace) {
+        $numRound = $actionSpace->getGame()->getCurrentRound()->getNum();
+        
+        if ($numRound >= $actionSpace->getAvailableFromRoundNum()) {
+            $actionClass = '\\Caverna\\CoreBundle\\GameEngine\\Action\\' . $actionSpace->getKey();
+            $actionClass::replenish($actionSpace);            
+        }
+    }
+    
+    public function replenish(Game $game) {
+        foreach ($game->getActionSpaces() as $actionSpace) {
+            $this->replenishActionSpace($actionSpace);
+        }
+    }
+    
     public function startGame(Game $game) {
         if ($game->getStatus() !== Game::STATUS_READY) {
             return;
@@ -60,6 +75,7 @@ class GameEngine {
         
         $this->createTurnsForCurrentRound($game);
         $game->setStatus(Game::STATUS_PLAYING);
+        $this->replenish($game);
         
         $this->em->persist($game);
         $this->em->flush();
@@ -97,7 +113,7 @@ class GameEngine {
         $round = $game->getCurrentRound();
         
         foreach($players as $player) {
-            $enanos[$player->getId()] = count($player->getDwarfs());
+            $enanos[$player->getId()] = $player->getDwarfs()->count();
         }
         
         $player = $round->getInitialPlayer();

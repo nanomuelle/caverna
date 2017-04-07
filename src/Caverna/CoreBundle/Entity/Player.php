@@ -88,6 +88,17 @@ class Player
     private $vp;
     
     /**
+     *
+     * @ORM\Column(type="smallint")
+     */
+    private $grain;
+    
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $vegetable;
+    
+    /**
      * @param integer $amount
      */
     public function addFood($amount) {
@@ -121,6 +132,20 @@ class Player
     public function addRuby($amount) {
         $this->ruby += $amount;
     }
+    
+    /**
+     * @param integer $amount
+     */
+    public function addGrain($amount) {
+        $this->grain += $amount;
+    }
+    
+    /**
+     * @param integer $amount
+     */
+    public function addVegetable($amount) {
+        $this->grain += $amount;
+    }    
     
     /**
      * @param integer $amount
@@ -520,22 +545,50 @@ class Player
     }
 
     /**
-     * Remove caveSpace
+     * Set grain
      *
-     * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
+     * @param integer $grain
+     *
+     * @return Player
      */
-    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
+    public function setGrain($grain)
     {
-        $this->caveSpaces->removeElement($caveSpace);
+        $this->grain = $grain;
+
+        return $this;
     }
 
     /**
-     * Get caveSpaces
+     * Get grain
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return integer
      */
-    public function getCaveSpaces()
+    public function getGrain()
     {
-        return $this->caveSpaces;
+        return $this->grain;
+    }
+
+    /**
+     * Set vegetable
+     *
+     * @param integer $vegetable
+     *
+     * @return Player
+     */
+    public function setVegetable($vegetable)
+    {
+        $this->vegetable = $vegetable;
+
+        return $this;
+    }
+
+    /**
+     * Get vegetable
+     *
+     * @return integer
+     */
+    public function getVegetable()
+    {
+        return $this->vegetable;
     }
 }

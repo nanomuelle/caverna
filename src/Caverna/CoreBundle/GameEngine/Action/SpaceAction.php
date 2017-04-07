@@ -15,5 +15,5 @@ abstract class SpaceAction {
     }
     
     public abstract function execute();
-    public abstract function replenish();
+    public abstract function replenish(ActionSpace $actionSpace);
 }

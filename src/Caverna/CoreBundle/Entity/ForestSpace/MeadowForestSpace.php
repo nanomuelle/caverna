@@ -14,21 +14,5 @@ use Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace;
 /**
  * @ORM\Entity;
  */
-class MeadowForestSpace extends BaseForestSpace {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;    
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+class MeadowForestSpace extends BaseForestSpace {  
 }
