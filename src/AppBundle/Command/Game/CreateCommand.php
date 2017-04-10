@@ -36,7 +36,7 @@ class CreateCommand extends Command {
         $this                
             ->setName('game:create')
             ->setDescription('Crea una nueva partida de n jugadores.')
-            ->addArgument('n', InputArgument::REQUIRED, 'Numero de jugadores')
+            ->addArgument('n', InputArgument::OPTIONAL, 'Numero de jugadores', 4)
             ;        
     }    
     

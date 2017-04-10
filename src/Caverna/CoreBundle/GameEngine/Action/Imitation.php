@@ -13,7 +13,7 @@ class Imitation {
         $player->addFood(ImitationActionSpace::FOOD_COST);
         
         $imitatedActionSpace = $actionSpace->getActionSpace();
-        var_dump($imitatedActionSpace);
+//        var_dump($imitatedActionSpace);
         $actionClass = '\\Caverna\CoreBundle\\GameEngine\\Action\\' . $imitatedActionSpace->getKey();
         $actionClass::execute($imitatedActionSpace, $player);        
     }

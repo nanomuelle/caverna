@@ -5,6 +5,8 @@ namespace Caverna\CoreBundle\GameEngine\Action;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
+use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
+use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
 /**
  * Drift mining: Take all the Stone that has accumulated on this Action space. 
  * (In games with 1 to 3 players, 1 Stone will be added to this Action space 
@@ -21,10 +23,23 @@ class DriftMining {
     const REPLENISH_STONE_4_TO_7_PLAYERS = 2;
     
     public static function execute(DriftMiningActionSpace $actionSpace, Player $p_player = null) {
+        
+        /* @var $player Player*/
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
-
+        
+        // Stone
         $player->addStone($actionSpace->getStone());
-        $actionSpace->setStone(0);        
+        $actionSpace->setStone(0);
+        
+        // Cavern / Tunnel
+        $cavern = $actionSpace->getCavernCaveSpace();
+        $tunnel = $actionSpace->getTunnelCaveSpace();
+        if ($cavern !== null && $tunnel !== null) {
+//            $old_cavern = $player->getCaveSpaceByRowAndCol($cavern->getRow(), $caver->getCol());
+//            $player->removeCaveSpace($old_cavern);            
+            $player->placeCaveSpace($cavern);
+            $player->placeCaveSpace($tunnel);
+        }
     }
     
     public static function replenish(DriftMiningActionSpace $actionSpace) {

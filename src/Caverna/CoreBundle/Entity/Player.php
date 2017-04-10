@@ -41,13 +41,13 @@ class Player
     private $dwarfs;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace", mappedBy="player", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace", mappedBy="player", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"row" = "ASC", "col" = "ASC"})
      */
     private $forestSpaces;
     
     /**
-     * @ORM\OneToMany(targetEntity="\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace", mappedBy="player", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace", mappedBy="player", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"row" = "ASC", "col" = "ASC"})
      */
     private $caveSpaces;
@@ -215,6 +215,32 @@ class Player
         return $this;
     }
 
+    /**
+     * Remove caveSpace
+     *
+     * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
+     */
+    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
+    {
+        $caveSpace->setPlayer(null);
+        $this->getCaveSpaces()->removeElement($caveSpace);
+    }
+    
+    public function getCaveSpaceByRowCol($row, $col) {
+        foreach ($this->getCaveSpaces() as $caveSpace) {
+            if ($caveSpace->getRow() === $row && $caveSpace->getCol() === $col) {
+                return $caveSpace;
+            }
+        }
+    }
+    
+    public function placeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {
+        $oldCaveSpace = $this->getCaveSpaceByRowCol($caveSpace->getRow(), $caveSpace->getCol());
+        $this->removeCaveSpace($oldCaveSpace);
+        var_dump($this->getCaveSpaces()->count());
+        $this->addCaveSpace($caveSpace);
+        var_dump($this->getCaveSpaces()->count());
+    }
     
     public function __toString() {
         return $this->num . ' ' . $this->color . ' (#'. $this->id .')';
@@ -586,16 +612,6 @@ class Player
     public function getVegetable()
     {
         return $this->vegetable;
-    }
-
-    /**
-     * Remove caveSpace
-     *
-     * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
-     */
-    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
-    {
-        $this->caveSpaces->removeElement($caveSpace);
     }
 
     /**
