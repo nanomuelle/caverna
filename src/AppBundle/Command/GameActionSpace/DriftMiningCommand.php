@@ -6,12 +6,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
+use Symfony\Component\Console\Helper\Table;
+// use Symfony\Component\Console\Helper\TableStyle;
+
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 
 use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
 use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
+use Caverna\CoreBundle\Entity\Player;
 
 
 /**
@@ -61,17 +65,41 @@ class DriftMiningCommand extends ActionSpaceCommand {
         return $selectedActionSpace;
     }
     
+    private function getCaveRows(Player $player) {
+        $rows = array(array(),array(),array(),array(),array(),array());
+        
+        /* @var $caveSpace CaveSpace */
+        foreach ($player->getCaveSpaces() as $caveSpace) {
+            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
+        }
+        
+        return $rows;
+    }
+    
+    protected function selectPos(InputInterface $input, OutputInterface $output) {
+        $rows = $this->getCaveRows($this->player);
+        
+        $table = new Table($output);
+        $table->setStyle('compact');
+//        $table->setStyle($style);
+        $table->addRows($rows);
+        $table->render();
+    }
+    
     protected function interact(InputInterface $input, OutputInterface $output) {
         parent::interact($input, $output);
-        
-//        ->setActionSpace($imitatedActionSpace);
-        $tile = $this->selectTile($input, $output);
         
         /* @var $tunnel TunnelCaveSpace */
         $tunnel = null;
         
         /* @var $cavern TunnelCaveSpace */
         $cavern = null;
+        
+        $tile = $this->selectTile($input, $output);
+        
+        if ($tile !== self::TILE_NINGUNO) {
+            $pos = $this->selectPos($input, $output);
+        }
         
         switch ($tile) {
             case self::TILE_NINGUNO:
@@ -96,6 +124,6 @@ class DriftMiningCommand extends ActionSpaceCommand {
     }    
     
     protected function execute(InputInterface $input, OutputInterface $output) {
-        parent::execute($input, $output);        
+//        parent::execute($input, $output);        
     }
 }

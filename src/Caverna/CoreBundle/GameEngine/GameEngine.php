@@ -89,6 +89,7 @@ class GameEngine {
         
         $this->em->persist($actionSpace->getGame());
         $this->em->flush();
+        $this->em->clear(); // clear em cache
     }
     
     public function finishCurrentTurn(Game $game) {
