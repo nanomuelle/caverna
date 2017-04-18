@@ -68,9 +68,21 @@ class DriftMiningCommand extends ActionSpaceCommand {
     private function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
+        $keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         /* @var $caveSpace CaveSpace */
+        $contador = 0;
         foreach ($player->getCaveSpaces() as $caveSpace) {
-            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
+//            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
+                        
+            $reflection = new \ReflectionClass($caveSpace);            
+            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';
+            if (class_exists($renderer)) {
+                $out = $renderer::render($caveSpace, $keys[$contador]);
+            } else {
+                $out = $keys[$contador] . substr('' . $caveSpace, 1);
+            }
+            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $out;
+            $contador++;
         }
         
         return $rows;
