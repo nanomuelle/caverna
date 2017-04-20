@@ -117,8 +117,10 @@ class ShowCommand extends Command {
         $rows = array(array(),array(),array(),array(),array(),array());
         
         /* @var $caveSpace CaveSpace */
-        foreach ($player->getCaveSpaces() as $caveSpace) {
-            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
+        foreach ($player->getCaveSpaces() as $caveSpace) {            
+            $reflection = new \ReflectionClass($caveSpace);            
+            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
+            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
         }
         
         return $rows;

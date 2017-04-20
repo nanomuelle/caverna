@@ -13,6 +13,10 @@ use Caverna\CoreBundle\GameEngine\Dwelling\SpaceForDwarfsInterface;
 class DwellingCaveSpace extends BaseCaveSpace implements SpaceForDwarfsInterface {    
     const SPACE_FOR_DWARFS = 1;
     
+    public function acceptsCavernTunnelTile() {
+        return false;
+    }
+    
     public function spaceForDwarfs() {
         return self::SPACE_FOR_DWARFS;
     }    

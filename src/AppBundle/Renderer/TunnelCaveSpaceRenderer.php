@@ -2,6 +2,7 @@
 
 namespace AppBundle\Renderer;
 
+use AppBundle\Renderer\SpaceRenderer as SR;
 use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
 
 class TunnelCaveSpaceRenderer {
@@ -9,27 +10,10 @@ class TunnelCaveSpaceRenderer {
      * @return string
      */
     public static function render(TunnelCaveSpace $caveSpace, $key = '') {
-        $f2 = chr(177);
-//        $ul = chr(218); // ┌
-//        $bl = chr(192); // └    
-//        $ur = chr(191); // ┐
-//        $br = chr(217); // ┘
-//        return
-//            "<bg=blue;fg=cyan>$ur$f2$ul</>\n".
-//            "<bg=blue;fg=cyan>$f2$f2$f2</>\n".
-//            "<bg=blue;fg=cyan>$br$f2$bl</>"
-//        ;  
-        if ($key === '') {
-            return
-                "<bg=blue;fg=cyan>$f2 $f2</>\n".
-                "<bg=blue;fg=cyan>   </>\n".
-                "<bg=blue;fg=cyan>$f2 $f2</>"
-            ;  
-        }
-        return
-            "<bg=blue;fg=cyan>$f2 $f2</>\n".
-            "<bg=blue;fg=cyan> </><bg=black;fg=white>" . $key . "</><bg=blue;fg=cyan> </>\n".
-            "<bg=blue;fg=cyan>$f2 $f2</>"
-        ;                 
+        return SR::render(
+            SR::TUNNEL_CORNER, SR::TUNNEL, SR::TUNNEL_CORNER,
+            SR::TUNNEL, SR::TUNNEL, SR::TUNNEL,
+            SR::TUNNEL_CORNER, SR::TUNNEL, SR::TUNNEL_CORNER,
+            $key);        
     }
 }

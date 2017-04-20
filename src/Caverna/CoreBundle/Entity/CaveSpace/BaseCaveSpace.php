@@ -43,6 +43,8 @@ abstract class BaseCaveSpace {
      */
     private $player;
 
+    public abstract function acceptsCavernTunnelTile();
+    
     /**
      * Get id
      *
