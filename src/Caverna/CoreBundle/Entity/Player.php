@@ -232,6 +232,7 @@ class Player
                 return $caveSpace;
             }
         }
+        return null;
     }
     
     public function placeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {

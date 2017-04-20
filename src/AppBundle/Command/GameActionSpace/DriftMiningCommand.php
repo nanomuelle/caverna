@@ -92,7 +92,7 @@ class DriftMiningCommand extends ActionSpaceCommand {
             switch ($this->tile) {
                 case self::TILE_TC_HORIZONTAL:
                     // TODO. crear metodo $caveSpace->acceptsTile()
-                    if ($caveSpace->acceptsCavernTunnelTile()) {
+                    if ($caveSpace->acceptsTile($this->tile)) {
                         $key = $keys[$contador];
                     } else {
                         $key = '';

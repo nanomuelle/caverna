@@ -8,8 +8,24 @@ use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
  * @ORM\Entity;
  */
 class MountainCaveSpace extends BaseCaveSpace {
-    public function acceptsCavernTunnelTile() {
-        return !$this->isExternal();
+    public function acceptsTile($tileType) {
+//        var_dump(parent::acceptsTile($tileType));
+//        if (!parent::acceptsTile($tileType)) {
+//            return false;
+//        }
+        
+        return parent::acceptsTile($tileType) && !$this->isExternal();
+//        switch ($tileType) {
+//            case BaseCaveSpace::TILE_C:
+//            case BaseCaveSpace::TILE_T:                
+//                // todo: comprobar que es adyacente a un cavern o a un tunnel
+//                return  !$this->isExternal();
+//                
+//            case BaseCaveSpace::TILE_CT_HORIZONTAL:
+//            case BaseCaveSpace::TILE_TC_HORIZONTAL:
+//                
+//        }
+//        return !$this->isExternal();
     }
     
     public function getFoodReward() {

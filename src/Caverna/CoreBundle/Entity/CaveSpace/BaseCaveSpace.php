@@ -5,6 +5,7 @@ namespace Caverna\CoreBundle\Entity\CaveSpace;
 use Doctrine\ORM\Mapping as ORM;
 
 use Caverna\CoreBundle\Entity\Player;
+use Caverna\CoreBundle\Entity\CaveSpace\MountainCaveSpace;
 
 /**
  * @ORM\Entity;
@@ -21,6 +22,13 @@ use Caverna\CoreBundle\Entity\Player;
  * })
  */
 abstract class BaseCaveSpace {
+    const TILE_T = "Tunel";
+    const TILE_C = "Caverna";
+    const TILE_TC_HORIZONTAL = "Tunel/Caverna Horizontal";
+    const TILE_CT_HORIZONTAL = "Caverna/Tunel Horizontal";
+    const TILE_TC_VERTICAL = "Tunel/Caverna Vertical";
+    const TILE_CT_VERTICAL = "Caverna/Tunel Vertical";
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -43,7 +51,37 @@ abstract class BaseCaveSpace {
      */
     private $player;
 
-    public abstract function acceptsCavernTunnelTile();
+    public function acceptsTile($tileTipe) {
+        return $this->mayDig();
+    }
+    
+    protected function mayDig() {
+        $row = $this->getRow();
+        $col = $this->getCol();
+        
+        $caveSpace = $this->getPlayer()->getCaveSpaceByRowCol($row - 1, $col);        
+        if ($caveSpace !== null && !($caveSpace instanceof MountainCaveSpace)) {
+            return true;
+        }
+
+        $caveSpace = $this->getPlayer()->getCaveSpaceByRowCol($row + 1, $col);
+        if ($caveSpace !== null && !($caveSpace instanceof MountainCaveSpace)) {
+            return true;
+        }
+        
+        $caveSpace = $this->getPlayer()->getCaveSpaceByRowCol($row, $col - 1);
+        if ($caveSpace !== null && !($caveSpace instanceof MountainCaveSpace)) {
+            return true;
+        }
+        
+        $caveSpace = $this->getPlayer()->getCaveSpaceByRowCol($row, $col + 1);
+        if ($caveSpace !== null && !($caveSpace instanceof MountainCaveSpace)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     
     /**
      * Get id
