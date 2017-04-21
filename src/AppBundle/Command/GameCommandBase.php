@@ -3,19 +3,10 @@
 namespace AppBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-# use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
-use Caverna\CoreBundle\Entity\Game;
+
 use Caverna\CoreBundle\Entity\Player;
-use Caverna\CoreBundle\Entity\Round;
-use Caverna\CoreBundle\Entity\Turn;
 use Caverna\CoreBundle\Entity\ForestSpace;
 use Caverna\CoreBundle\Entity\CaveSpace;
 
@@ -44,5 +35,17 @@ abstract class GameCommandBase extends Command {
         return $rows;        
     }
     
+    protected function getCaveRows(Player $player) {
+        $rows = array(array(),array(),array(),array(),array(),array());
+        
+        /* @var $caveSpace CaveSpace */
+        foreach ($player->getCaveSpaces() as $caveSpace) {            
+            $reflection = new \ReflectionClass($caveSpace);            
+            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
+            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
+        }
+        
+        return $rows;
+    }    
     
 }

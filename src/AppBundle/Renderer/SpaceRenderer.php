@@ -38,8 +38,12 @@ class SpaceRenderer {
     const CAVERN_BOTTOM_RIGHT = "<bg=blue;fg=cyan>\xD9</>";
     
     // Tunnel
-    const TUNNEL = "<bg=blue;fg=cyan> </>";
-    const TUNNEL_CORNER = "<bg=blue;fg=cyan>\xB1</>"; // ▒ = \xB1 = chr(177)
+    const TUNNEL = "<bg=blue;fg=cyan>\xB0</>";
+    const TUNNEL_CORNER = "<bg=cyan;fg=cyan>\xB1</>"; // ▒ = \xB1 = chr(177)
+    const TUNNEL_UPPER_LEFT = "<bg=blue;fg=cyan>\xD9</>";
+    const TUNNEL_UPPER_RIGHT = "<bg=blue;fg=cyan>\xC0</>";
+    const TUNNEL_BOTTOM_LEFT = "<bg=blue;fg=cyan>\xBF</>";
+    const TUNNEL_BOTTOM_RIGHT = "<bg=blue;fg=cyan>\xDA</>";    
     
     // Dwelling
     const DWELLING = "<bg=white;fg=black> </>";

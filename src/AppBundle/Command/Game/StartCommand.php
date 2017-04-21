@@ -15,17 +15,14 @@ use Doctrine\ORM\EntityManager;
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\Game;
 use Caverna\CoreBundle\Entity\Round;
-
+use AppBundle\Command\GameCommandBase;
 /**
  * @author marte
  */
-class StartCommand extends Command {
-    protected $gameEngineService;
+class StartCommand extends GameCommandBase {
     
     public function __construct(GameEngine $gameEngineService) {
-        parent::__construct();
-        
-        $this->gameEngineService = $gameEngineService;
+        parent::__construct($gameEngineService);
     }
 
     protected function configure() {

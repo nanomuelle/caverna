@@ -58,8 +58,13 @@ class DriftMiningCommand extends ActionSpaceCommand {
     protected function selectTile(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
         
-        $tiles = array(GameEngine::TILE_NINGUNO, GameEngine::TILE_TC_HORIZONTAL, 
-            GameEngine::TILE_CT_HORIZONTAL, GameEngine::TILE_TC_VERTICAL, GameEngine::TILE_CT_VERTICAL);
+        $tiles = array(
+            1 => GameEngine::TILE_NINGUNO, 
+            2 => GameEngine::TILE_TC_HORIZONTAL, 
+            3 => GameEngine::TILE_CT_HORIZONTAL, 
+            4 => GameEngine::TILE_TC_VERTICAL, 
+            5 => GameEngine::TILE_CT_VERTICAL
+        );
         
         $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tiles, 0);
         $question->getAutocompleterValues($tiles);
@@ -69,7 +74,7 @@ class DriftMiningCommand extends ActionSpaceCommand {
         return $selectedActionSpace;
     }
     
-    private function getCaveRows(Player $player) {
+    protected function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
         $keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -183,6 +188,9 @@ class DriftMiningCommand extends ActionSpaceCommand {
 
             $this->actionSpace->setTunnelCaveSpace($tunnel);
             $this->actionSpace->setCavernCaveSpace($cavern);
-        }        
+        } else {
+            $this->actionSpace->setTunnelCaveSpace($tunnel);
+            $this->actionSpace->setCavernCaveSpace($cavern);            
+        }
     }    
 }

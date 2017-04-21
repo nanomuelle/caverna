@@ -9,8 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\ArrayInput;
 
-use Symfony\Component\Console\Question\ChoiceQuestion;
-
 use AppBundle\Command\GameCommandBase;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
@@ -19,6 +17,8 @@ use Caverna\CoreBundle\Entity\Player;
 use Caverna\CoreBundle\Entity\Dwarf;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 use Caverna\CoreBundle\Entity\ActionSpace\ImitationActionSpace;
+
+use AppBundle\Console\SimpleChoiceQuestion;
 
 /**
  * @author marte
@@ -83,20 +83,21 @@ class ActionSpaceCommand extends GameCommandBase {
         $this->actionSpace = $actionSpace;
     }
     
+    private function unoBasedArray($array) {
+        $index = 1;
+        $outputArray = array();
+        foreach ($array as $value) {
+            $outputArray[''. $index] = $value;
+            $index++;
+        }
+        return $outputArray;
+    }
+    
     protected function selectDwarf(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
-        $question = new ChoiceQuestion(
-            'Selecciona enano:',
-            $this->player->getDwarfs()->toArray());
-        $question->setErrorMessage('El enano %s no es valido.');
-        $selectedDwarf = $helper->ask($input, $output, $question);
-        
-        foreach ($this->player->getAvailableDwarfs() as $dwarf) {
-            if ('' . $dwarf === $selectedDwarf) {
-                return $dwarf;
-            }
-        }
-//        $output->writeln('You have just selected: '.$dwarf);                    
+        $question = new SimpleChoiceQuestion('Selecciona enano:', $this->player->getAvailableDwarfs());
+        return $helper->ask($input, $output, $question);
+   
     }
     
     protected function interact(InputInterface $input, OutputInterface $output) {

@@ -14,6 +14,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Doctrine\ORM\EntityManager;
 
+use AppBundle\Command\GameCommandBase;
 use Caverna\CoreBundle\GameEngine\GameEngine;
 
 /**
@@ -21,15 +22,10 @@ use Caverna\CoreBundle\GameEngine\GameEngine;
  *
  * @author marte
  */
-class CreateCommand extends Command {
-    //put your code here
-    
-    protected $gameEngineService;
+class CreateCommand extends GameCommandBase {
     
     public function __construct(GameEngine $gameEngineService) {
-        parent::__construct();
-        
-        $this->gameEngineService = $gameEngineService;
+        parent::__construct($gameEngineService);
     }
 
     protected function configure() {

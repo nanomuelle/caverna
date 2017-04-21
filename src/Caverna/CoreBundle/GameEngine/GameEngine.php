@@ -27,6 +27,10 @@ class GameEngine {
         
     protected $em;
     
+    public function __toString() {
+        return 'GameEngine';
+    }
+    
     public function __construct(EntityManager $entityManager) {
         $this->em = $entityManager;
     }

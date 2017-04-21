@@ -11,6 +11,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
 
+use AppBundle\Command\GameCommandBase;
+
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\Game;
 use Caverna\CoreBundle\Entity\Player;
@@ -22,15 +24,11 @@ use Caverna\CoreBundle\Entity\CaveSpace;
 /**
  * @author marte
  */
-class ShowCommand extends Command {
+class ShowCommand extends GameCommandBase {
     const TABLE_STYLE = 'borderless';
     
-    protected $gameEngineService;
-    
     public function __construct(GameEngine $gameEngineService) {
-        parent::__construct();
-        
-        $this->gameEngineService = $gameEngineService;
+        parent::__construct($gameEngineService);
     }
 
     protected function configure() {
@@ -102,29 +100,29 @@ class ShowCommand extends Command {
         $this->renderPlayerBoard($output, $turn->getPlayer());
     }
     
-    private function getForestRows(Player $player) {
-        $rows = array(array(),array(),array(),array(),array(),array());
-        
-        /* @var $forestSpace ForestSpace */
-        foreach ($player->getForestSpaces() as $forestSpace) {
-            $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $forestSpace;
-        }
-        
-        return $rows;        
-    }
-
-    private function getCaveRows(Player $player) {
-        $rows = array(array(),array(),array(),array(),array(),array());
-        
-        /* @var $caveSpace CaveSpace */
-        foreach ($player->getCaveSpaces() as $caveSpace) {            
-            $reflection = new \ReflectionClass($caveSpace);            
-            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
-            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
-        }
-        
-        return $rows;
-    }
+//    private function getForestRows(Player $player) {
+//        $rows = array(array(),array(),array(),array(),array(),array());
+//        
+//        /* @var $forestSpace ForestSpace */
+//        foreach ($player->getForestSpaces() as $forestSpace) {
+//            $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $forestSpace;
+//        }
+//        
+//        return $rows;        
+//    }
+//
+//    private function getCaveRows(Player $player) {
+//        $rows = array(array(),array(),array(),array(),array(),array());
+//        
+//        /* @var $caveSpace CaveSpace */
+//        foreach ($player->getCaveSpaces() as $caveSpace) {            
+//            $reflection = new \ReflectionClass($caveSpace);            
+//            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
+//            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
+//        }
+//        
+//        return $rows;
+//    }
     
     private function renderPlayerBoard(OutputInterface $output, Player $player) {
         $forestRows = $this->getForestRows($player);
