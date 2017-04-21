@@ -238,9 +238,7 @@ class Player
     public function placeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {
         $oldCaveSpace = $this->getCaveSpaceByRowCol($caveSpace->getRow(), $caveSpace->getCol());
         $this->removeCaveSpace($oldCaveSpace);
-        var_dump($this->getCaveSpaces()->count());
         $this->addCaveSpace($caveSpace);
-        var_dump($this->getCaveSpaces()->count());
     }
     
     public function __toString() {

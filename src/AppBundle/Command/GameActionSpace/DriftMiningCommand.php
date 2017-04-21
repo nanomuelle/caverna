@@ -5,6 +5,7 @@ namespace AppBundle\Command\GameActionSpace;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
@@ -21,34 +22,35 @@ use Caverna\CoreBundle\Entity\Player;
 /**
  * @author marte
  */
-class DriftMiningCommand extends ActionSpaceCommand {
-    const TILE_NINGUNO = "Ninguno";
-    const TILE_TC_HORIZONTAL = "Tunel/Caverna Horizontal";
-    const TILE_CT_HORIZONTAL = "Caverna/Tunel Horizontal";
-    const TILE_TC_VERTICAL = "Tunel/Caverna Vertical";
-    const TILE_CT_VERTICAL = "Caverna/Tunel Vertical";
+class DriftMiningCommand extends ActionSpaceCommand {    
+    const COMMAND_NAME = 'game:action:drift-mining';
+    /**
+     * @var string
+     */
+    private $selectedTile;
     
     /**
-     * @var $cavern CavernCaveSpace
+     * @var string
      */
-    private $cavern;
+    private $validKeys;
     
     /**
-     * @var $tunnel TunnelCaveSpace
+     * @var array
      */
-    private $tunnel;
-    
-    private $tile;
+    private $caveSpaceByKey;
     
     public function __construct(GameEngine $gameEngineService) {
         parent::__construct($gameEngineService);        
         $this->actionSpaceKey = DriftMiningActionSpace::KEY;
+        $this->selectedTile = GameEngine::TILE_NINGUNO;
+        $this->validKeys = '';
+        $this->caveSpaceByKey = array();
     }
     
     protected function configure() {
         parent::configure();
         $this                
-            ->setName('game:action:drift-mining')
+            ->setName(self::COMMAND_NAME)
             ->setDescription('Drift Mining')
             ;  
     }
@@ -56,8 +58,8 @@ class DriftMiningCommand extends ActionSpaceCommand {
     protected function selectTile(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
         
-        $tiles = array(self::TILE_NINGUNO, self::TILE_TC_HORIZONTAL, 
-            self::TILE_CT_HORIZONTAL, self::TILE_TC_VERTICAL, self::TILE_CT_VERTICAL);
+        $tiles = array(GameEngine::TILE_NINGUNO, GameEngine::TILE_TC_HORIZONTAL, 
+            GameEngine::TILE_CT_HORIZONTAL, GameEngine::TILE_TC_VERTICAL, GameEngine::TILE_CT_VERTICAL);
         
         $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tiles, 0);
         $question->getAutocompleterValues($tiles);
@@ -67,36 +69,19 @@ class DriftMiningCommand extends ActionSpaceCommand {
         return $selectedActionSpace;
     }
     
-    private function getForestRows(Player $player) {
-        $rows = array(array(),array(),array(),array(),array(),array());
-        
-        /* @var $forestSpace ForestSpace */
-        foreach ($player->getForestSpaces() as $forestSpace) {
-            $reflection = new \ReflectionClass($forestSpace);
-            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
-            $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $renderer::render($forestSpace);
-        }
-        
-        return $rows;        
-    }
-    
     private function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
         $keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $contador = 0;
         /* @var $caveSpace CaveSpace */
-        foreach ($player->getCaveSpaces() as $caveSpace) {
-//            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $caveSpace;
-            
-            switch ($this->tile) {
-                case self::TILE_TC_HORIZONTAL:
-                    // TODO. crear metodo $caveSpace->acceptsTile()
-                    if ($caveSpace->acceptsTile($this->tile)) {
-                        $key = $keys[$contador];
-                    } else {
-                        $key = '';
-                    }
+        foreach ($player->getCaveSpaces() as $caveSpace) {            
+            switch ($this->selectedTile) {
+                case GameEngine::TILE_CT_HORIZONTAL:
+                case GameEngine::TILE_TC_HORIZONTAL:
+                    $key = $caveSpace->acceptsTile($this->selectedTile) ? $keys[$contador] : '';
+                    $this->validKeys .= $key;
+                    $this->caveSpaceByKey[$key] = $caveSpace;
                     break;
                     
                 default:
@@ -143,6 +128,22 @@ class DriftMiningCommand extends ActionSpaceCommand {
     
     protected function selectPos(InputInterface $input, OutputInterface $output) {
         $this->renderPlayerBoard($output, $this->player);
+        $question = new Question('Posicion [' . $this->validKeys . ']:');
+        $question->setNormalizer(function ($answer) {
+            $key = strtoupper($answer);
+            if (array_key_exists($key, $this->caveSpaceByKey)) {
+                return $this->caveSpaceByKey[$key];
+            }
+            return null;
+        });
+        $question->setValidator(function ($selectedCaveSpace) {
+            if ($selectedCaveSpace === null) {
+                throw new \RuntimeException('La posicion especificada no esta disponible.');
+            }
+            return $selectedCaveSpace;
+        });
+        $helper = $this->getHelper('question');
+        return $helper->ask($input, $output, $question);
     }
     
     protected function interact(InputInterface $input, OutputInterface $output) {
@@ -154,35 +155,34 @@ class DriftMiningCommand extends ActionSpaceCommand {
         /* @var $cavern TunnelCaveSpace */
         $cavern = null;
         
-        $this->tile = $this->selectTile($input, $output);
+        $this->selectedTile = $this->selectTile($input, $output);
         
-        if ($this->tile !== self::TILE_NINGUNO) {
-            $pos = $this->selectPos($input, $output);
-        }
-        
-        switch ($this->tile) {
-            case self::TILE_NINGUNO:
-                break;
+        if ($this->selectedTile !== GameEngine::TILE_NINGUNO) {
+            $caveSpace = $this->selectPos($input, $output);
             
-            case self::TILE_TC_HORIZONTAL:
-                $tunnel = new TunnelCaveSpace();
-                $tunnel->setRow(3);
-                $tunnel->setCol(1);
+            $cavern = new CavernCaveSpace();
+            $tunnel = new TunnelCaveSpace();
+            
+            switch ($this->selectedTile) {
+                case GameEngine::TILE_TC_HORIZONTAL:
+                    $tunnel->setRow($caveSpace->getRow());
+                    $tunnel->setCol($caveSpace->getCol());
+
+                    $cavern->setRow($caveSpace->getRow());
+                    $cavern->setCol($caveSpace->getCol() + 1);
+                    break;
                 
-                $cavern = new CavernCaveSpace();
-                $cavern->setRow(3);
-                $cavern->setCol(2);
-                break;
-        }
-        
-        $this->actionSpace->setTunnelCaveSpace($tunnel);
-        $this->actionSpace->setCavernCaveSpace($cavern);
-        
-//        $output->writeln($tile);        
-//        var_dump($tile);
+                case GameEngine::TILE_CT_HORIZONTAL:
+                    $cavern->setRow($caveSpace->getRow());
+                    $cavern->setCol($caveSpace->getCol());
+
+                    $tunnel->setRow($caveSpace->getRow());
+                    $tunnel->setCol($caveSpace->getCol() + 1);
+                    break;
+            }
+
+            $this->actionSpace->setTunnelCaveSpace($tunnel);
+            $this->actionSpace->setCavernCaveSpace($cavern);
+        }        
     }    
-    
-    protected function execute(InputInterface $input, OutputInterface $output) {
-//        parent::execute($input, $output);        
-    }
 }

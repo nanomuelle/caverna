@@ -22,13 +22,6 @@ use Caverna\CoreBundle\Entity\CaveSpace\MountainCaveSpace;
  * })
  */
 abstract class BaseCaveSpace {
-    const TILE_T = "Tunel";
-    const TILE_C = "Caverna";
-    const TILE_TC_HORIZONTAL = "Tunel/Caverna Horizontal";
-    const TILE_CT_HORIZONTAL = "Caverna/Tunel Horizontal";
-    const TILE_TC_VERTICAL = "Tunel/Caverna Vertical";
-    const TILE_CT_VERTICAL = "Caverna/Tunel Vertical";
-    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -59,71 +59,6 @@ abstract class ActionSpace {
      */
     private $num;
     
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $wood;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $stone;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $ore;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $ruby;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $food;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $vegetable;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $grain;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $dog;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $sheep;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $boar;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $cow;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $donkey;
-//
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $victoryPoints;
-
     /**
      * @return string key
      */
@@ -159,7 +94,7 @@ abstract class ActionSpace {
      * @return boolean
      */
     public function isImitableForPlayer(Player $player) {
-        if (!$this->isAvailable()) {
+        if ($this->isAvailable()) {
             return false;
         }
         

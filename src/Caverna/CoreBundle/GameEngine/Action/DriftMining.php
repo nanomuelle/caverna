@@ -22,8 +22,7 @@ class DriftMining {
     const REPLENISH_STONE_1_TO_3_PLAYERS = 1;
     const REPLENISH_STONE_4_TO_7_PLAYERS = 2;
     
-    public static function execute(DriftMiningActionSpace $actionSpace, Player $p_player = null) {
-        
+    public static function execute(DriftMiningActionSpace $actionSpace, Player $p_player = null) {        
         /* @var $player Player*/
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
         
@@ -35,8 +34,6 @@ class DriftMining {
         $cavern = $actionSpace->getCavernCaveSpace();
         $tunnel = $actionSpace->getTunnelCaveSpace();
         if ($cavern !== null && $tunnel !== null) {
-//            $old_cavern = $player->getCaveSpaceByRowAndCol($cavern->getRow(), $caver->getCol());
-//            $player->removeCaveSpace($old_cavern);            
             $player->placeCaveSpace($cavern);
             $player->placeCaveSpace($tunnel);
         }

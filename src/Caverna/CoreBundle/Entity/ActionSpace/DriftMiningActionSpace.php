@@ -24,12 +24,12 @@ class DriftMiningActionSpace extends ActionSpace {
     /**
      * @var CavernCaveSpace
      */
-    private $cavern;
+    private $cavernCaveSpace;
     
     /**
      * @var TunnelCaveSpace
      */
-    private $tunnel;
+    private $tunnelCaveSpace;
     
     public function getKey() {
         return self::KEY;
@@ -77,6 +77,8 @@ class DriftMiningActionSpace extends ActionSpace {
         parent::__construct();
         $this->setName('Drift Mining');
         $this->stone = 0;
+        $this->cavernCaveSpace = null;
+        $this->tunnelCaveSpace = null;
     }
 
     /**

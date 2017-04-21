@@ -17,6 +17,14 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
  * @author marte
  */
 class GameEngine {
+    const TILE_NINGUNO = "Ninguno";
+    const TILE_T = "Tunel";
+    const TILE_C = "Caverna";
+    const TILE_TC_HORIZONTAL = "Tunel/Caverna Horizontal";
+    const TILE_CT_HORIZONTAL = "Caverna/Tunel Horizontal";
+    const TILE_TC_VERTICAL = "Tunel/Caverna Vertical";
+    const TILE_CT_VERTICAL = "Caverna/Tunel Vertical";
+        
     protected $em;
     
     public function __construct(EntityManager $entityManager) {
@@ -83,13 +91,16 @@ class GameEngine {
     
     public function executeActionSpace(ActionSpace $actionSpace) {
         $actionSpace->getGame()->getCurrentRound()->getCurrentTurn()->setActionSpace($actionSpace);
-        
+        $this->executeAction($actionSpace);
+    }
+    
+    public function executeAction(ActionSpace $actionSpace) {
         $actionClass = '\\Caverna\\CoreBundle\\GameEngine\\Action\\' . $actionSpace->getKey();
         $actionClass::execute($actionSpace);
         
         $this->em->persist($actionSpace->getGame());
         $this->em->flush();
-        $this->em->clear(); // clear em cache
+        $this->em->clear(); // clear em cache        
     }
     
     public function finishCurrentTurn(Game $game) {

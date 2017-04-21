@@ -17,7 +17,7 @@ class ImitationActionSpace extends ActionSpace {
     /**
      * @ORM\OneToOne(targetEntity="\Caverna\CoreBundle\Entity\ActionSpace\ActionSpace")
      */
-    private $actionSpace;
+    private $imitatedActionSpace;
     
     public function isImitableForPlayer(Player $player) {
         return false;
@@ -34,33 +34,38 @@ class ImitationActionSpace extends ActionSpace {
     public function getState() {
         return 'Comida: -2';
     }
-            
+
+    public function __toString() {
+        $imitated = $this->getImitatedActionSpace() === null ? '' : ' (' . $this->getImitatedActionSpace() . ')';
+        return parent::__toString() . $imitated;
+    }
+    
     public function __construct() {
         parent::__construct();
         $this->setName('Imitation');
     }
 
     /**
-     * Set actionSpace
+     * Set imitatedActionSpace
      *
-     * @param \Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $actionSpace
+     * @param \Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $imitatedActionSpace
      *
      * @return ImitationActionSpace
      */
-    public function setActionSpace(\Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $actionSpace = null)
+    public function setImitatedActionSpace(\Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $imitatedActionSpace = null)
     {
-        $this->actionSpace = $actionSpace;
+        $this->imitatedActionSpace = $imitatedActionSpace;
 
         return $this;
     }
 
     /**
-     * Get actionSpace
+     * Get imitatedActionSpace
      *
      * @return \Caverna\CoreBundle\Entity\ActionSpace\ActionSpace
      */
-    public function getActionSpace()
+    public function getImitatedActionSpace()
     {
-        return $this->actionSpace;
+        return $this->imitatedActionSpace;
     }
 }

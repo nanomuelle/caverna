@@ -52,7 +52,7 @@ class Dwarf {
     public function __toString() {
         $output = $this->getName();
         if ($this->actionSpace !== null) {
-            $output .= ' [' . $this->actionSpace->getName() . ']';
+            $output .= ' [' . $this->actionSpace . ']';
         }
         
         return $output;

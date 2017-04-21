@@ -5,6 +5,7 @@ namespace AppBundle\Command\GameActionSpace;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Input\ArrayInput;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\ImitationActionSpace;
@@ -48,9 +49,39 @@ class ImitationCommand extends ActionSpaceCommand {
     }    
     
     protected function interact(InputInterface $input, OutputInterface $output) {
-        parent::interact($input, $output);
-        
+        parent::interact($input, $output);        
         $imitatedActionSpace = $this->selectActionSpace($input, $output);
-        $this->actionSpace->setActionSpace($imitatedActionSpace);
+        $this->actionSpace->setImitatedActionSpace($imitatedActionSpace);
     }
+    
+    protected function execute(InputInterface $input, OutputInterface $output) {
+        // parent::execute($input, $output);
+//        var_dump($this->actionSpace->getImitatedActionSpace()->getKey());
+        
+//        $reflection = new \ReflectionClass($this->actionSpace->getImitatedActionSpace());
+        $commandToImitate = 'AppBundle\\Command\\GameActionSpace\\' . $this->actionSpace->getImitatedActionSpace()->getKey() . 'Command';
+        $output->writeln('CAVERN SPACE BEFORE COMMAND');
+        var_dump($this->actionSpace->getImitatedActionSpace()->getCavernCaveSpace());
+        $command = $this->getApplication()->find($commandToImitate::COMMAND_NAME);
+        $command->run(new ArrayInput(array(
+            'command' => $commandToImitate::COMMAND_NAME,
+            'id' => $this->game->getId(),
+            'imitation' => true
+        )), $output);        
+        $output->writeln('CAVERN SPACE AFTER IMITATED COMMAND');
+        var_dump($this->actionSpace->getImitatedActionSpace()->getCavernCaveSpace());
+        parent::execute($input, $output);
+        $output->writeln('CAVERN SPACE AFTER EXECUTE');
+        var_dump($this->actionSpace->getImitatedActionSpace()->getCavernCaveSpace());
+//        var_dump($actionSpaceCommandToImitate::COMMAND_NAME);        
+//        return;
+//        $this->actionSpace->setDwarf($this->dwarf);
+//        $this->gameEngineService->executeActionSpace($this->actionSpace);
+//        
+//        $showCommand = $this->getApplication()->find('game:show');
+//        $showCommand->run(new ArrayInput(array(
+//            'command' => 'game:show',
+//            'id' => $this->game->getId()
+//        )), $output);        
+    }    
 }
