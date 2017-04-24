@@ -22,9 +22,5 @@ class LoggingCommand extends ActionSpaceCommand {
             ->setName('game:action:logging')
             ->setDescription('Logging')
             ;        
-    }    
-    
-//    protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output) {
-//        parent::execute($input, $output);
-//    }
+    }        
 }

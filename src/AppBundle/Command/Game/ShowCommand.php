@@ -2,14 +2,11 @@
 
 namespace AppBundle\Command\Game;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-# use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
 
 use AppBundle\Command\GameCommandBase;
 
@@ -18,13 +15,12 @@ use Caverna\CoreBundle\Entity\Game;
 use Caverna\CoreBundle\Entity\Player;
 use Caverna\CoreBundle\Entity\Round;
 use Caverna\CoreBundle\Entity\Turn;
-use Caverna\CoreBundle\Entity\ForestSpace;
-use Caverna\CoreBundle\Entity\CaveSpace;
 
 /**
  * @author marte
  */
 class ShowCommand extends GameCommandBase {
+    const COMMAND_NAME = 'game:show';
     const TABLE_STYLE = 'borderless';
     
     public function __construct(GameEngine $gameEngineService) {
@@ -33,7 +29,7 @@ class ShowCommand extends GameCommandBase {
 
     protected function configure() {
         $this                
-            ->setName('game:show')
+            ->setName(self::COMMAND_NAME)
             ->setDescription('Vista de partida.')
             ->addArgument('id', InputArgument::REQUIRED, 'Game Id')
             ;        
@@ -100,38 +96,6 @@ class ShowCommand extends GameCommandBase {
         $this->renderPlayerBoard($output, $turn->getPlayer());
     }
     
-//    private function renderPlayerBoard(OutputInterface $output, Player $player) {
-//        $forestRows = $this->getForestRows($player);
-//        $caveRows = $this->getCaveRows($player);
-//        $rows = array();
-//        for ($row = 0; $row < 6; $row++) {
-//            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
-//        }
-//        
-//        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
-//        $style = new TableStyle();
-//        $style
-//                ->setCellHeaderFormat('')
-//                ->setCellRowFormat('%s')
-//                ->setCellHeaderFormat('%s')
-//                ->setCellRowContentFormat('%s')
-//                ->setHorizontalBorderChar('')
-//                ->setVerticalBorderChar('')
-//                ->setCrossingChar('')
-////                ->setBorderFormat('')
-////                ->setCrossingChar('')
-//                ;
-//        
-//        
-//        $table = new Table($output);
-////        $table->setStyle('compact');
-//        $table->setStyle($style);
-//        $table->addRows($rows);
-//        $table->render();
-//        
-//        $output->writeln('');
-//    }
-    
     private function renderActionSpaces(OutputInterface $output, Game $game) {
         $actionSpaces = $game->getActionSpaces();
         $table = new Table($output);
@@ -154,51 +118,16 @@ class ShowCommand extends GameCommandBase {
         $output->writeln('');        
     }
     
-    private function renderPlayers(OutputInterface $output, Game $game) {
-        $players = $game->getPlayers();
-        $table = new Table($output);
-        $table->setStyle($this::TABLE_STYLE);
-        $table
-            ->setHeaders(array('id', 'Num', 'Color', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
-        ;        
-        
-        /* @var $player Player */
-        foreach ($players as $player) {
-            $dwarfs = '';
-            for ($i = 0; $i < $player->spaceForDwarfs(); $i++) {
-                if ($i < $player->getDwarfs()->count()) {
-                    $dwarfs .= $player->getDwarfs()[$i] . "\n";
-                } else {
-                    $dwarfs .= "[ ]\n";                    
-                }
-            }
-            
-            $table->addRow(array(
-                '#' . $player->getId(),
-                $player->getNum(),
-                $player->getColor(),
-                $dwarfs,
-                $player->getFood(),
-                $player->getWood(),
-                $player->getStone(),
-                $player->getOre(),
-                $player->getRuby(),
-                $player->getVp()
-            ));
-        }
-        
-        $table->render();
-        $output->writeln('');        
-    }
-        
     protected function execute(InputInterface $input, OutputInterface $output) {
+        parent::execute($input, $output);
+        
         $id = $input->getArgument('id');
         $game = $this->gameEngineService->game($id);
         $output->writeln('Partida');
         $this->renderGame($output, $game);
         
         $output->writeln('Jugadores');
-        $this->renderPlayers($output, $game);
+        $this->renderPlayers($output, $game->getPlayers());
         
         $output->writeln('Action Spaces');
         $this->renderActionSpaces($output, $game);

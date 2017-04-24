@@ -4,7 +4,7 @@ namespace AppBundle\Command\GameActionSpace;
 
 
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
+// use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -113,6 +113,9 @@ class ActionSpaceCommand extends GameCommandBase {
     }
     
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->logger = $this->getContainer()->get('logger');
+        $this->logger->notice($this->getName(), $input->getArguments());
+                
         if ( $input->getArgument('imitation') ) {
             return;
         } 

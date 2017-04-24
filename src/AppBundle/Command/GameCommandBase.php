@@ -2,7 +2,8 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+//use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -14,7 +15,7 @@ use Caverna\CoreBundle\Entity\Player;
 use Caverna\CoreBundle\Entity\ForestSpace;
 use Caverna\CoreBundle\Entity\CaveSpace;
 
-abstract class GameCommandBase extends Command {
+abstract class GameCommandBase extends ContainerAwareCommand {    
     /**
      * @var GameEngine
      */
@@ -25,7 +26,7 @@ abstract class GameCommandBase extends Command {
         
         $this->gameEngineService = $gameEngineService;
     }
-    
+
     protected function getForestRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
@@ -85,4 +86,45 @@ abstract class GameCommandBase extends Command {
         $output->writeln('');
     }
     
+    protected function renderPlayers(OutputInterface $output, $players) {
+
+        $table = new Table($output);
+        $table->setStyle($this::TABLE_STYLE);
+        $table
+            ->setHeaders(array('id', 'Num', 'Color', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
+        ;        
+        
+        /* @var $player Player */
+        foreach ($players as $player) {
+            $dwarfs = '';
+            for ($i = 0; $i < $player->spaceForDwarfs(); $i++) {
+                if ($i < $player->getDwarfs()->count()) {
+                    $dwarfs .= $player->getDwarfs()[$i] . "\n";
+                } else {
+                    $dwarfs .= "[ ]\n";                    
+                }
+            }
+            
+            $table->addRow(array(
+                '#' . $player->getId(),
+                $player->getNum(),
+                $player->getColor(),
+                $dwarfs,
+                $player->getFood(),
+                $player->getWood(),
+                $player->getStone(),
+                $player->getOre(),
+                $player->getRuby(),
+                $player->getVp()
+            ));
+        }
+        
+        $table->render();
+        $output->writeln('');        
+    }
+    
+    protected function execute(\Symfony\Component\Console\Input\InputInterface $input, OutputInterface $output) {
+        $this->logger = $this->getContainer()->get('logger');
+        $this->logger->notice($this->getName(), $input->getArguments());        
+    }
 }

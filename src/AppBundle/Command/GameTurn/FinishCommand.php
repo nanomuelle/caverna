@@ -26,6 +26,8 @@ class FinishCommand extends GameCommandBase {
     }    
     
     protected function execute(InputInterface $input, OutputInterface $output) {
+        parent::execute($input, $output);
+        
         $id = $input->getArgument('id');
         $game = $this->gameEngineService->game($id);
         

@@ -7,9 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
-
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
@@ -23,6 +20,7 @@ use Caverna\CoreBundle\Entity\Player;
  */
 class DriftMiningCommand extends ActionSpaceCommand {    
     const COMMAND_NAME = 'game:action:drift-mining';
+    
     /**
      * @var string
      */
@@ -92,35 +90,6 @@ class DriftMiningCommand extends ActionSpaceCommand {
         
         return $rows;
     }
-    
-//    private function renderPlayerBoard(OutputInterface $output, Player $player) {
-//        $forestRows = $this->getForestRows($player);
-//        $caveRows = $this->getCaveRows($player);
-//        $rows = array();
-//        for ($row = 0; $row < 6; $row++) {
-//            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
-//        }
-//        
-//        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
-//        $style = new TableStyle();
-//        $style
-//                ->setCellHeaderFormat('')
-//                ->setCellRowFormat('%s')
-//                ->setCellHeaderFormat('%s')
-//                ->setCellRowContentFormat('%s')
-//                ->setHorizontalBorderChar('')
-//                ->setVerticalBorderChar('')
-//                ->setCrossingChar('')
-//                ;
-//        
-//        
-//        $table = new Table($output);
-//        $table->setStyle($style);
-//        $table->addRows($rows);
-//        $table->render();
-//        
-//        $output->writeln('');
-//    }
     
     protected function selectPos(InputInterface $input, OutputInterface $output) {
         $this->renderPlayerBoard($output, $this->player);

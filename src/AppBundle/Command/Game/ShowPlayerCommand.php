@@ -6,16 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
-
 use AppBundle\Command\GameCommandBase;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
-use Caverna\CoreBundle\Entity\Game;
-use Caverna\CoreBundle\Entity\Player;
-use Caverna\CoreBundle\Entity\Round;
-use Caverna\CoreBundle\Entity\Turn;
 
 /**
  * @author marte
@@ -37,6 +30,8 @@ class ShowPlayerCommand extends GameCommandBase {
     }    
     
     protected function execute(InputInterface $input, OutputInterface $output) {        
+        parent::execute($input, $output);
+        
         $id = $input->getArgument('id');
         $game = $this->gameEngineService->game($id);
         
@@ -50,6 +45,8 @@ class ShowPlayerCommand extends GameCommandBase {
             $output->writeln('<error>                           </>');
             return;
         }
+        
+        $this->renderPlayers($output, array($player));
         $this->renderPlayerBoard($output, $player);
     } 
 }

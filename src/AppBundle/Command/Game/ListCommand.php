@@ -30,6 +30,8 @@ class ListCommand extends GameCommandBase {
     }    
     
     protected function execute(InputInterface $input, OutputInterface $output) {
+        parent::execute($input, $output);
+        
         $games = $this->gameEngineService->gameList();
         $table = new Table($output);
         $table->setStyle('borderless');

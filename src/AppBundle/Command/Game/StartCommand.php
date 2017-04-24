@@ -2,20 +2,15 @@
 
 namespace AppBundle\Command\Game;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
+// use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\ArrayInput;
 
-use Symfony\Component\Console\Helper\Table;
-use Doctrine\ORM\EntityManager;
-
 use Caverna\CoreBundle\GameEngine\GameEngine;
-use Caverna\CoreBundle\Entity\Game;
-use Caverna\CoreBundle\Entity\Round;
 use AppBundle\Command\GameCommandBase;
+
 /**
  * @author marte
  */
@@ -34,6 +29,8 @@ class StartCommand extends GameCommandBase {
     }    
     
     protected function execute(InputInterface $input, OutputInterface $output) {
+        parent::execute($input, $output);
+        
         $id = $input->getArgument('id');
         $game = $this->gameEngineService->game($id);
         

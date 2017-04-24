@@ -23,8 +23,4 @@ class ExcavationCommand extends ActionSpaceCommand {
             ->setDescription('Excavation')
             ;        
     }    
-    
-//    protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output) {
-//        parent::execute($input, $output);
-//    }
 }
