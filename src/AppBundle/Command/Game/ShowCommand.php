@@ -161,14 +161,14 @@ class ShowCommand extends GameCommandBase {
         $table = new Table($output);
         $table->setStyle($this::TABLE_STYLE);
         $table
-            ->setHeaders(array('', 'Accion', 'Descripcion', 'Estado', 'Enano'))
+            ->setHeaders(array('', 'Accion', 'Estado', 'Enano'))
         ;
         foreach ($actionSpaces as $actionSpace) {
             $dwarf = $actionSpace->getDwarf() ? $actionSpace->getDwarf() : '';
             $table->addRow(array(
                 $actionSpace->isAvailable() ? '' : '-',
                 $actionSpace->getKey(),
-                $actionSpace->getDescription(),
+//                $actionSpace->getDescription(),
                 $actionSpace->getState(),
                 $dwarf ? $dwarf->getName() : ''
             ));

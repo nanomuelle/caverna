@@ -1,31 +1,42 @@
 <?php
 
 namespace Caverna\CoreBundle\Entity\CaveSpace;
-use Doctrine\ORM\Mapping as ORM;
-use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
 
+use Doctrine\ORM\Mapping as ORM;
+
+use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
+use Caverna\CoreBundle\GameEngine\GameEngine;
+
+use Caverna\CoreBundle\Entity\CaveSpace\IRewardsPlayer;
 /**
  * @ORM\Entity;
  */
-class MountainCaveSpace extends BaseCaveSpace {
+class MountainCaveSpace extends BaseCaveSpace implements IRewardsPlayer {
+    public function rewardsPlayer() {
+        $this->getPlayer()->addFood($this->getFoodReward());
+    }
+    
     public function acceptsTile($tileType) {
-//        var_dump(parent::acceptsTile($tileType));
-//        if (!parent::acceptsTile($tileType)) {
-//            return false;
-//        }
+        if (!parent::acceptsTile($tileType)) {
+            return false;
+        }
+                
+        if ($this->isExternal()) {
+            return false;
+        }
         
-        return parent::acceptsTile($tileType) && !$this->isExternal();
-//        switch ($tileType) {
-//            case BaseCaveSpace::TILE_C:
-//            case BaseCaveSpace::TILE_T:                
-//                // todo: comprobar que es adyacente a un cavern o a un tunnel
-//                return  !$this->isExternal();
-//                
-//            case BaseCaveSpace::TILE_CT_HORIZONTAL:
-//            case BaseCaveSpace::TILE_TC_HORIZONTAL:
-//                
-//        }
-//        return !$this->isExternal();
+        switch ($tileType) {
+            case GameEngine::TILE_CT_HORIZONTAL:
+            case GameEngine::TILE_TC_HORIZONTAL:               
+                $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow(), $this->getCol() + 1);
+                break;
+            
+            case GameEngine::TILE_CT_VERTICAL:
+            case GameEngine::TILE_TC_VERTICAL:               
+                $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow() + 1, $this->getCol());
+                break;
+        }
+        return is_a($horizontalNeighbour, MountainCaveSpace::class) && !$horizontalNeighbour->isExternal();
     }
     
     public function getFoodReward() {

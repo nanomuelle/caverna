@@ -33,9 +33,10 @@ class DriftMining {
         // Cavern / Tunnel
         $cavern = $actionSpace->getCavernCaveSpace();
         $tunnel = $actionSpace->getTunnelCaveSpace();
-        if ($cavern !== null && $tunnel !== null) {
+        if ($cavern !== null && $tunnel !== null) {            
             $player->placeCaveSpace($cavern);
             $player->placeCaveSpace($tunnel);
+            
         }
     }
     

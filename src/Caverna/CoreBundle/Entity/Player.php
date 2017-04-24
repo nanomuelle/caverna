@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Caverna\CoreBundle\GameEngine\Dwelling\SpaceForDwarfsInterface;
 
+use Caverna\CoreBundle\Entity\CaveSpace\IRewardsPlayer;
+
 /**
  * @ORM\Entity
  */
@@ -237,6 +239,11 @@ class Player
     
     public function placeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {
         $oldCaveSpace = $this->getCaveSpaceByRowCol($caveSpace->getRow(), $caveSpace->getCol());
+        
+        if ($oldCaveSpace instanceof IRewardsPlayer) {
+            $oldCaveSpace->rewardsPlayer();
+        }
+        
         $this->removeCaveSpace($oldCaveSpace);
         $this->addCaveSpace($caveSpace);
     }
