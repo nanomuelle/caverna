@@ -148,7 +148,17 @@ class Game
          }
         return null;
     }
-     public function __construct() {
+    
+    public function getPlayerByNum($num) {
+        foreach ($this->getPlayers() as $player) {
+            if ($player->getNum() === (int) $num) {
+                return $player;
+            }
+        }
+        return null;
+    }
+
+    public function __construct() {
          $this->numRedHarvestMarkers = 0;
          $this->status = Game::STATUS_WAITING_PLAYERS;
 

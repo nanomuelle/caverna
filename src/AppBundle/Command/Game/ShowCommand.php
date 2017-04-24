@@ -100,61 +100,37 @@ class ShowCommand extends GameCommandBase {
         $this->renderPlayerBoard($output, $turn->getPlayer());
     }
     
-//    private function getForestRows(Player $player) {
-//        $rows = array(array(),array(),array(),array(),array(),array());
-//        
-//        /* @var $forestSpace ForestSpace */
-//        foreach ($player->getForestSpaces() as $forestSpace) {
-//            $rows[$forestSpace->getRow()][$forestSpace->getCol()] = $forestSpace;
+//    private function renderPlayerBoard(OutputInterface $output, Player $player) {
+//        $forestRows = $this->getForestRows($player);
+//        $caveRows = $this->getCaveRows($player);
+//        $rows = array();
+//        for ($row = 0; $row < 6; $row++) {
+//            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
 //        }
 //        
-//        return $rows;        
-//    }
-//
-//    private function getCaveRows(Player $player) {
-//        $rows = array(array(),array(),array(),array(),array(),array());
-//        
-//        /* @var $caveSpace CaveSpace */
-//        foreach ($player->getCaveSpaces() as $caveSpace) {            
-//            $reflection = new \ReflectionClass($caveSpace);            
-//            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
-//            $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
-//        }
-//        
-//        return $rows;
-//    }
-    
-    private function renderPlayerBoard(OutputInterface $output, Player $player) {
-        $forestRows = $this->getForestRows($player);
-        $caveRows = $this->getCaveRows($player);
-        $rows = array();
-        for ($row = 0; $row < 6; $row++) {
-            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
-        }
-        
-        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
-        $style = new TableStyle();
-        $style
-                ->setCellHeaderFormat('')
-                ->setCellRowFormat('%s')
-                ->setCellHeaderFormat('%s')
-                ->setCellRowContentFormat('%s')
-                ->setHorizontalBorderChar('')
-                ->setVerticalBorderChar('')
-                ->setCrossingChar('')
-//                ->setBorderFormat('')
+//        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
+//        $style = new TableStyle();
+//        $style
+//                ->setCellHeaderFormat('')
+//                ->setCellRowFormat('%s')
+//                ->setCellHeaderFormat('%s')
+//                ->setCellRowContentFormat('%s')
+//                ->setHorizontalBorderChar('')
+//                ->setVerticalBorderChar('')
 //                ->setCrossingChar('')
-                ;
-        
-        
-        $table = new Table($output);
-//        $table->setStyle('compact');
-        $table->setStyle($style);
-        $table->addRows($rows);
-        $table->render();
-        
-        $output->writeln('');
-    }
+////                ->setBorderFormat('')
+////                ->setCrossingChar('')
+//                ;
+//        
+//        
+//        $table = new Table($output);
+////        $table->setStyle('compact');
+//        $table->setStyle($style);
+//        $table->addRows($rows);
+//        $table->render();
+//        
+//        $output->writeln('');
+//    }
     
     private function renderActionSpaces(OutputInterface $output, Game $game) {
         $actionSpaces = $game->getActionSpaces();

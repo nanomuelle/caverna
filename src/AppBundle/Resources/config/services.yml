@@ -24,6 +24,12 @@ services:
         tags:
             - { name: console.command }
     
+    app.game.show.player_command:
+        class: AppBundle\Command\Game\ShowPlayerCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+    
     app.game.start_command:
         class: AppBundle\Command\Game\StartCommand
         arguments: ['@caverna.game_engine']

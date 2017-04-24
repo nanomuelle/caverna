@@ -4,6 +4,10 @@ namespace AppBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableStyle;
+
 use Caverna\CoreBundle\GameEngine\GameEngine;
 
 use Caverna\CoreBundle\Entity\Player;
@@ -47,5 +51,38 @@ abstract class GameCommandBase extends Command {
         
         return $rows;
     }    
+    
+    protected function renderPlayerBoard(OutputInterface $output, Player $player) {
+        $forestRows = $this->getForestRows($player);
+        $caveRows = $this->getCaveRows($player);
+        
+        $rows = array();
+        for ($row = 0; $row < 6; $row++) {
+            $rows[$row] = array_merge($forestRows[$row], $caveRows[$row]);
+        }
+        
+        // http://www.fileformat.info/info/unicode/block/miscellaneous_symbols_and_pictographs/list.htm
+        $style = new TableStyle();
+        $style
+                ->setCellHeaderFormat('')
+                ->setCellRowFormat('%s')
+                ->setCellHeaderFormat('%s')
+                ->setCellRowContentFormat('%s')
+                ->setHorizontalBorderChar('')
+                ->setVerticalBorderChar('')
+                ->setCrossingChar('')
+//                ->setBorderFormat('')
+//                ->setCrossingChar('')
+                ;
+        
+        
+        $table = new Table($output);
+//        $table->setStyle('compact');
+        $table->setStyle($style);
+        $table->addRows($rows);
+        $table->render();
+        
+        $output->writeln('');
+    }
     
 }
