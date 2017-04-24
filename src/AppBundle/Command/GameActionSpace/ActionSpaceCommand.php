@@ -71,13 +71,23 @@ class ActionSpaceCommand extends GameCommandBase {
         if ($actionSpace === null) {
             throw new \Exception($this->actionSpaceKey . ' no esta disponible.');
         }
-        
-        if ($is_imitation && $actionSpace->getDwarf() === null) {
-            throw new \Exception($actionSpace->getKey() . ' no esta acupado, no se puede imitar.');
-        }
-        
-        if (!$is_imitation && $actionSpace->getKey() !== ImitationActionSpace::KEY && $actionSpace->getDwarf() !== null) {
-            throw new \Exception($actionSpace->getKey() . ' esta acupado por: ' . $actionSpace->getDwarf());
+
+        if ($is_imitation) {
+            if ($actionSpace->getKey() === ImitationActionSpace::KEY) {
+                throw new \Exception($actionSpace->getKey() . ' no se puede imitar.');
+            }
+            
+            if ($actionSpace->getDwarf() === null) {
+                throw new \Exception($actionSpace->getKey() . ' no esta acupado, no se puede imitar.');
+            }            
+        } else {
+            if ($actionSpace->getDwarf() !== null) {
+                throw new \Exception($actionSpace->getKey() . ' esta acupado por: ' . $actionSpace->getDwarf());
+            }
+            
+            if ($actionSpace->getKey() === ImitationActionSpace::KEY && $this->player->getFood() < ImitationActionSpace::FOOD_COST) {
+                throw new \Exception('No tienes suficiente comida para ralizar la accion ' . $actionSpace->getKey());
+            }
         }
 
         $this->actionSpace = $actionSpace;

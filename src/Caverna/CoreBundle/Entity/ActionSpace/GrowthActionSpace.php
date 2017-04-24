@@ -48,16 +48,6 @@ class GrowthActionSpace extends ActionSpace {
         return self::VP;
     }
     
-    public function __toString() {        
-        return parent::__toString() . ' (' . 
-            $this->getFood() . 'F' .
-            $this->getWood() . 'W' .
-            $this->getStone() . 'S' . 
-            $this->getOre() . 'O' .
-            $this->getVP() . 'V' .
-        ')';
-    }
-    
     public function __construct() {
         parent::__construct();
         $this->setName('Growth');
