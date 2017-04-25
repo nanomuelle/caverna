@@ -4,15 +4,14 @@ namespace AppBundle\Command\GameActionSpace;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+//use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
+use Caverna\CoreBundle\GameEngine\TileFactory;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 
-use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
-use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
 use Caverna\CoreBundle\Entity\Player;
 
 /**
@@ -24,7 +23,7 @@ class DriftMiningCommand extends ActionSpaceCommand {
     /**
      * @var string
      */
-    private $selectedTile;
+    private $selectedTileType;
     
     /**
      * @var string
@@ -39,7 +38,7 @@ class DriftMiningCommand extends ActionSpaceCommand {
     public function __construct(GameEngine $gameEngineService) {
         parent::__construct($gameEngineService);        
         $this->actionSpaceKey = DriftMiningActionSpace::KEY;
-        $this->selectedTile = GameEngine::TILE_NINGUNO;
+        $this->selectedTileType = TileFactory::TILE_NINGUNO;
         $this->validKeys = '';
         $this->caveSpaceByKey = array();
     }
@@ -52,25 +51,6 @@ class DriftMiningCommand extends ActionSpaceCommand {
             ;  
     }
     
-    protected function selectTile(InputInterface $input, OutputInterface $output) {
-        $helper = $this->getHelper('question');
-        
-        $tiles = array(
-            1 => GameEngine::TILE_NINGUNO, 
-            2 => GameEngine::TILE_TC_HORIZONTAL, 
-            3 => GameEngine::TILE_CT_HORIZONTAL, 
-            4 => GameEngine::TILE_TC_VERTICAL, 
-            5 => GameEngine::TILE_CT_VERTICAL
-        );
-        
-        $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tiles, 0);
-        $question->getAutocompleterValues($tiles);
-        $question->setErrorMessage('La loseta %s no es valida.');
-        $selectedTile = $helper->ask($input, $output, $question);
-        
-        return $selectedTile;
-    }
-    
     protected function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
@@ -80,7 +60,10 @@ class DriftMiningCommand extends ActionSpaceCommand {
         foreach ($player->getCaveSpaces() as $caveSpace) {
             $key = $caveSpace->acceptsTile($this->selectedTile) ? $keys[$contador] : '';
             $this->validKeys .= $key;
-            $this->caveSpaceByKey[$key] = $caveSpace;
+            
+            if ($key !== '') {
+                $this->caveSpaceByKey[$key] = $caveSpace;
+            }
             
             $reflection = new \ReflectionClass($caveSpace);            
             $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';
@@ -114,54 +97,23 @@ class DriftMiningCommand extends ActionSpaceCommand {
     protected function interact(InputInterface $input, OutputInterface $output) {
         parent::interact($input, $output);
         
-        $this->selectedTile = $this->selectTile($input, $output);
-        if ($this->selectedTile !== GameEngine::TILE_NINGUNO) {
-            $caveSpace = $this->selectPos($input, $output);
-        }
-
-        $cavern = new CavernCaveSpace();
-        $tunnel = new TunnelCaveSpace();
-            
-        switch ($this->selectedTile) {
-            case GameEngine::TILE_NINGUNO:
-                $tunnel = null;
-                $cavern = null;
-                break;
-
-            case GameEngine::TILE_TC_HORIZONTAL:
-                $tunnel->setRow($caveSpace->getRow());
-                $tunnel->setCol($caveSpace->getCol());
-
-                $cavern->setRow($caveSpace->getRow());
-                $cavern->setCol($caveSpace->getCol() + 1);
-                break;
-
-            case GameEngine::TILE_CT_HORIZONTAL:
-                $cavern->setRow($caveSpace->getRow());
-                $cavern->setCol($caveSpace->getCol());
-
-                $tunnel->setRow($caveSpace->getRow());
-                $tunnel->setCol($caveSpace->getCol() + 1);
-                break;
-
-            case GameEngine::TILE_TC_VERTICAL:
-                $tunnel->setRow($caveSpace->getRow());
-                $tunnel->setCol($caveSpace->getCol());
-
-                $cavern->setRow($caveSpace->getRow() + 1);
-                $cavern->setCol($caveSpace->getCol());
-                break;
-
-            case GameEngine::TILE_CT_VERTICAL:
-                $cavern->setRow($caveSpace->getRow());
-                $cavern->setCol($caveSpace->getCol());
-
-                $tunnel->setRow($caveSpace->getRow() + 1);
-                $tunnel->setCol($caveSpace->getCol());
-                break;
-        }
+        $this->selectedTile = $this->selectTile($input, $output, array(
+            1 => TileFactory::TILE_NINGUNO, 
+            2 => TileFactory::TILE_TC_HORIZONTAL, 
+            3 => TileFactory::TILE_CT_HORIZONTAL, 
+            4 => TileFactory::TILE_TC_VERTICAL, 
+            5 => TileFactory::TILE_CT_VERTICAL
+        ));
         
-        $this->actionSpace->setTunnelCaveSpace($tunnel);
-        $this->actionSpace->setCavernCaveSpace($cavern);
+        if ($this->selectedTileType === TileFactory::TILE_NINGUNO) {
+            $this->actionSpace->setTile(null);
+        } else {
+            $caveSpace = $this->selectPos($input, $output);
+            $this->actionSpace->setTile(TileFactory::createTile(
+                $caveSpace->getRow(), 
+                $caveSpace->getCol(), 
+                $this->selectedTileType
+            ));        
+        }
     }    
 }

@@ -123,6 +123,14 @@ abstract class GameCommandBase extends ContainerAwareCommand {
         $output->writeln('');        
     }
     
+    protected function selectTile(InputInterface $input, OutputInterface $output, $tiles) {
+        $helper = $this->getHelper('question');        
+        $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tiles, 0);
+        $question->getAutocompleterValues($tiles);
+        $question->setErrorMessage('La loseta %s no es valida.');        
+        return $helper->ask($input, $output, $question);
+    }    
+    
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, OutputInterface $output) {
         $this->logger = $this->getContainer()->get('logger');
         $this->logger->notice($this->getName(), $input->getArguments());        

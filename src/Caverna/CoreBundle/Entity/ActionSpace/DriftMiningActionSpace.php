@@ -5,9 +5,6 @@ namespace Caverna\CoreBundle\Entity\ActionSpace;
 use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 
-use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
-use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
-
 /**
  * @ORM\Entity;
  */
@@ -22,14 +19,9 @@ class DriftMiningActionSpace extends ActionSpace {
     private $stone;
     
     /**
-     * @var CavernCaveSpace
+     * @var array
      */
-    private $cavernCaveSpace;
-    
-    /**
-     * @var TunnelCaveSpace
-     */
-    private $tunnelCaveSpace;
+    private $tile;
     
     public function getKey() {
         return self::KEY;
@@ -52,24 +44,13 @@ class DriftMiningActionSpace extends ActionSpace {
     }
     
     /**
-     * @return CavernCaveSpace
+     * @return array
      */
-    public function getCavernCaveSpace() {
-        return $this->cavernCaveSpace;
+    public function getTile() {
+        return $this->tile;
     }
-    public function setCavernCaveSpace(CavernCaveSpace $cavernCaveSpace) {
-        $this->cavernCaveSpace = $cavernCaveSpace;
-        return $this;
-    }
-    
-    /**
-     * @return TunnelCaveSpace
-     */
-    public function getTunnelCaveSpace() {
-        return $this->tunnelCaveSpace;
-    }
-    public function setTunnelCaveSpace(TunnelCaveSpace $tunnelCaveSpace) {
-        $this->tunnelCaveSpace = $tunnelCaveSpace;
+    public function setTile(array $tile) {
+        $this->tile = $tile;
         return $this;
     }
     

@@ -18,6 +18,11 @@ class ExcavationActionSpace extends ActionSpace {
      */
     private $stone;
     
+    /**
+     * @var array
+     */
+    private $tile;
+        
     public function getKey() {
         return self::KEY;
     }
@@ -35,6 +40,17 @@ class ExcavationActionSpace extends ActionSpace {
     
     public function getState() {
         return 'Piedra: ' . $this->getStone();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTile() {
+        return $this->tile;
+    }
+    public function setTile(array $tile) {
+        $this->tile = $tile;
+        return $this;
     }
         
     public function __construct() {

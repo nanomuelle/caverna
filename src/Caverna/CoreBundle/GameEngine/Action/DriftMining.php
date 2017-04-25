@@ -30,14 +30,12 @@ class DriftMining {
         $player->addStone($actionSpace->getStone());
         $actionSpace->setStone(0);
         
-        // Cavern / Tunnel
-        $cavern = $actionSpace->getCavernCaveSpace();
-        $tunnel = $actionSpace->getTunnelCaveSpace();
-        if ($cavern !== null && $tunnel !== null) {            
-            $player->placeCaveSpace($cavern);
-            $player->placeCaveSpace($tunnel);
-            
-        }
+        // tile
+        $tile = $actionSpace->getTile();
+        if ($tile !== null) {
+            $player->placeCaveSpace($tile[0]);
+            $player->placeCaveSpace($tile[1]);
+        }        
     }
     
     public static function replenish(DriftMiningActionSpace $actionSpace) {

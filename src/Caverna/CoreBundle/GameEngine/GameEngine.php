@@ -17,14 +17,6 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
  * @author marte
  */
 class GameEngine {
-    const TILE_NINGUNO = "Ninguno";
-    const TILE_T = "Tunel";
-    const TILE_C = "Caverna";
-    const TILE_TC_HORIZONTAL = "Tunel/Caverna Horizontal";
-    const TILE_CT_HORIZONTAL = "Caverna/Tunel Horizontal";
-    const TILE_TC_VERTICAL = "Tunel/Caverna Vertical";
-    const TILE_CT_VERTICAL = "Caverna/Tunel Vertical";
-        
     protected $em;
     
     public function __toString() {
@@ -153,4 +145,5 @@ class GameEngine {
         $this->em->persist($round);
         $this->em->flush();
     }
+    
 }
