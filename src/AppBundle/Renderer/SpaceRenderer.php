@@ -21,13 +21,13 @@ class SpaceRenderer {
     const BOTTOM_RIGHT_CORNER = "\xD9"; // chr(217); ┘
     
     // Forest
-    const FOREST = "<bg=green> </>";
-    const EXTERNAL_FOREST = "<bg=green;fg=black>\xB1</>"; // ▒ = \xB1 = chr(177)
+    const FOREST = "<bg=green;fg=yellow>\xB1</>"; // ░ = \xB0 = chr(177)
+    const EXTERNAL_FOREST = "<bg=green;fg=black>\xB2</>"; // ▓ = \xB2 = chr(178)
     const BOAR_REWARD = '<bg=white;fg=red>B</>';
     const INITIAL_FOREST = '<bg=green;fg=yellow;options=bold><</>';
     
     // Mountain
-    const EXTERNAL_MOUNTAIN = "<bg=green;fg=black>\xB1</>"; // ▒ = \xB1 = chr(177)
+    const EXTERNAL_MOUNTAIN = "<bg=green;fg=black>\xB2</>"; // ▓ = \xB2 = chr(178)
     const INTERNAL_MOUNTAIN = "<bg=cyan;fg=black>\xB1</>"; // ▒ = \xB1 = chr(177)    
     
     // Cavern
@@ -44,6 +44,12 @@ class SpaceRenderer {
     const TUNNEL_UPPER_RIGHT = "<bg=blue;fg=cyan>\xC0</>";
     const TUNNEL_BOTTOM_LEFT = "<bg=blue;fg=cyan>\xBF</>";
     const TUNNEL_BOTTOM_RIGHT = "<bg=blue;fg=cyan>\xDA</>";    
+    
+    // Field
+    const FIELD = "<bg=white;fg=green>\xB2</>"; // ▓ = \xB2 = chr(178)
+    
+    // Meadow
+    const MEADOW = "<bg=green;fg=black>\xBA</>"; // ║ = \xBA = chr(186)
     
     // Dwelling
     const DWELLING = "<bg=white;fg=black> </>";

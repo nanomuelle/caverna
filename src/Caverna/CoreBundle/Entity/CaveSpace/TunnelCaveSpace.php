@@ -7,8 +7,9 @@ use Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace;
 /**
  * @ORM\Entity;
  */
-class TunnelCaveSpace extends BaseCaveSpace {    
-    public function acceptsTile($tileTipe) {
+class TunnelCaveSpace extends BaseCaveSpace 
+{    
+    public function acceptsTile($tileType) {
         return false;
     }       
 }

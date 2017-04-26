@@ -44,7 +44,7 @@ abstract class BaseCaveSpace {
      */
     private $player;
 
-    public function acceptsTile($tileTipe) {
+    public function acceptsTile($tileType) {
         return $this->mayDig();
     }
     

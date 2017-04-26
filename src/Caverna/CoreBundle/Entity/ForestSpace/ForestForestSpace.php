@@ -5,17 +5,68 @@ namespace Caverna\CoreBundle\Entity\ForestSpace;
 use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace;
 
+use Caverna\CoreBundle\GameEngine\TileFactory;
 /**
  * @ORM\Entity;
  */
-class ForestForestSpace extends BaseForestSpace {
-    
-    public function isExternal() {
-        if ($this->getRow() === 0 || $this->getRow() === 5 || $this->getCol() === 0) {
-            return true;
+class ForestForestSpace extends BaseForestSpace {    
+    public function acceptsTile($tileType) {        
+        switch ($tileType) {
+            case TileFactory::TILE_F:
+            case TileFactory::TILE_M:
+                return parent::acceptsTile($tileType);
+            
+            case TileFactory::TILE_FM_HORIZONTAL:
+                $rightForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow(), $this->getCol() + 1);
+                
+                // me and rightForestSpace are ForestForestSpace
+                if (!$this instanceof ForestForestSpace || !$rightForestSpace instanceof ForestForestSpace) {
+                    return false;
+                }
+                
+                return parent::acceptsTile(TileFactory::TILE_F) || $rightForestSpace->acceptsTile(TileFactory::TILE_M);
+                
+            case TileFactory::TILE_MF_HORIZONTAL:
+                $rightForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow(), $this->getCol() + 1);
+                
+                // me and rightForestSpace are ForestForestSpace
+                if (!$this instanceof ForestForestSpace || !$rightForestSpace instanceof ForestForestSpace) {
+                    return false;
+                }
+                
+                return parent::acceptsTile(TileFactory::TILE_M) || $rightForestSpace->acceptsTile(TileFactory::TILE_F);
+            
+            case TileFactory::TILE_FM_VERTICAL:
+                $bottomForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow() + 1, $this->getCol());
+                
+                // me and bottomForestSpace are ForestForestSpace
+                if (!$this instanceof ForestForestSpace || !$bottomForestSpace instanceof ForestForestSpace) {
+                    return false;
+                }
+                
+                if ($bottomForestSpace->isExternal()) {
+                    return false;
+                }                
+
+                return parent::acceptsTile(TileFactory::TILE_F) || $bottomForestSpace->acceptsTile(TileFactory::TILE_M);
+                
+            case TileFactory::TILE_MF_VERTICAL:
+                $bottomForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow() + 1, $this->getCol());
+                
+                // me and bottomForestSpace are ForestForestSpace
+                if (!$this instanceof ForestForestSpace || !$bottomForestSpace instanceof ForestForestSpace) {
+                    return false;
+                }
+                
+                if ($bottomForestSpace->isExternal()) {
+                    return false;
+                }
+                
+                return parent::acceptsTile(TileFactory::TILE_M) || $bottomForestSpace->acceptsTile(TileFactory::TILE_F);
+            
+            default:
+                return false;
         }
-        
-        return false;
     }
     
     /**
@@ -42,107 +93,4 @@ class ForestForestSpace extends BaseForestSpace {
         }        
         return 0;        
     }    
-    
-    public function __toString() {
-        $h = chr(196); // ─
-        $f = chr(177); // ▒
-        $v = chr(179); // │
-        $ul = chr(218); // ┌
-        $bl = chr(192); // └
-        
-        if ($this->isExternal()) {
-                return
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>";
-                
-            if ($this->getRow() === 0 && $this->getCol() === 0) {
-                return
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>"
-//                    "<bg=green;fg=black>$f</><bg=green>$ul </>"
-//                    "<bg=green;fg=black>$f</><bg=green>$v </>"
-                ;
-            }
-            
-            if ($this->getRow() === 5 && $this->getCol() === 0) {
-              return
-//                    "<bg=green;fg=black>$f</><bg=green>$v </>\n".
-//                    "<bg=green;fg=black>$f</><bg=green>$bl </>\n".
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>"
-                ;
-            }
-                       
-            if ($this->getRow() === 0) {
-                return
-                    "<bg=green;fg=black>$f$f$f</>\n". 
-                    "<bg=green;fg=black>$f$f$f</>\n". 
-                    "<bg=green;fg=black>$f$f$f</>"
-//                    "<bg=green>$h$h$h</>"
-                ;  
-            }
-
-            if ($this->getRow() === 4) {
-                return
-                    "<bg=green>$h$h$h</>\n".
-                    "<bg=green;fg=black>$f$f$f</>\n".
-                    "<bg=green;fg=black>$f$f$f</>"
-                ;  
-            }
-            
-            if ($this->getCol() === 0) {
-                return
-                    "<bg=green;fg=black>$f<bg=green>$v </>\n".
-                    "<bg=green;fg=black>$f<bg=green>$v </>\n".
-                    "<bg=green;fg=black>$f<bg=green>$v </>"
-                ;                  
-                //return chr(179); // │
-            }
-
-            // Unicode => return "<fg=green>\xF0\x9F\x8C\xB5</>";
-        }
-        
-        if ($this->getFoodReward() > 0) {
-            // return "<fg=yellow>\xF0\x9F\x8D\xB5</>"; // Unicode
-            return
-                "<bg=green>   </>\n". 
-                "<bg=cyan;fg=black>+1</><bg=green> </>\n".
-                "<bg=green> <bg=cyan;fg=black> </> </>"
-            ;
-        }
-       
-        if ($this->getBoarReward() > 0) {
-            // Unicode return "<fg=red;options=bold>\xF0\x9F\x90\xB7</>"; // 'b';
-            return
-                "<bg=green>   </>\n". 
-                "<bg=green> <bg=white;fg=red>B</> </>\n".
-                "<bg=green>   </>"
-            ;
-        }
-        
-        // initial forest space
-        if ($this->getRow() === 4 && $this->getCol() === 3) {            
-            // Unicode return "<fg=white;options=bold>\xF0\x9F\x8C\xB2</>"; // '<';
-            return
-                "<bg=green>   </>\n". 
-                "<bg=green;fg=black> < </>\n".
-                "<bg=green>   </>"
-            ;     
-        }
-        
-        // return "<fg=green;options=bold>\xF0\x9F\x8C\xB2</>"; // chr(177); //'.';
-        //return "<fg=green;options=bold> f </>"; // chr(177); //'.';
-        $f1 = chr(176);
-        $f2 = chr(177);
-        $f3 = chr(178);        
-        return
-            "<bg=green>   </>\n". 
-            "<bg=green> <bg=green;fg=black>$f2</> </>\n".
-            "<bg=green>   </>"
-        ;        
-    }
-    
 }

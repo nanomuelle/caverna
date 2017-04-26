@@ -14,5 +14,9 @@ use Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace;
 /**
  * @ORM\Entity;
  */
-class MeadowForestSpace extends BaseForestSpace {  
+class MeadowForestSpace extends BaseForestSpace 
+{  
+    public function acceptsTile($tileType) {
+        return false;
+    } 
 }

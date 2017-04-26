@@ -194,8 +194,7 @@ class Player
      *
      * @return Player
      */
-    public function addForestSpace(\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace)
-    {
+    public function addForestSpace(\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace) {
         $this->forestSpaces[] = $forestSpace;
         $forestSpace->setPlayer($this);
 
@@ -203,14 +202,32 @@ class Player
     }
 
     /**
+     * Remove forestSpace
+     *
+     * @param \Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace
+     */
+    public function removeForestSpace(\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace) {
+        $forestSpace->setPlayer(null);
+        $this->forestSpaces->removeElement($forestSpace);
+    }    
+    
+    public function getForestSpaceByRowCol($row, $col) {
+        foreach ($this->getForestSpaces() as $forestSpace) {
+            if ($forestSpace->getRow() === $row && $forestSpace->getCol() === $col) {
+                return $forestSpace;
+            }
+        }
+        return null;
+    }
+        
+    /**
      * Add caveSpace
      *
      * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
      *
      * @return Player
      */
-    public function addCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
-    {
+    public function addCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {
         $this->caveSpaces[] = $caveSpace;
         $caveSpace->setPlayer($this);
 
@@ -222,8 +239,7 @@ class Player
      *
      * @param \Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace
      */
-    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace)
-    {
+    public function removeCaveSpace(\Caverna\CoreBundle\Entity\CaveSpace\BaseCaveSpace $caveSpace) {
         $caveSpace->setPlayer(null);
         $this->getCaveSpaces()->removeElement($caveSpace);
     }
@@ -248,6 +264,17 @@ class Player
         $this->addCaveSpace($caveSpace);
     }
     
+    public function placeForestSpace(\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace) {
+        $oldForestSpace = $this->getForestSpaceByRowCol($forestSpace->getRow(), $forestSpace->getCol());
+        
+        if ($oldForestSpace instanceof IRewardsPlayer) {
+            $oldForestSpace->rewardsPlayer();
+        }
+        
+        $this->removeForestSpace($oldForestSpace);
+        $this->addForestSpace($forestSpace);
+    }
+    
     public function __toString() {
         return $this->num . ' ' . $this->color . ' (#'. $this->id .')';
     }
@@ -262,14 +289,44 @@ class Player
         return $spaceForDwarfs;
     }
     
+    public function validCaveSpacesForTileType($tileType) {
+        $keys = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $positions = array();
+        $contador = 0;
+        $caveSpaces = $this->getCaveSpaces();        
+        foreach ($caveSpaces as $caveSpace) {
+            if ($caveSpace->acceptsTile($tileType)) {
+                $key = $keys[$contador];
+                $positions[$key] = $caveSpace;                
+                $contador++;
+            }
+        }
+        return $positions;
+    }    
+    
+    public function validForestSpacesForTileType($tileType) {
+        $keys = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $positions = array();
+        $contador = 0;
+        $forestSpaces = $this->getForestSpaces();        
+        foreach ($forestSpaces as $forestSpace) {
+            if ($forestSpace->acceptsTile($tileType)) {
+                $key = $keys[$contador];
+                $positions[$key] = $forestSpace;                
+                $contador++;
+            }
+        }
+        return $positions;
+    }    
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->dwarfs = new ArrayCollection();
-//        $this->addDwarf(new Dwarf());
-//        $this->addDwarf(new Dwarf());
+        $this->caveSpaces = new ArrayCollection();
+        $this->forestSpaces = new ArrayCollection();
 
         $this->food = 0;
         $this->wood = 0;
@@ -526,16 +583,6 @@ class Player
     public function getNext()
     {
         return $this->next;
-    }
-
-    /**
-     * Remove forestSpace
-     *
-     * @param \Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace
-     */
-    public function removeForestSpace(\Caverna\CoreBundle\Entity\ForestSpace\BaseForestSpace $forestSpace)
-    {
-        $this->forestSpaces->removeElement($forestSpace);
     }
 
     /**

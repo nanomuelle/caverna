@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Caverna\CoreBundle\Entity\Player;
 
+use Caverna\CoreBundle\Entity\ForestSpace\ForestForestSpace;
+
+
 /**
  * @ORM\Entity;
  * @ORM\InheritanceType("JOINED")
@@ -44,6 +47,57 @@ abstract class BaseForestSpace {
      */
     private $player;
 
+    public function isExternal() {
+        if ($this->getRow() === 0 || $this->getRow() === 5 || $this->getCol() === 0) {
+            return true;
+        }
+        
+        return false;
+    }
+        
+    public function acceptsTile($tileType) {
+        return $this->mayDeforest();
+    }
+    
+    protected function mayDeforest() {
+        $row = $this->getRow();
+        $col = $this->getCol();
+                
+        // es externa
+        if ($this->isExternal()) {
+            return false;
+        }
+        
+        // casilla inicial?
+        if ($row === 4 && $col === 3 && $this instanceof ForestForestSpace) {
+            return true;
+        }
+        
+        // adjacente a una casilla ya deforestada?
+        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row - 1, $col);
+        
+        if ($forestSpace !== null && !($forestSpace instanceof ForestForestSpace)) {
+            return true;
+        }
+
+        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row + 1, $col);
+        if ($forestSpace !== null && !($forestSpace instanceof ForestForestSpace)) {
+            return true;
+        }
+        
+        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row, $col - 1);
+        if ($forestSpace !== null && !($forestSpace instanceof ForestForestSpace)) {
+            return true;
+        }
+        
+        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row, $col + 1);
+        if ($forestSpace !== null && !($forestSpace instanceof ForestForestSpace)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function __construct() {
         $this->stable = false;
     }

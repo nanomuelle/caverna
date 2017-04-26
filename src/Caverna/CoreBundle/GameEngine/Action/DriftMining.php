@@ -5,8 +5,6 @@ namespace Caverna\CoreBundle\GameEngine\Action;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
-use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
-use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
 /**
  * Drift mining: Take all the Stone that has accumulated on this Action space. 
  * (In games with 1 to 3 players, 1 Stone will be added to this Action space 
@@ -18,7 +16,8 @@ use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
  * from the general supply. You have to place the twin tile adjacent to an 
  * already occupied Mountain space, i.e. you have to extend your cave system.
  */
-class DriftMining {
+class DriftMining 
+{
     const REPLENISH_STONE_1_TO_3_PLAYERS = 1;
     const REPLENISH_STONE_4_TO_7_PLAYERS = 2;
     

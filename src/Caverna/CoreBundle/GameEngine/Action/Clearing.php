@@ -18,7 +18,8 @@ use Caverna\CoreBundle\Entity\Player;
  * entrance. Subsequent tiles must be placed adjacent to other Fields, Meadows 
  * or Pastures.
  */
-class Clearing {
+class Clearing 
+{
     const REPLENISH_WOOD_1_TO_3_PLAYERS = 1;
     const REPLENISH_WOOD_4_TO_7_PLAYERS = 2;
     
@@ -26,7 +27,14 @@ class Clearing {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
         $player->addWood($actionSpace->getWood());
-        $actionSpace->setWood(0);        
+        $actionSpace->setWood(0);
+        
+        // tile
+        $tile = $actionSpace->getTile();
+        if ($tile !== null) {
+            $player->placeForestSpace($tile[0]);
+            $player->placeForestSpace($tile[1]);
+        }          
     }
     
     public static function replenish(ClearingActionSpace $actionSpace) {

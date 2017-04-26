@@ -4,25 +4,27 @@ namespace Caverna\CoreBundle\Entity\ActionSpace;
 
 use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
+use Caverna\CoreBundle\GameEngine\TileFactory;
 
 /**
  * @ORM\Entity;
  */
-class DriftMiningActionSpace extends ActionSpace {
+class DriftMiningActionSpace extends ActionSpace 
+{
     const KEY = 'DriftMining';
     const DESCRIPTION_1_TO_3 = 'Piedra 1(1)';
     const DESCRIPTION_4_TO_7 = 'Piedra 2(2)';
-    
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $stone;
     
     /**
      * @var array
      */
     private $tile;
     
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stone;
+        
     public function getKey() {
         return self::KEY;
     }
@@ -49,17 +51,27 @@ class DriftMiningActionSpace extends ActionSpace {
     public function getTile() {
         return $this->tile;
     }
+
     public function setTile(array $tile) {
         $this->tile = $tile;
         return $this;
+    }
+    
+    public function getTileTypes() {
+        return array(
+            1 => TileFactory::TILE_NINGUNO, 
+            2 => TileFactory::TILE_TC_HORIZONTAL, 
+            3 => TileFactory::TILE_CT_HORIZONTAL, 
+            4 => TileFactory::TILE_TC_VERTICAL, 
+            5 => TileFactory::TILE_CT_VERTICAL
+        );        
     }
     
     public function __construct() {
         parent::__construct();
         $this->setName('Drift Mining');
         $this->stone = 0;
-        $this->cavernCaveSpace = null;
-        $this->tunnelCaveSpace = null;
+        $this->tile = null;
     }
 
     /**

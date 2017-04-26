@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
@@ -16,7 +17,7 @@ use Caverna\CoreBundle\GameEngine\GameEngine;
 
 use Caverna\CoreBundle\Entity\Player;
 use Caverna\CoreBundle\Entity\ForestSpace;
-use Caverna\CoreBundle\Entity\CaveSpace;
+// use Caverna\CoreBundle\Entity\CaveSpace;
 
 abstract class GameCommandBase extends ContainerAwareCommand {    
     /**
@@ -33,7 +34,6 @@ abstract class GameCommandBase extends ContainerAwareCommand {
     protected function getForestRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
-        /* @var $forestSpace ForestSpace */
         foreach ($player->getForestSpaces() as $forestSpace) {
             $reflection = new \ReflectionClass($forestSpace);
             $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
@@ -46,15 +46,14 @@ abstract class GameCommandBase extends ContainerAwareCommand {
     protected function getCaveRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
-        /* @var $caveSpace CaveSpace */
         foreach ($player->getCaveSpaces() as $caveSpace) {            
             $reflection = new \ReflectionClass($caveSpace);            
-            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
+            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';
             $rows[$caveSpace->getRow()][$caveSpace->getCol()] = $renderer::render($caveSpace);
         }
         
         return $rows;
-    }    
+    }
     
     protected function renderPlayerBoard(OutputInterface $output, Player $player) {
         $forestRows = $this->getForestRows($player);
@@ -125,14 +124,38 @@ abstract class GameCommandBase extends ContainerAwareCommand {
         $output->writeln('');        
     }
     
-    protected function selectTile(InputInterface $input, OutputInterface $output, $tiles) {
+    protected function selectTileType(InputInterface $input, OutputInterface $output, $tileTypes) {
         $helper = $this->getHelper('question');        
-        $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tiles, 0);
-        $question->getAutocompleterValues($tiles);
-        $question->setErrorMessage('La loseta %s no es valida.');        
-        return $helper->ask($input, $output, $question);
+        $question = new ChoiceQuestion('Selecciona la loseta que quieres:', $tileTypes, 0);
+        $question->getAutocompleterValues($tileTypes);
+        $question->setErrorMessage('La loseta %s no es valida.');
+        
+        return $helper->ask($input, $output, $question);        
     }    
     
+    protected function selectTilePosition(InputInterface $input, OutputInterface $output, $positions) {
+        $this->renderPlayerBoard($output, $this->player);
+        
+        $valid_keys = join('', array_keys($positions));
+        $question = new Question('Posicion [' . $valid_keys . ']:');
+        $question->setNormalizer(function ($answer) use ($positions) {
+            $key = strtoupper($answer);
+            if (array_key_exists($key, $positions)) {
+                return $positions[$key];
+            }
+            return null;
+        });
+        $question->setValidator(function ($selectedCaveSpace) {
+            if ($selectedCaveSpace === null) {
+                throw new \RuntimeException('La posicion especificada no esta disponible.');
+            }
+            return $selectedCaveSpace;
+        });
+        
+        $helper = $this->getHelper('question');
+        return $helper->ask($input, $output, $question);
+    }
+        
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, OutputInterface $output) {
         $this->logger = $this->getContainer()->get('logger');
         $this->logger->notice($this->getName(), $input->getArguments());        
