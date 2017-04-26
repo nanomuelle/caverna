@@ -106,22 +106,15 @@ class GameEngine {
         $this->em->flush();
     }
     
-    private function calcularAccionesRestantes($enanos) {
-        
-        $acciones_restantes = 0;
-        foreach ($enanos as $num_enanos_player) {
-            $acciones_restantes += $num_enanos_player;
-        }
-        return $acciones_restantes;
-    }
-    
     private function createTurnsForCurrentRound(Game $game) {
         $enanos = array();
         $players = $game->getPlayers();        
-        $round = $game->getCurrentRound();
+        $round = $game->getCurrentRound();        
+        $enanos_restantes = 0;
         
         foreach($players as $player) {
             $enanos[$player->getId()] = $player->getDwarfs()->count();
+            $enanos_restantes += $player->getDwarfs()->count();
         }
         
         $player = $round->getInitialPlayer();
@@ -137,13 +130,38 @@ class GameEngine {
                         
                 $enanos[$player->getId()]--;
                 $contador_turnos++;
+                $enanos_restantes--;
             }
             $player = $player->getNext();
-            $acciones_restantes = $this->calcularAccionesRestantes($enanos);
-        } while($acciones_restantes > 0);
+        } while($enanos_restantes > 0);
         
         $this->em->persist($round);
         $this->em->flush();
     }
     
+    public function finishCurrentRound(Game $game) {
+        $nextRound = $game->getNextRound();
+        
+        if ($nextRound !== null) {
+            $game->setCurrentRound($nextRound);
+            $this->createTurnsForCurrentRound($game);
+            
+            foreach ($game->getActionSpaces() as $actionSpace) {
+                $actionSpace->setDwarf(null);
+                $this->em->persist($actionSpace);
+            }
+
+            // TODO: HARVEST
+            // $this->harvest($game);
+            
+            $this->replenish($game);
+            
+            $this->em->persist($game);
+            $this->em->flush();
+            
+            return;
+        }
+        
+        // TODO: FIN DE LA PARTIDA
+    }    
 }

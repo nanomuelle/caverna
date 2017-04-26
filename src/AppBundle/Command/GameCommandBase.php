@@ -6,6 +6,9 @@ namespace AppBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
 
@@ -91,7 +94,7 @@ abstract class GameCommandBase extends ContainerAwareCommand {
         $table = new Table($output);
         $table->setStyle($this::TABLE_STYLE);
         $table
-            ->setHeaders(array('id', 'Num', 'Color', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
+            ->setHeaders(array('Num', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
         ;        
         
         /* @var $player Player */
@@ -106,9 +109,8 @@ abstract class GameCommandBase extends ContainerAwareCommand {
             }
             
             $table->addRow(array(
-                '#' . $player->getId(),
+//                '#' . $player->getId(),
                 $player->getNum(),
-                $player->getColor(),
                 $dwarfs,
                 $player->getFood(),
                 $player->getWood(),

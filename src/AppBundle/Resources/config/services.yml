@@ -1,11 +1,4 @@
 services:
-#    app.game_engine:
-#        class: AppBundle\GameEngine\GameEngine
-#        arguments:
-#            entityManager: '@doctrine.orm.entity_manager'
-#        tags:
-#            - { name: app.game_engine, alias: app_game_engine }
-
     app.game.create_command:
         class: AppBundle\Command\Game\CreateCommand
         arguments: ['@caverna.game_engine']
@@ -38,6 +31,12 @@ services:
     
     app.game_turn.finish_command:
         class: AppBundle\Command\GameTurn\FinishCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_round.finish_command:
+        class: AppBundle\Command\GameRound\FinishCommand
         arguments: ['@caverna.game_engine']
         tags:
             - { name: console.command }

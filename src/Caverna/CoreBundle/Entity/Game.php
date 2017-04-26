@@ -72,6 +72,7 @@ class Game
          }
          return $imitableActionSpaces;
      }
+     
      /**
       * Add round
       *
@@ -79,8 +80,7 @@ class Game
       *
       * @return Game
       */
-     public function addRound(\Caverna\CoreBundle\Entity\Round $round)
-     {
+     public function addRound(\Caverna\CoreBundle\Entity\Round $round) {
          $round->setGame($this);
          $this->rounds[] = $round;
          
@@ -98,8 +98,7 @@ class Game
      *
      * @return Game
      */
-    public function addActionSpace(\Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $actionSpace)
-    {
+    public function addActionSpace(\Caverna\CoreBundle\Entity\ActionSpace\ActionSpace $actionSpace) {
         $actionSpace->setGame($this);
         $this->actionSpaces[] = $actionSpace;
 
@@ -113,8 +112,7 @@ class Game
       *
       * @return Game
       */
-     public function addPlayer(\Caverna\CoreBundle\Entity\Player $player)
-     {
+     public function addPlayer(\Caverna\CoreBundle\Entity\Player $player) {
          if ($this->players->count() > 0) {
             $this->players->last()->setNext($player);
          }
@@ -130,8 +128,7 @@ class Game
          return $this;
      }
 
-     public function getNumPlayers()
-     {
+     public function getNumPlayers() {
          return $this->players->count();
      }
 
@@ -157,7 +154,17 @@ class Game
         }
         return null;
     }
-
+    
+    public function getNextRound() {
+        $nextNum = $this->getCurrentRound()->getNum() + 1;
+        foreach ($this->getRounds() as $round) {
+            if ($round->getNum() === $nextNum) {
+                return $round;
+            }
+        }        
+        return null;
+    }
+    
     public function __construct() {
          $this->numRedHarvestMarkers = 0;
          $this->status = Game::STATUS_WAITING_PLAYERS;

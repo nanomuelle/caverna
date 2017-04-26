@@ -2,6 +2,10 @@
 
 namespace Caverna\CoreBundle\GameEngine;
 
+
+use Caverna\CoreBundle\Entity\CaveSpace\CavernCaveSpace;
+use Caverna\CoreBundle\Entity\CaveSpace\TunnelCaveSpace;
+
 /**
  * Description of TileFactory
  *
@@ -92,25 +96,25 @@ class TileFactory {
     
     public static function createTile($row, $col, $tileType) {
         switch ($tileType) {
-            case GameEngine::TILE_NINGUNO:
+            case self::TILE_NINGUNO:
                 return array(null, null);
 
-            case GameEngine::TILE_TC_HORIZONTAL:
+            case self::TILE_TC_HORIZONTAL:
                 return self::createHorizontalTunnelCavernTile($row, $col);
 
-            case GameEngine::TILE_CT_HORIZONTAL:
+            case self::TILE_CT_HORIZONTAL:
                 return self::createHorizontalCavernTunnelTile($row, $col);
             
-            case GameEngine::TILE_CC_HORIZONTAL:
+            case self::TILE_CC_HORIZONTAL:
                 return self::createHorizontalCavernCavernTile($row, $col);
                     
-            case GameEngine::TILE_TC_VERTICAL:
+            case self::TILE_TC_VERTICAL:
                 return self::createVerticalTunnelCavernTile($row, $col);
 
-            case GameEngine::TILE_CT_VERTICAL:
+            case self::TILE_CT_VERTICAL:
                 return self::createVerticalCavernTunnelTile($row, $col);
             
-            case GameEngine::TILE_CC_VERTICAL:
+            case self::TILE_CC_VERTICAL:
                 return self::createVerticalCavernCavernTile($row, $col);
         }        
     }

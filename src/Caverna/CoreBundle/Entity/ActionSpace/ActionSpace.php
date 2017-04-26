@@ -119,7 +119,10 @@ abstract class ActionSpace {
     public function setDwarf(\Caverna\CoreBundle\Entity\Dwarf $dwarf = null)
     {
         $this->dwarf = $dwarf;
-        $dwarf->setActionSpace($this);
+        
+        if ($dwarf !== null) {
+            $dwarf->setActionSpace($this);
+        }
         return $this;
     }
     

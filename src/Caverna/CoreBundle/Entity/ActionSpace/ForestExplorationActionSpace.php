@@ -37,6 +37,14 @@ class ForestExplorationActionSpace extends ActionSpace {
         }
     }        
     
+    /**
+     * 
+     * @param integer $amount
+     */
+    public function addWood($amount) {
+        $this->wood += $amount;
+    }
+
     public function __construct() {
         parent::__construct();
         $this->setName('Forest Exploration');

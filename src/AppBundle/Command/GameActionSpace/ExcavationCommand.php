@@ -61,7 +61,7 @@ class ExcavationCommand extends ActionSpaceCommand {
         $contador = 0;
         /* @var $caveSpace CaveSpace */
         foreach ($player->getCaveSpaces() as $caveSpace) {
-            $key = $caveSpace->acceptsTile($this->selectedTile) ? $keys[$contador] : '';
+            $key = $caveSpace->acceptsTile($this->selectedTileType) ? $keys[$contador] : '';
             $this->validKeys .= $key;
             
             if ($key !== '') {

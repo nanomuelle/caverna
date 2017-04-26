@@ -27,12 +27,14 @@ class MountainCaveSpace extends BaseCaveSpace implements IRewardsPlayer {
         
         switch ($tileType) {
             case TileFactory::TILE_CT_HORIZONTAL:
-            case TileFactory::TILE_TC_HORIZONTAL:               
+            case TileFactory::TILE_TC_HORIZONTAL:    
+            case TileFactory::TILE_CC_HORIZONTAL:
                 $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow(), $this->getCol() + 1);
                 break;
             
             case TileFactory::TILE_CT_VERTICAL:
-            case TileFactory::TILE_TC_VERTICAL:               
+            case TileFactory::TILE_TC_VERTICAL:
+            case TileFactory::TILE_CC_VERTICAL:
                 $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow() + 1, $this->getCol());
                 break;
         }

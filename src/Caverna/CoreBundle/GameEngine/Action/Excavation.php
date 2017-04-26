@@ -26,7 +26,14 @@ class Excavation {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
         $player->addStone($actionSpace->getStone());
-        $actionSpace->setStone(0);        
+        $actionSpace->setStone(0);    
+        
+        // tile
+        $tile = $actionSpace->getTile();
+        if ($tile !== null) {
+            $player->placeCaveSpace($tile[0]);
+            $player->placeCaveSpace($tile[1]);
+        }        
     }
     
     public static function replenish(ExcavationActionSpace $actionSpace) {

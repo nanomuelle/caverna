@@ -46,16 +46,16 @@ class SustenanceActionSpace extends ActionSpace {
     }
     
     /**
-     * @param integer $amoung
+     * @param integer $amount
      */
-    public function addFood($amoung) {
+    public function addFood($amount) {
         $this->food += $amount;
     }
     
     /**
-     * @param integer $amoung
+     * @param integer $amount
      */
-    public function addVegetable($amoung) {
+    public function addVegetable($amount) {
         $this->vegetable += $amount;
     }
     
