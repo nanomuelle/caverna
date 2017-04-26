@@ -15,8 +15,8 @@ use Caverna\CoreBundle\Entity\Player;
  * Forest spaces of your Home board that are not covered by any tiles. 
  * (See “Clearing” for further details.)
  */
-class Sustenance {
-    
+class Sustenance 
+{    
     public static function execute(SustenanceActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
@@ -34,6 +34,13 @@ class Sustenance {
             $player->addVegetable($actionSpace->getVegetable());
             $actionSpace->setVegetable(0);
         }
+        
+        // tile
+        $tile = $actionSpace->getTile();
+        if ($tile !== null) {
+            $player->placeForestSpace($tile[0]);
+            $player->placeForestSpace($tile[1]);
+        }          
     }
     
     public static function replenish(SustenanceActionSpace $actionSpace) {

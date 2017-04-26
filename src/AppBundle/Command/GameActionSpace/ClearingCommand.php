@@ -16,7 +16,8 @@ use Caverna\CoreBundle\Entity\ActionSpace\ClearingActionSpace;
 /**
  * @author marte
  */
-class ClearingCommand extends ActionSpaceCommand {
+class ClearingCommand extends ActionSpaceCommand 
+{
     const COMMAND_NAME = 'game:action:clearing';
     
     private $positions;

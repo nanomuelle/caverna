@@ -4,11 +4,13 @@ namespace Caverna\CoreBundle\Entity\ActionSpace;
 
 use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
+use Caverna\CoreBundle\GameEngine\TileFactory;
 
 /**
  * @ORM\Entity;
  */
-class SustenanceActionSpace extends ActionSpace {
+class SustenanceActionSpace extends ActionSpace 
+{
     const KEY = 'Sustenance';
     const DESCRIPTION_1_TO_3 = "Comida: (1), Grano: +1";
     const DESCRIPTION_4_TO_7 = "Grano: 1, Hortaliza: (1)";
@@ -18,6 +20,11 @@ class SustenanceActionSpace extends ActionSpace {
     const REPLENISH_FOOD = 1;
     const REPLENISH_VEGETABLE = 1;
     
+    /**
+     * @var array
+     */
+    private $tile;
+        
     /**
      * @ORM\Column(type="integer")
      */
@@ -77,6 +84,27 @@ class SustenanceActionSpace extends ActionSpace {
         }
         return 'Grano: ' . $this->getGrain() . ', Hortaliza: ' . $this->getVegetable();
     }        
+    
+    /**
+     * @return array
+     */
+    public function getTile() {
+        return $this->tile;
+    }
+    public function setTile(array $tile = null) {
+        $this->tile = $tile;
+        return $this;
+    }
+    
+    public function getTileTypes() {
+        return array(
+            1 => TileFactory::TILE_NINGUNO, 
+            2 => TileFactory::TILE_FM_HORIZONTAL, // field, meadow horizontal
+            3 => TileFactory::TILE_MF_HORIZONTAL, // meadow, field horizontal
+            4 => TileFactory::TILE_FM_VERTICAL, 
+            5 => TileFactory::TILE_MF_VERTICAL
+        );        
+    }
     
     public function __construct() {
         parent::__construct();
