@@ -11,34 +11,42 @@ use Caverna\CoreBundle\Entity\CaveSpace\IRewardsPlayer;
 /**
  * @ORM\Entity;
  */
-class MountainCaveSpace extends BaseCaveSpace implements IRewardsPlayer {
-    public function rewardsPlayer() {
-        $this->getPlayer()->addFood($this->getFoodReward());
-    }
-    
-    public function acceptsTile($tileType) {
-        if (!parent::acceptsTile($tileType)) {
-            return false;
-        }
-                
-        if ($this->isExternal()) {
-            return false;
-        }
-        
+class MountainCaveSpace extends BaseCaveSpace implements IRewardsPlayer {    
+    public function acceptsTile($tileType) {                
         switch ($tileType) {
+            case TileFactory::TILE_C:
+            case TileFactory::TILE_T:
+                return parent::acceptsTile($tileType);
+            
             case TileFactory::TILE_CT_HORIZONTAL:
-            case TileFactory::TILE_TC_HORIZONTAL:    
+            case TileFactory::TILE_TC_HORIZONTAL:
             case TileFactory::TILE_CC_HORIZONTAL:
-                $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow(), $this->getCol() + 1);
+                $sideCaveSpace = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow(), $this->getCol() + 1);
                 break;
             
             case TileFactory::TILE_CT_VERTICAL:
             case TileFactory::TILE_TC_VERTICAL:
             case TileFactory::TILE_CC_VERTICAL:
-                $horizontalNeighbour = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow() + 1, $this->getCol());
+                $sideCaveSpace = $this->getPlayer()->getCaveSpaceByRowCol($this->getRow() + 1, $this->getCol());
                 break;
         }
-        return is_a($horizontalNeighbour, MountainCaveSpace::class) && !$horizontalNeighbour->isExternal();
+        
+        // me and sideCaveSpace are MountainCaveSpace
+        if (!$sideCaveSpace instanceof MountainCaveSpace) {
+            return false;
+        }
+        
+        // sideCaveSpace is not external
+        if ($sideCaveSpace->isExternal()) {
+            return false;
+        }                                
+        
+        // me or sideCaveSpace have a diggable neighbour
+        return parent::acceptsTile(TileFactory::TILE_C) || $sideCaveSpace->acceptsTile(TileFactory::TILE_C);        
+    }
+    
+    public function rewardsPlayer() {
+        $this->getPlayer()->addFood($this->getFoodReward());
     }
     
     public function getFoodReward() {

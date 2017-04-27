@@ -147,8 +147,14 @@ class GameEngine {
             $this->createTurnsForCurrentRound($game);
             
             foreach ($game->getActionSpaces() as $actionSpace) {
-                $actionSpace->setDwarf(null);
-                $this->em->persist($actionSpace);
+                $dwarf = $actionSpace->getDwarf();
+                if ($dwarf !== null) {
+                    $dwarf->setActionSpace(null);
+                    $actionSpace->setDwarf(null);
+                    
+                    $this->em->persist($dwarf);
+                    $this->em->persist($actionSpace);
+                }                
             }
 
             // TODO: HARVEST

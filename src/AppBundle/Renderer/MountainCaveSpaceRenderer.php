@@ -21,22 +21,22 @@ class MountainCaveSpaceRenderer {
         if ($caveSpace->getFoodReward() === 1) {
             return SR::render(
                 SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
-                SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
+                SR::INTERNAL_MOUNTAIN, SR::MIDDLE_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
                 SR::INTERNAL_MOUNTAIN, SR::FOOD_PLUS, SR::FOOD_1,
                 $key);            
         }
         
         if ($caveSpace->getFoodReward() === 2) {
             return SR::render(
-                SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
-                SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
                 SR::INTERNAL_MOUNTAIN, SR::FOOD_PLUS, SR::FOOD_2,
+                SR::INTERNAL_MOUNTAIN, SR::MIDDLE_MOUNTAIN, SR::RIVER,
+                SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
                 $key);            
         }
         
         return SR::render(
             SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
-            SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
+            SR::INTERNAL_MOUNTAIN, SR::MIDDLE_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
             SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN, SR::INTERNAL_MOUNTAIN,
             $key);            
     }

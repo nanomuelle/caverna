@@ -10,63 +10,34 @@ use Caverna\CoreBundle\GameEngine\TileFactory;
  * @ORM\Entity;
  */
 class ForestForestSpace extends BaseForestSpace {    
-    public function acceptsTile($tileType) {        
+    public function acceptsTile($tileType) {
         switch ($tileType) {
             case TileFactory::TILE_F:
             case TileFactory::TILE_M:
                 return parent::acceptsTile($tileType);
             
             case TileFactory::TILE_FM_HORIZONTAL:
-                $rightForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow(), $this->getCol() + 1);
-                
-                // me and rightForestSpace are ForestForestSpace
-                if (!$this instanceof ForestForestSpace || !$rightForestSpace instanceof ForestForestSpace) {
-                    return false;
-                }
-                
-                return parent::acceptsTile(TileFactory::TILE_F) || $rightForestSpace->acceptsTile(TileFactory::TILE_M);
-                
             case TileFactory::TILE_MF_HORIZONTAL:
-                $rightForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow(), $this->getCol() + 1);
-                
-                // me and rightForestSpace are ForestForestSpace
-                if (!$this instanceof ForestForestSpace || !$rightForestSpace instanceof ForestForestSpace) {
-                    return false;
-                }
-                
-                return parent::acceptsTile(TileFactory::TILE_M) || $rightForestSpace->acceptsTile(TileFactory::TILE_F);
+                $sideForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow(), $this->getCol() + 1);
+                break;
             
             case TileFactory::TILE_FM_VERTICAL:
-                $bottomForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow() + 1, $this->getCol());
-                
-                // me and bottomForestSpace are ForestForestSpace
-                if (!$this instanceof ForestForestSpace || !$bottomForestSpace instanceof ForestForestSpace) {
-                    return false;
-                }
-                
-                if ($bottomForestSpace->isExternal()) {
-                    return false;
-                }                
-
-                return parent::acceptsTile(TileFactory::TILE_F) || $bottomForestSpace->acceptsTile(TileFactory::TILE_M);
-                
             case TileFactory::TILE_MF_VERTICAL:
-                $bottomForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow() + 1, $this->getCol());
-                
-                // me and bottomForestSpace are ForestForestSpace
-                if (!$this instanceof ForestForestSpace || !$bottomForestSpace instanceof ForestForestSpace) {
-                    return false;
-                }
-                
-                if ($bottomForestSpace->isExternal()) {
-                    return false;
-                }
-                
-                return parent::acceptsTile(TileFactory::TILE_M) || $bottomForestSpace->acceptsTile(TileFactory::TILE_F);
-            
-            default:
-                return false;
+                $sideForestSpace = $this->getPlayer()->getForestSpaceByRowCol($this->getRow() + 1, $this->getCol());
+                break;            
         }
+        
+        // sideForestSpace is ForestForestSpace
+        if (!$sideForestSpace instanceof ForestForestSpace) {
+            return false;
+        }
+
+        // sideForestSpace is not external
+        if ($sideForestSpace->isExternal()) {
+            return false;
+        }                
+
+        return parent::acceptsTile(TileFactory::TILE_F) || $sideForestSpace->acceptsTile(TileFactory::TILE_F);        
     }
     
     /**

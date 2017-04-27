@@ -74,8 +74,7 @@ abstract class BaseForestSpace {
         }
         
         // adjacente a una casilla ya deforestada?
-        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row - 1, $col);
-        
+        $forestSpace = $this->getPlayer()->getForestSpaceByRowCol($row - 1, $col);        
         if ($forestSpace !== null && !($forestSpace instanceof ForestForestSpace)) {
             return true;
         }

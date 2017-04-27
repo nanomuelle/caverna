@@ -29,6 +29,7 @@ class SpaceRenderer {
     // Mountain
     const EXTERNAL_MOUNTAIN = "<bg=green;fg=black>\xB2</>"; // ▓ = \xB2 = chr(178)
     const INTERNAL_MOUNTAIN = "<bg=cyan;fg=black>\xB1</>"; // ▒ = \xB1 = chr(177)    
+    const MIDDLE_MOUNTAIN = "<bg=cyan;fg=blue>\xB2</>"; // ▓ = \XB2 = char(178)
     
     // Cavern
     const CAVERN = "<bg=blue;fg=cyan> </>";

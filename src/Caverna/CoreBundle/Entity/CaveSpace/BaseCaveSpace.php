@@ -51,7 +51,13 @@ abstract class BaseCaveSpace {
     protected function mayDig() {
         $row = $this->getRow();
         $col = $this->getCol();
+                
+        // es externa
+        if ($this->isExternal()) {
+            return false;
+        }
         
+        // adjacente a una casilla ya escabada        
         $caveSpace = $this->getPlayer()->getCaveSpaceByRowCol($row - 1, $col);        
         if ($caveSpace !== null && !($caveSpace instanceof MountainCaveSpace)) {
             return true;

@@ -93,7 +93,7 @@ abstract class GameCommandBase extends ContainerAwareCommand {
         $table = new Table($output);
         $table->setStyle($this::TABLE_STYLE);
         $table
-            ->setHeaders(array('Num', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Ruby', 'VP'))
+            ->setHeaders(array('Num', 'Enanos', 'Comida', 'Madera', 'Piedra', 'Mineral', 'Grano', 'Hortaliza', 'Ruby', 'VP'))
         ;        
         
         /* @var $player Player */
@@ -115,6 +115,8 @@ abstract class GameCommandBase extends ContainerAwareCommand {
                 $player->getWood(),
                 $player->getStone(),
                 $player->getOre(),
+                $player->getGrain(),
+                $player->getVegetable(),
                 $player->getRuby(),
                 $player->getVp()
             ));

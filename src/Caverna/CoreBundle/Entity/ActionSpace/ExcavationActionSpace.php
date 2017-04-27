@@ -4,6 +4,7 @@ namespace Caverna\CoreBundle\Entity\ActionSpace;
 
 use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
+use Caverna\CoreBundle\GameEngine\TileFactory;
 
 /**
  * @ORM\Entity;
@@ -52,7 +53,19 @@ class ExcavationActionSpace extends ActionSpace {
         $this->tile = $tile;
         return $this;
     }
-        
+     
+    public function getTileTypes() {
+        return array(
+            1 => TileFactory::TILE_NINGUNO, 
+            2 => TileFactory::TILE_TC_HORIZONTAL, 
+            3 => TileFactory::TILE_CT_HORIZONTAL, 
+            4 => TileFactory::TILE_CC_HORIZONTAL,
+            5 => TileFactory::TILE_TC_VERTICAL, 
+            6 => TileFactory::TILE_CT_VERTICAL,
+            7 => TileFactory::TILE_CC_VERTICAL            
+        );
+    }
+    
     public function __construct() {
         parent::__construct();
         $this->setName('Excavation');
