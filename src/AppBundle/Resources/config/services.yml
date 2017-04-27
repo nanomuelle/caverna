@@ -101,4 +101,10 @@ services:
         tags:
             - { name: console.command }
 
+    app.game_action_space.ruby_mining_command:
+        class: AppBundle\Command\GameActionSpace\RubyMiningCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
             

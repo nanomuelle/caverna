@@ -146,10 +146,10 @@ class FourPlayersGameBuilder {
             array('Clearing', 1),
             
             array('StartingPlayer', 1),
-            array('Ore mining', 1),
+            array('OreMining', 1),
             array('Sustenance', 1),
             
-            array('Ruby mining', 1),
+            array('RubyMining', 1),
             array('Housework', 1),
             array('SlashAndBurn', 1)
         );
