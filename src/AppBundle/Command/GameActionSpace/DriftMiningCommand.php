@@ -2,14 +2,14 @@
 
 namespace AppBundle\Command\GameActionSpace;
 
-use AppBundle\Command\GameActionSpace\TwinCavernTileCommandBase;
+use AppBundle\Command\GameActionSpace\TwinMountainTileCommandBase;
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\DriftMiningActionSpace;
 
 /**
  * @author marte
  */
-class DriftMiningCommand extends TwinCavernTileCommandBase 
+class DriftMiningCommand extends TwinMountainTileCommandBase 
 {
     const COMMAND_NAME = 'game:action:drift-mining';
     

@@ -2,14 +2,14 @@
 
 namespace AppBundle\Command\GameActionSpace;
 
-use AppBundle\Command\GameActionSpace\TwinCavernTileCommandBase;
+use AppBundle\Command\GameActionSpace\TwinMountainTileCommandBase;
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\ExcavationActionSpace;
 
 /**
  * @author marte
  */
-class ExcavationCommand extends TwinCavernTileCommandBase 
+class ExcavationCommand extends TwinMountainTileCommandBase 
 {
     const COMMAND_NAME = 'game:action:excavation';
     

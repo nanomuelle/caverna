@@ -14,11 +14,11 @@ use Caverna\CoreBundle\Entity\Player;
 /**
  * @author marte
  */
-abstract class TwinCavernTileCommandBase extends ActionSpaceCommand 
+abstract class TwinForestTileCommandBase extends ActionSpaceCommand 
 {
     protected $positions;
     
-    private function getCaveSpaceKey($row, $col) {
+    private function getForestSpaceKey($row, $col) {
         foreach ($this->positions as $key => $position) {
             if ($position->getRow() === $row && $position->getCol() === $col) {
                 return $key;
@@ -26,20 +26,19 @@ abstract class TwinCavernTileCommandBase extends ActionSpaceCommand
         }
         return '';
     }
-
-    protected function getCaveRows(Player $player) {
+    
+    protected function getForestRows(Player $player) {
         $rows = array(array(),array(),array(),array(),array(),array());
         
-        foreach ($player->getCaveSpaces() as $caveSpace) {
-            $row = $caveSpace->getRow();
-            $col = $caveSpace->getCol();
+        foreach ($player->getForestSpaces() as $forestSpace) {
+            $row = $forestSpace->getRow();
+            $col = $forestSpace->getCol();
             
-            $key = $this->getCaveSpaceKey($row, $col);  
+            $key = $this->getForestSpaceKey($row, $col);  
             
-            $reflection = new \ReflectionClass($caveSpace);            
-            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';
-            
-            $rows[$row][$col] = $renderer::render($caveSpace, $key);
+            $reflection = new \ReflectionClass($forestSpace);
+            $renderer = 'AppBundle\\Renderer\\' . $reflection->getShortName() . 'Renderer';            
+            $rows[$row][$col] = $renderer::render($forestSpace, $key);
         }
         
         return $rows;
@@ -54,12 +53,12 @@ abstract class TwinCavernTileCommandBase extends ActionSpaceCommand
             return;
         }
         
-        $this->positions = $this->player->validCaveSpacesForTileType($tileType);
+        $this->positions = $this->player->validForestSpacesForTileType($tileType);
         $position = $this->selectTilePosition($input, $output, $this->positions);
         $this->actionSpace->setTile(TileFactory::createTile(
             $position->getRow(), 
             $position->getCol(), 
             $tileType
         ));                
-    }        
+    }    
 }
