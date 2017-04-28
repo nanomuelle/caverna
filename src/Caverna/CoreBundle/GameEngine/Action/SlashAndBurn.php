@@ -2,7 +2,7 @@
 
 namespace Caverna\CoreBundle\GameEngine\Action;
 
-use Caverna\CoreBundle\Entity\ActionSpace\SlahAndBurnActionSpace;
+use Caverna\CoreBundle\Entity\ActionSpace\SlashAndBurnActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
 /**
@@ -15,7 +15,7 @@ use Caverna\CoreBundle\Entity\Player;
  */
 class SlashAndBurn 
 {
-    public static function execute(SlahAndBurnActionSpace $actionSpace, Player $p_player = null) {
+    public static function execute(SlashAndBurnActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
         // tile
@@ -34,7 +34,7 @@ class SlashAndBurn
         }        
     }
     
-    public static function replenish(ClearingActionSpace $actionSpace) {
+    public static function replenish(SlashAndBurnActionSpace $actionSpace) {
         return;
     }
 

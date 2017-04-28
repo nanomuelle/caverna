@@ -107,4 +107,14 @@ services:
         tags:
             - { name: console.command }
 
-            
+    app.game_action_space.housework_command:
+        class: AppBundle\Command\GameActionSpace\HouseworkCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }
+
+    app.game_action_space.slash_and_burn_command:
+        class: AppBundle\Command\GameActionSpace\SlashAndBurnCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }

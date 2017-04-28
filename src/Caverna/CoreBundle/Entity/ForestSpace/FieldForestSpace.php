@@ -44,4 +44,52 @@ class FieldForestSpace extends BaseForestSpace
     public function isEmpty() {
         return $this->getGrain() + $this->getVegetable() === 0;
     }
+
+    /**
+     * Set grain
+     *
+     * @param integer $grain
+     *
+     * @return FieldForestSpace
+     */
+    public function setGrain($grain)
+    {
+        $this->grain = $grain;
+
+        return $this;
+    }
+
+    /**
+     * Get grain
+     *
+     * @return integer
+     */
+    public function getGrain()
+    {
+        return $this->grain;
+    }
+
+    /**
+     * Set vegetable
+     *
+     * @param integer $vegetable
+     *
+     * @return FieldForestSpace
+     */
+    public function setVegetable($vegetable)
+    {
+        $this->vegetable = $vegetable;
+
+        return $this;
+    }
+
+    /**
+     * Get vegetable
+     *
+     * @return integer
+     */
+    public function getVegetable()
+    {
+        return $this->vegetable;
+    }
 }

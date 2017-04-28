@@ -2,6 +2,9 @@
 
 namespace Caverna\CoreBundle\GameEngine\Action;
 
+use Caverna\CoreBundle\Entity\ActionSpace\HouseworkActionSpace;
+use Caverna\CoreBundle\Entity\Player;
+
 /**
  * Housework: Take 1 Dog from the general supply. Additionally or alternatively, 
  * take a Furnishing tile, pay its building costs and place it on an empty 

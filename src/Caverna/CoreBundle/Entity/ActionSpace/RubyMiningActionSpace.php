@@ -41,4 +41,28 @@ class RubyMiningActionSpace extends ActionSpace {
         $this->setName('Ruby Mining');
         $this->ruby = 0;
     }
+
+    /**
+     * Set ruby
+     *
+     * @param integer $ruby
+     *
+     * @return RubyMiningActionSpace
+     */
+    public function setRuby($ruby)
+    {
+        $this->ruby = $ruby;
+
+        return $this;
+    }
+
+    /**
+     * Get ruby
+     *
+     * @return integer
+     */
+    public function getRuby()
+    {
+        return $this->ruby;
+    }
 }

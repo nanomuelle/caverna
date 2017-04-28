@@ -21,7 +21,10 @@ use Caverna\CoreBundle\Entity\Game;
  *      "Clearing" = "ClearingActionSpace",
  *      "StartingPlayer" = "StartingPlayerActionSpace",
  *      "OreMining" = "OreMiningActionSpace",
- *      "Sustenance" = "SustenanceActionSpace"
+ *      "Sustenance" = "SustenanceActionSpace",
+ *      "RubyMining" = "RubyMiningActionSpace",
+ *      "Housework" = "HouseworkActionSpace",
+ *      "SlashAndBurn" = "SlashAndBurnActionSpace"
  * })
  */
 abstract class ActionSpace {
@@ -68,6 +71,8 @@ abstract class ActionSpace {
      * @return string description
      */
     public abstract function getDescription();
+    
+    public abstract function getState();
     
     public function isAvailable() {        
         // partida no jugando

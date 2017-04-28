@@ -11,8 +11,10 @@ class OreMiningActionSpace extends ActionSpace {
     const KEY = 'OreMining';
     const DESCRIPTION = 'Mineral: 3(2)';
     
-    const INITIAL_ORE = 3;
-    const REPLENISH_ORE = 2;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ore;
     
     public function getKey() {
         return self::KEY;
@@ -26,13 +28,41 @@ class OreMiningActionSpace extends ActionSpace {
         return 'Mineral: ' . $this->getOre();
     }        
     
-    public function getOre() {
-        return self::ORE;
+    /**
+     * 
+     * @param int $amount
+     */
+    public function addOre($amount) {
+        $this->ore += $amount;
     }
     
     public function __construct() {
         parent::__construct();
         $this->setName('Ore Mining');
         $this->ore = 0;
+    }
+
+    /**
+     * Set ore
+     *
+     * @param integer $ore
+     *
+     * @return OreMiningActionSpace
+     */
+    public function setOre($ore)
+    {
+        $this->ore = $ore;
+
+        return $this;
+    }
+
+    /**
+     * Get ore
+     *
+     * @return integer
+     */
+    public function getOre()
+    {
+        return $this->ore;
     }
 }

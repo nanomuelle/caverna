@@ -2,16 +2,16 @@
 
 namespace Caverna\CoreBundle\Entity\ActionSpace;
 
+use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 use Caverna\CoreBundle\Entity\ForestSpace\FieldForestSpace;
+
 /**
- * Description of SlahAndBurnActionSpace
- *
- * @author marte
+ * @ORM\Entity;
  */
 class SlashAndBurnActionSpace extends ActionSpace
 {
-    const KEY = 'Clearing';
+    const KEY = 'SlashAndBurn';
 
     private $fieldForestSpacesForGrain;
     private $fieldForestSpacesForVegetable;
@@ -21,9 +21,13 @@ class SlashAndBurnActionSpace extends ActionSpace
     }
     
     public function getDescription() {
-        return "[MF Tile] & Sow";
+        return '[MF Tile] & Sow';
     }
-        
+     
+    public function getState() {
+        return '[MF Tile] & Sow';
+    }
+    
     public function getFieldForestSpacesForGrain() {
         return $this->fieldForestSpacesForGrain;
     }
