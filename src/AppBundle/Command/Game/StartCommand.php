@@ -14,7 +14,9 @@ use AppBundle\Command\GameCommandBase;
 /**
  * @author marte
  */
-class StartCommand extends GameCommandBase {
+class StartCommand extends GameCommandBase 
+{
+    const COMMAND_NAME = 'game:start';
     
     public function __construct(GameEngine $gameEngineService) {
         parent::__construct($gameEngineService);
@@ -22,7 +24,7 @@ class StartCommand extends GameCommandBase {
 
     protected function configure() {
         $this                
-            ->setName('game:start')
+            ->setName(self::COMMAND_NAME)
             ->setDescription('Da comienzo a una partida.')
             ->addArgument('id', InputArgument::REQUIRED, 'Game Id')
             ;        
@@ -36,7 +38,7 @@ class StartCommand extends GameCommandBase {
         
         $this->gameEngineService->startGame($game);
         
-        $showCommand = $this->getApplication()->find('game:show');
+        $showCommand = $this->getApplication()->find('game:show');        
         $showCommand->run(new ArrayInput(array(
             'command' => 'game:show',
             'id' => $id

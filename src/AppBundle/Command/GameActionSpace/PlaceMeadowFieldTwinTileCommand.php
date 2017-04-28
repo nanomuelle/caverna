@@ -14,9 +14,23 @@ use Caverna\CoreBundle\Entity\Player;
 /**
  * @author marte
  */
-abstract class TwinForestTileCommandBase extends ActionSpaceCommand 
+class PlaceMeadowFieldTwinTileCommand extends ActionSpaceCommand 
 {
+    const COMMAND_NAME = 'place-meadow-field-twin-tile';
+    
     protected $positions;
+    
+    public function __construct(\Caverna\CoreBundle\GameEngine\GameEngine $gameEngineService) {
+        parent::__construct($gameEngineService);
+    }
+    
+    protected function configure() {
+        parent::configure();
+        $this                
+            ->setName(self::COMMAND_NAME)
+            ->setDescription('Place meadow/field twin tile')
+            ;
+    }
     
     private function getForestSpaceKey($row, $col) {
         foreach ($this->positions as $key => $position) {

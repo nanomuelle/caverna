@@ -63,7 +63,7 @@ class ActionSpaceCommand extends GameCommandBase {
 
     private function validateActionSpace($is_imitation) {
         if ($this->actionSpaceKey === '') {
-            throw new Exception('$actionSpaceKey debe ser definido en el metodo __construnct de la subclase.');
+            throw new \Exception('$actionSpaceKey debe ser definido en el metodo __construnct de la subclase.');
         }
         
         $actionSpace = $this->game->getActionSpaceByKey($this->actionSpaceKey);
@@ -111,6 +111,7 @@ class ActionSpaceCommand extends GameCommandBase {
     }
     
     protected function interact(InputInterface $input, OutputInterface $output) {
+        var_dump($input);
         $this->game = $this->gameEngineService->game($input->getArgument('id'));
         $this->player = $this->game->getCurrentRound()->getCurrentTurn()->getPlayer();
         

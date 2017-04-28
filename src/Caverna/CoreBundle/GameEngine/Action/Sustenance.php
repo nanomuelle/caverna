@@ -5,6 +5,8 @@ namespace Caverna\CoreBundle\GameEngine\Action;
 use Caverna\CoreBundle\Entity\ActionSpace\SustenanceActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
+use Caverna\CoreBundle\GameEngine\Action\PlaceMeadowFieldTwinTile;
+
 /**
  * Sustenance: Take all the goods or Food markers that have accumulated on this 
  * Action space. (In games with 1 to 3 players, 1 Food will be added to this 
@@ -35,12 +37,7 @@ class Sustenance
             $actionSpace->setVegetable(0);
         }
         
-        // tile
-        $tile = $actionSpace->getTile();
-        if ($tile !== null) {
-            $player->placeForestSpace($tile[0]);
-            $player->placeForestSpace($tile[1]);
-        }          
+        PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
     }
     
     public static function replenish(SustenanceActionSpace $actionSpace) {

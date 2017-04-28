@@ -118,3 +118,9 @@ services:
         arguments: ['@caverna.game_engine']
         tags:
             - { name: console.command }
+            
+    app.game_action_space.place_meadow_field_twin_tile_command:
+        class: AppBundle\Command\GameActionSpace\PlaceMeadowFieldTwinTileCommand
+        arguments: ['@caverna.game_engine']
+        tags:
+            - { name: console.command }

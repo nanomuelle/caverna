@@ -5,6 +5,8 @@ namespace Caverna\CoreBundle\GameEngine\Action;
 use Caverna\CoreBundle\Entity\ActionSpace\ClearingActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
+use Caverna\CoreBundle\GameEngine\Action\PlaceMeadowFieldTwinTile;
+
 /**
  * Clearing: Take all the Wood that has accumulated on this Action space. (In 
  * games with 1 to 3 players, 1 Wood will be added to this Action space every 
@@ -29,12 +31,7 @@ class Clearing
         $player->addWood($actionSpace->getWood());
         $actionSpace->setWood(0);
         
-        // tile
-        $tile = $actionSpace->getTile();
-        if ($tile !== null) {
-            $player->placeForestSpace($tile[0]);
-            $player->placeForestSpace($tile[1]);
-        }          
+        PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
     }
     
     public static function replenish(ClearingActionSpace $actionSpace) {

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command\GameActionSpace;
 
-use AppBundle\Command\GameActionSpace\TwinForestTileCommandBase;
+use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\SustenanceActionSpace;
@@ -10,7 +10,7 @@ use Caverna\CoreBundle\Entity\ActionSpace\SustenanceActionSpace;
 /**
  * @author marte
  */
-class SustenanceCommand extends TwinForestTileCommandBase 
+class SustenanceCommand extends ActionSpaceCommand 
 {
     const COMMAND_NAME = 'game:action:sustenance';
     

@@ -2,6 +2,10 @@
 
 namespace AppBundle\Command\GameActionSpace;
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
+
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\SlashAndBurnActionSpace;
 
@@ -10,7 +14,7 @@ use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 /**
  * @author marte
  */
-class SlashAndBurnCommand extends ActionSpaceCommand 
+class SlashAndBurnCommand extends ActionSpaceCommand
 {
     const COMMAND_NAME = 'game:action:slash-and-burn';
     
@@ -26,4 +30,14 @@ class SlashAndBurnCommand extends ActionSpaceCommand
             ->setDescription('Slash and burn')
             ;
     }        
+
+    protected function interact(InputInterface $input, OutputInterface $output) {
+        parent::interact($input, $output);
+                
+        $helper = $this->getHelper('question');
+        $sowableActionSpaces = $this->game->getImitableActionSpacesForPlayer($this->player);
+        $question = new SimpleChoiceQuestion('Selecciona la accion que quieres imitar:', $imitableActionSpaces);
+        return $helper->ask($input, $output, $question);
+        
+    }    
 }
