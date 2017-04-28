@@ -13,10 +13,11 @@ namespace Caverna\CoreBundle\GameEngine\Action;
  *
  * @author marte
  */
-class HouseWork {
+class Housework 
+{
     const DOG = 1;
     
-    public static function execute(HouseWorkActionSpace $actionSpace, Player $p_player = null) {
+    public static function execute(HouseworkActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
         
         // TODO: place furnishing        
@@ -24,7 +25,7 @@ class HouseWork {
         $player->addDog(self::DOG);
     }
     
-    public static function replenish(HouseWorkActionSpace $actionSpace) {
+    public static function replenish(HouseworkActionSpace $actionSpace) {
         return;
     }    
 }

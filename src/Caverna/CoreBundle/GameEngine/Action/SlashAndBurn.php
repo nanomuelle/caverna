@@ -2,6 +2,9 @@
 
 namespace Caverna\CoreBundle\GameEngine\Action;
 
+use Caverna\CoreBundle\Entity\ActionSpace\SlahAndBurnActionSpace;
+use Caverna\CoreBundle\Entity\Player;
+
 /**
  * Slash-and-burn: Place a Meadow/Field twin tile on 2 adjacent Forest spaces 
  * of your Home board that are not covered by any tiles. (See “Clearing” for 
@@ -10,6 +13,29 @@ namespace Caverna\CoreBundle\GameEngine\Action;
  *
  * @author marte
  */
-class SlashAndBurn {
-    //put your code here
+class SlashAndBurn 
+{
+    public static function execute(SlahAndBurnActionSpace $actionSpace, Player $p_player = null) {
+        $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
+
+        // tile
+        $tile = $actionSpace->getTile();
+        if ($tile !== null) {
+            $player->placeForestSpace($tile[0]);
+            $player->placeForestSpace($tile[1]);
+        }
+        
+        foreach ($actionSpace->getFieldForestSpacesForGrain as $fieldForestSpace) {
+            $fieldForestSpace->sowGrain();
+        }
+        
+        foreach ($actionSpace->getFieldForestSpacesForVegetable as $fieldForestSpace) {
+            $fieldForestSpace->sowVegetable();
+        }        
+    }
+    
+    public static function replenish(ClearingActionSpace $actionSpace) {
+        return;
+    }
+
 }
