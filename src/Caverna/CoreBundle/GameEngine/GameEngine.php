@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Caverna\CoreBundle\GameEngine\FourPlayersGameBuilder;
 
 use Caverna\CoreBundle\Entity\Game;
+use Caverna\CoreBundle\Entity\Player;
 //use Caverna\CoreBundle\Entity\Round;
 use Caverna\CoreBundle\Entity\Turn;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
@@ -57,18 +58,12 @@ class GameEngine {
                 ->find($id);
     }
     
-    private function replenishActionSpace(ActionSpace $actionSpace) {
-        $numRound = $actionSpace->getGame()->getCurrentRound()->getNum();
-        
-        if ($numRound >= $actionSpace->getAvailableFromRoundNum()) {
-            $actionClass = '\\Caverna\\CoreBundle\\GameEngine\\Action\\' . $actionSpace->getKey();
-            $actionClass::replenish($actionSpace);            
-        }
-    }
-    
     public function replenish(Game $game) {
+        $numRound = $game()->getCurrentRound()->getNum();
         foreach ($game->getActionSpaces() as $actionSpace) {
-            $this->replenishActionSpace($actionSpace);
+            if ($numRound >= $actionSpace->getAvailableFromRoundNum()) {
+                $actionSpace->replenish();
+            }
         }
     }
     
@@ -106,6 +101,19 @@ class GameEngine {
         $this->em->flush();
     }
     
+    /**
+     * 
+     * @param int $num
+     * @param Player $player
+     * @return Turn
+     */
+    private function createTurn($num, Player $player) {
+        $turn = new Turn();
+        $turn->setNum($num);
+        $turn->setPlayer($player);
+        return $turn;
+    }
+    
     private function createTurnsForCurrentRound(Game $game) {
         $enanos = array();
         $players = $game->getPlayers();        
@@ -119,12 +127,9 @@ class GameEngine {
         
         $player = $round->getInitialPlayer();
         $contador_turnos = 1;
-        do {
+        while ($enanos_restantes > 0) {
             if ($enanos[$player->getId()] > 0) {
-                $turn = new Turn();
-                $turn->setNum($contador_turnos);
-                $turn->setPlayer($player);
-                $round->addTurn($turn);                        
+                $round->addTurn($this->createTurn($contador_turnos, $player));                        
                 
                 $this->em->persist($round);
                         
@@ -133,7 +138,7 @@ class GameEngine {
                 $enanos_restantes--;
             }
             $player = $player->getNext();
-        } while($enanos_restantes > 0);
+        }
         
         $this->em->persist($round);
         $this->em->flush();
