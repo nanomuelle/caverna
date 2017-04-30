@@ -17,11 +17,15 @@ use Caverna\CoreBundle\GameEngine\Action\PlaceMeadowFieldTwinTile;
  */
 class SlashAndBurn 
 {
-    public static function execute(SlashAndBurnActionSpace $actionSpace, Player $p_player = null) {
+    public static function executePlaceMeadowFieldTwinTile(SlashAndBurnActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
-        PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
-        
+        PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());        
+    }
+    
+    public static function executeSow(SlashAndBurnActionSpace $actionSpace, Player $p_player = null) {
+        $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
+
         foreach ($actionSpace->getFieldForestSpacesForGrain as $fieldForestSpace) {
             $fieldForestSpace->sowGrain();
         }
@@ -34,5 +38,4 @@ class SlashAndBurn
     public static function replenish(SlashAndBurnActionSpace $actionSpace) {
         return;
     }
-
 }

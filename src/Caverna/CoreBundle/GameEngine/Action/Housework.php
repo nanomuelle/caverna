@@ -27,8 +27,5 @@ class Housework
         // TODO: allow interchange order of furnishing and addDog
         $player->addDog(self::DOG);
     }
-    
-    public static function replenish(HouseworkActionSpace $actionSpace) {
-        return;
-    }    
+   
 }

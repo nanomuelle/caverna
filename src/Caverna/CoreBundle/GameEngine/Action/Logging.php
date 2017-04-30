@@ -15,26 +15,12 @@ use Caverna\CoreBundle\Entity\Player;
  * a Weapon.
  */
 class Logging {
-    const INITIAL_WOOD = 3;
-    const REPLENISH_WOOD_1_TO_3_PLAYERS = 1;
-    const REPLENISH_WOOD_4_TO_7_PLAYERS = 3;
+
     
     public static function execute(LoggingActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
         $player->addWood($actionSpace->getWood());
         $actionSpace->setWood(0);        
-    }
-    
-    public static function replenish(LoggingActionSpace $actionSpace) {
-        if ($actionSpace->getWood() > 0) {
-            if ($actionSpace->getGame()->getNumPlayers() < 4) {
-                $actionSpace->addWood(self::REPLENISH_WOOD_1_TO_3_PLAYERS);
-            } else {
-                $actionSpace->addWood(self::REPLENISH_WOOD_4_TO_7_PLAYERS);
-            }
-        } else {
-            $actionSpace->setWood(self::INITIAL_WOOD);            
-        }
     }
 }

@@ -7,6 +7,15 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 use Caverna\CoreBundle\GameEngine\TileFactory;
 
 /**
+ * Sustenance: Take all the goods or Food markers that have accumulated on this 
+ * Action space. (In games with 1 to 3 players, 1 Food will be added to this 
+ * Action space every round. In games with 4 to 7 players, 1 Vegetable will be 
+ * added to it every round unless it is empty. Then 1 Grain will be added to it 
+ * instead.) In games with 1 to 3 players, also take 1 Grain from the general 
+ * supply. Additionally, you may place a Meadow/Field twin tile on 2 adjacent 
+ * Forest spaces of your Home board that are not covered by any tiles. 
+ * (See “Clearing” for further details.)
+ * 
  * @ORM\Entity;
  */
 class SustenanceActionSpace extends ActionSpace 
@@ -104,6 +113,20 @@ class SustenanceActionSpace extends ActionSpace
             4 => TileFactory::TILE_FM_VERTICAL, 
             5 => TileFactory::TILE_MF_VERTICAL
         );        
+    }
+    
+    public static function replenish(SustenanceActionSpace $actionSpace) {
+        if ($actionSpace->getGame()->getNumPlayers() < 4) {
+            $actionSpace->addFood(SustenanceActionSpace::REPLENISH_FOOD);
+        }
+        
+        if ($actionSpace->getGame()->getNumPlayers() >= 4) {
+            if ($actionSpace->getGrain() === 0) {
+                $actionSpace->setGrain(SustenanceActionSpace::GRAIN);
+            } else {
+                $actionSpace->addVegetable(SustenanceActionSpace::REPLENISH_VEGETABLE);
+            }
+        }
     }
     
     public function __construct() {

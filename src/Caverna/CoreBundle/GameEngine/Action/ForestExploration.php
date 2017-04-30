@@ -15,12 +15,7 @@ use Caverna\CoreBundle\Entity\Player;
  * with 4 or more players, also take 2 Food.
  */
 class ForestExploration {
-    const REPLENISH_WOOD = 1;
-    
-    const INITIAL_WOOD_3_PLAYERS = 1;
     const VEGETABLES_3_PLAYERS = 1;
-    
-    const INITIAL_WOOD_4_TO_7_PLAYERS = 2;
     const FOOD_4_TO_7_PLAYERS = 2;
     
     public static function execute(ForestExplorationActionSpace $actionSpace, Player $p_player = null) {
@@ -33,17 +28,5 @@ class ForestExploration {
         } else {
             $player->addFood(self::FOOD_4_TO_7_PLAYERS);
         }
-    }
-    
-    public static function replenish(ForestExplorationActionSpace $actionSpace) {
-        if ($actionSpace->getWood() === 0) {
-            $actionSpace->setWood(
-                $actionSpace->getGame()->getNumPlayers() < 4 ?
-                    self::INITIAL_WOOD_3_PLAYERS :
-                    self::INITIAL_WOOD_4_TO_7_PLAYERS
-            );
-        } else {
-            $actionSpace->addWood(self::REPLENISH_WOOD);
-        }
-    }
+    }    
 }

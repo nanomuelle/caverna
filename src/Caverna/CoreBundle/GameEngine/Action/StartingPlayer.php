@@ -11,7 +11,6 @@ use Caverna\CoreBundle\Entity\ActionSpace\StartingPlayerActionSpace;
  * general supply. (1 Food is added to this Action space every round.)
  */
 class StartingPlayer {
-    const REPLENISH_FOOD = 1;
     const ORE_1_TO_3_PLAYERS = 2;
     const RUBY_4_TO_7_PLAYERS = 1;
     
@@ -37,7 +36,4 @@ class StartingPlayer {
         }        
     }
     
-    public static function replenish(StartingPlayerActionSpace $actionSpace) {
-        $actionSpace->addFood(self::REPLENISH_FOOD);
-    }
 }

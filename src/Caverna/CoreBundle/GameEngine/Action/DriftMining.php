@@ -18,9 +18,6 @@ use Caverna\CoreBundle\Entity\Player;
  */
 class DriftMining 
 {
-    const REPLENISH_STONE_1_TO_3_PLAYERS = 1;
-    const REPLENISH_STONE_4_TO_7_PLAYERS = 2;
-    
     public static function execute(DriftMiningActionSpace $actionSpace, Player $p_player = null) {        
         /* @var $player Player*/
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
@@ -37,11 +34,4 @@ class DriftMining
         }        
     }
     
-    public static function replenish(DriftMiningActionSpace $actionSpace) {
-        if ($actionSpace->getGame()->getNumPlayers() < 4) {
-            $actionSpace->addStone(self::REPLENISH_STONE_1_TO_3_PLAYERS);
-        } else {
-            $actionSpace->addStone(self::REPLENISH_STONE_4_TO_7_PLAYERS);
-        }        
-    }
 }

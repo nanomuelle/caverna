@@ -18,10 +18,6 @@ use Caverna\CoreBundle\Entity\Player;
  * cave system.
  */
 class Excavation {
-    const REPLENISH_STONE = 1;
-    const INITIAL_STONE_1_TO_3 = 1;
-    const INITIAL_STONE_4_TO_7 = 2;
-    
     public static function execute(ExcavationActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
@@ -34,17 +30,5 @@ class Excavation {
             $player->placeCaveSpace($tile[0]);
             $player->placeCaveSpace($tile[1]);
         }        
-    }
-    
-    public static function replenish(ExcavationActionSpace $actionSpace) {
-        if ($actionSpace->getStone() === 0) {
-            $actionSpace->setStone( 
-                $actionSpace->getGame()->getNumPlayers() < 4 ? 
-                self::INITIAL_STONE_1_TO_3 : 
-                self::INITIAL_STONE_4_TO_7 
-            );
-        } else {
-            $actionSpace->addStone(self::REPLENISH_STONE);
-        }
-    }
+    }    
 }

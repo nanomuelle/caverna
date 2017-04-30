@@ -22,9 +22,6 @@ use Caverna\CoreBundle\GameEngine\Action\PlaceMeadowFieldTwinTile;
  */
 class Clearing 
 {
-    const REPLENISH_WOOD_1_TO_3_PLAYERS = 1;
-    const REPLENISH_WOOD_4_TO_7_PLAYERS = 2;
-    
     public static function execute(ClearingActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
 
@@ -32,13 +29,5 @@ class Clearing
         $actionSpace->setWood(0);
         
         PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
-    }
-    
-    public static function replenish(ClearingActionSpace $actionSpace) {
-        if ($actionSpace->getGame()->getNumPlayers() < 4) {
-            $actionSpace->addWood(self::REPLENISH_WOOD_1_TO_3_PLAYERS);
-        } else {
-            $actionSpace->addWood(self::REPLENISH_WOOD_4_TO_7_PLAYERS);
-        }
-    }
+    }    
 }

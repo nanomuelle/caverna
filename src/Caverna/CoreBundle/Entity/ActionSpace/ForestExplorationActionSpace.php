@@ -6,12 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 
 /**
+ * Forest exploration (3-7 players): Take all the Wood that has accumulated on 
+ * this Action space. (In 3-player games, this Action space can be found on the
+ * additional game board: every round, 1 Wood will be added to it. In games 
+ * with 4 or more players, it can be found on the two-sided basic game board: 
+ * every round, 1 Wood will be added to it unless it is empty. Then 2 Wood will 
+ * be added to it instead.) In 3-player games, also take 1 Vegetable. In games 
+ * with 4 or more players, also take 2 Food.
+ * 
  * @ORM\Entity;
  */
 class ForestExplorationActionSpace extends ActionSpace {
     const KEY = 'ForestExploration';
     const DESCRIPTION_3_PLAYERS = 'Madera 1(1) Hortaliza +1';
     const DESCRIPTION_4_TO_7_PLAYERS = 'Madera 2(1) Comida +1';
+    const REPLENISH_WOOD = 1;    
+    const INITIAL_WOOD_3_PLAYERS = 1;
+    const INITIAL_WOOD_4_TO_7_PLAYERS = 2;
     
     /**
      * @ORM\Column(type="integer")
@@ -43,6 +54,18 @@ class ForestExplorationActionSpace extends ActionSpace {
      */
     public function addWood($amount) {
         $this->wood += $amount;
+    }
+
+    public static function replenish() {
+        if ($this->getWood() === 0) {
+            $this->setWood(
+                $this->getGame()->getNumPlayers() < 4 ?
+                    self::INITIAL_WOOD_3_PLAYERS :
+                    self::INITIAL_WOOD_4_TO_7_PLAYERS
+            );
+        } else {
+            $this->addWood(self::REPLENISH_WOOD);
+        }
     }
 
     public function __construct() {

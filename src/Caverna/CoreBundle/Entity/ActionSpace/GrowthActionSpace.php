@@ -5,6 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 
 /**
+ * Growth (4-7 players): Take 1 Wood, 1 Stone, 1 Ore, 1 Food and 2 Gold from the
+ *  general supply. Alternatively, carry out a Family growth action.
+ * 
  * @ORM\Entity;
  */
 class GrowthActionSpace extends ActionSpace {
@@ -46,6 +49,10 @@ class GrowthActionSpace extends ActionSpace {
     
     public function getVp() {
         return self::VP;
+    }
+
+    public static function replenish() {
+        return;
     }
     
     public function __construct() {

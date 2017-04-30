@@ -7,11 +7,17 @@ use Caverna\CoreBundle\Entity\ActionSpace\ActionSpace;
 use Caverna\CoreBundle\Entity\Player;
 
 /**
+ * Starting player: Take the Starting player token and all the Food that has 
+ * accumulated on this Action space. Additionally, take 2 Ore (in games 
+ * with 1 to 3 players) or 1 Ruby (in games with 4 to 7 players) from the 
+ * general supply. (1 Food is added to this Action space every round.)
+ * 
  * @ORM\Entity;
  */
 class StartingPlayerActionSpace extends ActionSpace {
     const KEY = 'StartingPlayer';
     const DESCRIPTION = 'Jugador Inicial, Comida 1(1)';
+    const REPLENISH_FOOD = 1;
 
     /**
      * @ORM\Column(type="integer")
@@ -48,6 +54,10 @@ class StartingPlayerActionSpace extends ActionSpace {
     public function addFood($amount) {
         $this->food += $amount;
     } 
+    
+    public static function replenish() {
+        $this->addFood(self::REPLENISH_FOOD);
+    }
     
     public function __construct() {
         parent::__construct();

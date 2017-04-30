@@ -25,7 +25,9 @@ class Sustenance
         if ($actionSpace->getGame()->getNumPlayers() < 4) {
             $player->addFood($actionSpace->getFood());
             $actionSpace->setFood(0);
-
+        }
+        
+        if ($actionSpace->getGame()->getNumPlayers() === 3) {
             $player->addGrain($actionSpace->getGrain());
         }
         
@@ -39,18 +41,5 @@ class Sustenance
         
         PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
     }
-    
-    public static function replenish(SustenanceActionSpace $actionSpace) {
-        if ($actionSpace->getGame()->getNumPlayers() < 4) {
-            $actionSpace->addFood(SustenanceActionSpace::REPLENISH_FOOD);
-        }
-        
-        if ($actionSpace->getGame()->getNumPlayers() >= 4) {
-            if ($actionSpace->getGrain() === 0) {
-                $actionSpace->setGrain(SustenanceActionSpace::GRAIN);
-            } else {
-                $actionSpace->addVegetable(SustenanceActionSpace::REPLENISH_VEGETABLE);
-            }
-        }
-    }
+
 }
