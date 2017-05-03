@@ -45,7 +45,7 @@ class OreMiningActionSpace extends ActionSpace {
         $this->ore += $amount;
     }
 
-    public static function replenish() {
+    public function replenish() {
         if ($this->getOre() === 0) {
             $this->setOre(self::INITIAL_ORE);
         } else {

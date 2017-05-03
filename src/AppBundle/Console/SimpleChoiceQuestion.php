@@ -10,7 +10,7 @@ class SimpleChoiceQuestion extends Question {
         $index = 1;
         $outputArray = array();
         foreach ($array as $value) {
-            $outputArray[''. $index] = $value;
+            $outputArray[$index] = $value;
             $index++;
         }
         return $outputArray;

@@ -23,7 +23,7 @@ use AppBundle\Console\SimpleChoiceQuestion;
 /**
  * @author marte
  */
-class ActionSpaceCommand extends GameCommandBase {
+abstract class ActionSpaceCommand extends GameCommandBase {
     /**
      * @var Game
      */
@@ -49,11 +49,15 @@ class ActionSpaceCommand extends GameCommandBase {
      */
     protected $actionSpaceKey;
     
+    protected $options;
+    
+    protected abstract function executeActionSpace(InputInterface $input, OutputInterface $output);
+    
     public function __construct(GameEngine $gameEngineService) {
         parent::__construct($gameEngineService);
         $this->actionSpaceKey = '';
     }
-
+        
     protected function configure() {
         $this
             ->addArgument('id', InputArgument::REQUIRED, 'Game Id')
@@ -110,8 +114,7 @@ class ActionSpaceCommand extends GameCommandBase {
    
     }
     
-    protected function interact(InputInterface $input, OutputInterface $output) {
-        var_dump($input);
+    protected function interact(InputInterface $input, OutputInterface $output) {        
         $this->game = $this->gameEngineService->game($input->getArgument('id'));
         $this->player = $this->game->getCurrentRound()->getCurrentTurn()->getPlayer();
         
@@ -127,12 +130,12 @@ class ActionSpaceCommand extends GameCommandBase {
         $this->logger = $this->getContainer()->get('logger');
         $this->logger->notice($this->getName(), $input->getArguments());
                 
-        if ( $input->getArgument('imitation') ) {
-            return;
+        if (!$input->getArgument('imitation') ) {
+            $this->actionSpace->setDwarf($this->dwarf);
         } 
-
-        $this->actionSpace->setDwarf($this->dwarf);
-        $this->gameEngineService->executeActionSpace($this->actionSpace);
+        
+        $this->executeActionSpace($input, $output);
+//        $this->gameEngineService->executeActionSpace($this->actionSpace);
         
         $showCommand = $this->getApplication()->find('game:show');
         $showCommand->run(new ArrayInput(array(

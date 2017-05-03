@@ -80,7 +80,7 @@ class ExcavationActionSpace extends ActionSpace {
         );
     }
     
-    public static function replenish() {
+    public function replenish() {
         if ($this->getStone() === 0) {
             $this->setStone( 
                 $this->getGame()->getNumPlayers() < 4 ? 

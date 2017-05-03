@@ -79,7 +79,7 @@ class DriftMiningActionSpace extends ActionSpace
         );        
     }
     
-    public static function replenish() {
+    public function replenish() {
         if ($this->getGame()->getNumPlayers() < 4) {
             $this->addStone(self::REPLENISH_STONE_1_TO_3_PLAYERS);
         } else {

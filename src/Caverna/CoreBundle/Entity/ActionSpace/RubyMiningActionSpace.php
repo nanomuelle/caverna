@@ -43,7 +43,7 @@ class RubyMiningActionSpace extends ActionSpace {
         return 'Ruby: ' . $this->getRuby();
     }        
     
-    public static function replenish() {
+    public function replenish() {
         if ($this->getGame()->getNumPlayers() === 2 &&
                 $this->getGame()->getCurrentRound()->getNum() < 3) {
             return;

@@ -14,6 +14,8 @@ use AppBundle\Console\SimpleChoiceQuestion;
 
 use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 
+use Caverna\CoreBundle\GameEngine\Action\Imitation;
+
 /**
  * @author marte
  */
@@ -44,7 +46,7 @@ class ImitationCommand extends ActionSpaceCommand {
         $this->actionSpace->setImitatedActionSpace($imitatedActionSpace);
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function executeActionSpace(InputInterface $input, OutputInterface $output) {
         $commandToImitate = 'AppBundle\\Command\\GameActionSpace\\' . $this->actionSpace->getImitatedActionSpace()->getKey() . 'Command';
 
         $command = $this->getApplication()->find($commandToImitate::COMMAND_NAME);
@@ -55,5 +57,6 @@ class ImitationCommand extends ActionSpaceCommand {
         )), $output);        
 
         parent::execute($input, $output);
+//        Imitation::execute($this->actionSpace, $this->player, $this->options);
     }    
 }

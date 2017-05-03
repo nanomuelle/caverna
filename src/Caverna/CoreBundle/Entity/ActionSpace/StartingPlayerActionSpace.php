@@ -55,7 +55,7 @@ class StartingPlayerActionSpace extends ActionSpace {
         $this->food += $amount;
     } 
     
-    public static function replenish() {
+    public function replenish() {
         $this->addFood(self::REPLENISH_FOOD);
     }
     

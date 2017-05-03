@@ -56,7 +56,7 @@ class ForestExplorationActionSpace extends ActionSpace {
         $this->wood += $amount;
     }
 
-    public static function replenish() {
+    public function replenish() {
         if ($this->getWood() === 0) {
             $this->setWood(
                 $this->getGame()->getNumPlayers() < 4 ?

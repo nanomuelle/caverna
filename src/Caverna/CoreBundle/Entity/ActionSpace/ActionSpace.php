@@ -74,6 +74,10 @@ abstract class ActionSpace {
     
     public abstract function getState();
     
+    public function replenish() {
+        return;
+    } 
+        
     public function isAvailable() {        
         // partida no jugando
         if ($this->getGame()->getStatus() !== Game::STATUS_PLAYING ) {

@@ -10,6 +10,7 @@ use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\SlashAndBurnActionSpace;
 
 use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
+use Caverna\CoreBundle\GameEngine\Action\SlashAndBurn;
 
 /**
  * @author marte
@@ -39,5 +40,9 @@ class SlashAndBurnCommand extends ActionSpaceCommand
         $question = new SimpleChoiceQuestion('Selecciona la accion que quieres imitar:', $imitableActionSpaces);
         return $helper->ask($input, $output, $question);
         
+    }    
+    
+    protected function executeActionSpace(InputInterface $input, OutputInterface $output) {
+        SlashAndBurn::execute($this->actionSpace, $this->player, $this->options);
     }    
 }

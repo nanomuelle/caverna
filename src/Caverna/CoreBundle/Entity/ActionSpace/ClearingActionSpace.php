@@ -85,14 +85,14 @@ class ClearingActionSpace extends ActionSpace
         );        
     }
 
-    public static function replenish() {
+    public function replenish() {
         if ($this->getGame()->getNumPlayers() < 4) {
             $this->addWood(self::REPLENISH_WOOD_1_TO_3_PLAYERS);
         } else {
             $this->addWood(self::REPLENISH_WOOD_4_TO_7_PLAYERS);
         }
     }
-    
+        
     public function __construct() {
         parent::__construct();
         $this->setName('Clearing');

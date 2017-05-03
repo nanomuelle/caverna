@@ -11,7 +11,7 @@ use AppBundle\Command\GameActionSpace\ActionSpaceCommand;
 use Caverna\CoreBundle\GameEngine\GameEngine;
 use Caverna\CoreBundle\Entity\ActionSpace\ClearingActionSpace;
 
-use AppBundle\Command\GameActionSpace\PlaceMeadowFieldTwinTileCommand;
+//use AppBundle\Command\GameActionSpace\PlaceMeadowFieldTwinTileCommand;
 
 /**
  * @author marte
@@ -33,11 +33,11 @@ class ClearingCommand extends ActionSpaceCommand
             ;        
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $placeTileCommand = $this->getApplication()->find(PlaceMeadowFieldTwinTileCommand::COMMAND_NAME);
-        $placeTileCommand->run(new ArrayInput(array(
-            'command' => PlaceMeadowFieldTwinTileCommand::COMMAND_NAME,
-            'id' => $input->getArgument('id')
-        )), $output);
+    protected function executeActionSpace(InputInterface $input, OutputInterface $output) {
+//        $placeTileCommand = $this->getApplication()->find(PlaceMeadowFieldTwinTileCommand::COMMAND_NAME);
+//        $placeTileCommand->run(new ArrayInput(array(
+//            'command' => PlaceMeadowFieldTwinTileCommand::COMMAND_NAME,
+//            'id' => $input->getArgument('id')
+//        )), $output);
     }
 }

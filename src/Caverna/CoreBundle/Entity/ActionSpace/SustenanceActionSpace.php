@@ -115,16 +115,16 @@ class SustenanceActionSpace extends ActionSpace
         );        
     }
     
-    public static function replenish(SustenanceActionSpace $actionSpace) {
-        if ($actionSpace->getGame()->getNumPlayers() < 4) {
-            $actionSpace->addFood(SustenanceActionSpace::REPLENISH_FOOD);
+    public function replenish() {
+        if ($this->getGame()->getNumPlayers() < 4) {
+            $this->addFood(self::REPLENISH_FOOD);
         }
         
-        if ($actionSpace->getGame()->getNumPlayers() >= 4) {
-            if ($actionSpace->getGrain() === 0) {
-                $actionSpace->setGrain(SustenanceActionSpace::GRAIN);
+        if ($this->getGame()->getNumPlayers() >= 4) {
+            if ($this->getGrain() === 0) {
+                $this->setGrain(self::GRAIN);
             } else {
-                $actionSpace->addVegetable(SustenanceActionSpace::REPLENISH_VEGETABLE);
+                $this->addVegetable(self::REPLENISH_VEGETABLE);
             }
         }
     }

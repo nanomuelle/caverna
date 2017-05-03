@@ -24,10 +24,12 @@ class Clearing
 {
     public static function execute(ClearingActionSpace $actionSpace, Player $p_player = null) {
         $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();
-
+        
+        // take resources
         $player->addWood($actionSpace->getWood());
         $actionSpace->setWood(0);
         
+        // place tile
         PlaceMeadowFieldTwinTile::execute($player, $actionSpace->getTile());
     }    
 }

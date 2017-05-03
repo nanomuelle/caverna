@@ -50,10 +50,6 @@ class GrowthActionSpace extends ActionSpace {
     public function getVp() {
         return self::VP;
     }
-
-    public static function replenish() {
-        return;
-    }
     
     public function __construct() {
         parent::__construct();

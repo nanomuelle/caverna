@@ -52,10 +52,6 @@ class ImitationActionSpace extends ActionSpace {
         return parent::__toString() . $imitated;
     }
     
-    public static function replenish() {
-        return;
-    }
-    
     public function __construct() {
         parent::__construct();
         $this->setName('Imitation');

@@ -31,10 +31,6 @@ class HouseworkActionSpace extends ActionSpace
         return 'Perro: 1, Furnish cavern';
     }
     
-    public static function replenish() {
-        return;
-    } 
-    
     public function __construct() {
         parent::__construct();
         $this->setName('Housework');

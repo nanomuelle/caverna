@@ -47,7 +47,7 @@ class LoggingActionSpace extends ActionSpace {
         return 'Madera: ' . $this->getWood();
     }      
     
-    public static function replenish() {
+    public function replenish() {
         if ($this->getWood() > 0) {
             if ($this->getGame()->getNumPlayers() < 4) {
                 $this->addWood(self::REPLENISH_WOOD_1_TO_3_PLAYERS);

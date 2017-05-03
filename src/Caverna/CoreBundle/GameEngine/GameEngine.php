@@ -59,7 +59,7 @@ class GameEngine {
     }
     
     public function replenish(Game $game) {
-        $numRound = $game()->getCurrentRound()->getNum();
+        $numRound = $game->getCurrentRound()->getNum();
         foreach ($game->getActionSpaces() as $actionSpace) {
             if ($numRound >= $actionSpace->getAvailableFromRoundNum()) {
                 $actionSpace->replenish();
