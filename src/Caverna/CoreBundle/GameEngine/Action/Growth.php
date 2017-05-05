@@ -10,20 +10,16 @@ use Caverna\CoreBundle\Entity\Player;
  *  general supply. Alternatively, carry out a Family growth action.
  */
 class Growth {
-    const TAKE_RESOURCES = 'TAKE_RESOURCES';
-    const FAMILY_GROWTH = 'FAMILY_GROWTH';
-    
-    public static function execute(GrowthActionSpace $actionSpace, Player $player, $options) {        
-//        $player = $p_player ? $p_player : $actionSpace->getDwarf()->getPlayer();        
-        if ($options === self::TAKE_RESOURCES) {
-            $player->addFood($actionSpace->getFood());
-            $player->addWood($actionSpace->getWood());
-            $player->addStone($actionSpace->getStone());
-            $player->addOre($actionSpace->getOre());
-            $player->addVp($actionSpace->getVp());
-        } else {
-            // TODO: Family Growth
-            // ...
-        }
+    public static function takeResources(GrowthActionSpace $actionSpace, Player $player) {
+        $player->addFood($actionSpace->getFood());
+        $player->addWood($actionSpace->getWood());
+        $player->addStone($actionSpace->getStone());
+        $player->addOre($actionSpace->getOre());
+        $player->addVp($actionSpace->getVp());
     }    
+    
+    public static function growthFamily(GrowthActionSpace $actionSpace, Player $player) {
+        // TODO
+        return;
+    }
 }

@@ -89,16 +89,19 @@ class GameEngine {
         $actionClass = '\\Caverna\\CoreBundle\\GameEngine\\Action\\' . $actionSpace->getKey();
         $actionClass::execute($actionSpace);
         
-        $this->em->persist($actionSpace->getGame());
+        $this->save($actionSpace->getGame());
+    }
+    
+    public function save(Game $game) {
+        $this->em->persist($game);
         $this->em->flush();
-        $this->em->clear(); // clear em cache        
+        $this->em->clear();
     }
     
     public function finishCurrentTurn(Game $game) {
         $game->getCurrentRound()->finishCurrentTurn();
         
-        $this->em->persist($game);
-        $this->em->flush();
+        $this->save($game);
     }
     
     /**

@@ -36,6 +36,7 @@ class ImitationCommand extends ActionSpaceCommand {
     protected function selectActionSpace(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
         $imitableActionSpaces = $this->game->getImitableActionSpacesForPlayer($this->player);
+        var_dump($imitableActionSpaces);
         $question = new SimpleChoiceQuestion('Selecciona la accion que quieres imitar:', $imitableActionSpaces);
         return $helper->ask($input, $output, $question);
     }    
@@ -56,7 +57,11 @@ class ImitationCommand extends ActionSpaceCommand {
             'imitation' => true
         )), $output);        
 
-        parent::execute($input, $output);
+//        parent::execute($input, $output);
 //        Imitation::execute($this->actionSpace, $this->player, $this->options);
     }    
+    
+    protected function execute(InputInterface $input, OutputInterface $output) {
+        return;
+    }
 }

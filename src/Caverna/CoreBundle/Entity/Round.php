@@ -66,12 +66,14 @@ class Round {
     public function finishCurrentTurn() {
         // Si no hay turno actual no hacemos nada
         if ($this->getCurrentTurn() === null) {
-            return false;
+            throw new Exception('No hay turno actual');
+//            return false;
         }
         
         // Si no se ha jugado un enano a un actionSpace, no se puede finalizar el turno
         if ($this->getCurrentTurn()->getActionSpace() === null) {
-            return false;
+            throw new \Exception('El jugador actual aun no ha realizado ninguna accion');
+//            return false;
         }
         
         $nextNumTurn = $this->getCurrentTurn()->getNum() + 1;
@@ -82,6 +84,7 @@ class Round {
             }
         }
         
+        // no hay mas turnos
         $this->setCurrentTurn(null);
     }
     

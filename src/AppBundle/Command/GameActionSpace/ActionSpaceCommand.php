@@ -49,6 +49,10 @@ abstract class ActionSpaceCommand extends GameCommandBase {
      */
     protected $actionSpaceKey;
     
+    /**
+     *
+     * @var array
+     */
     protected $options;
     
     protected abstract function executeActionSpace(InputInterface $input, OutputInterface $output);
@@ -56,6 +60,7 @@ abstract class ActionSpaceCommand extends GameCommandBase {
     public function __construct(GameEngine $gameEngineService) {
         parent::__construct($gameEngineService);
         $this->actionSpaceKey = '';
+        $this->options = array();
     }
         
     protected function configure() {
@@ -129,12 +134,14 @@ abstract class ActionSpaceCommand extends GameCommandBase {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->logger = $this->getContainer()->get('logger');
         $this->logger->notice($this->getName(), $input->getArguments());
-                
-        if (!$input->getArgument('imitation') ) {
+        
+        $is_imitation = $input->getArgument('imitation');
+        if (!$is_imitation) {
             $this->actionSpace->setDwarf($this->dwarf);
         } 
         
         $this->executeActionSpace($input, $output);
+        $this->gameEngineService->save($this->game);
 //        $this->gameEngineService->executeActionSpace($this->actionSpace);
         
         $showCommand = $this->getApplication()->find('game:show');
